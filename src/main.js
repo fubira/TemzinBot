@@ -34,7 +34,7 @@ bot.on('message', (jmes) => {
 });
 
 bot.on('end', () => {
-  console.log('[bot.end] ');
+  console.log('[bot.end]');
 });
 
 const rl = readline.createInterface({
@@ -45,7 +45,7 @@ rl.on('line', (line) => {
   bot.chat(line);
 })
 rl.on('close', () => {
-  bot.chat('bye');
+  bot.chat('bye.');
   delay(1000).then(() => {
     bot.quit();
   })
