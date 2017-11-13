@@ -13,8 +13,8 @@ module.exports.jmes_to_text = (jmes) => {
 
   if (jmes.extra)
     jmes.extra.forEach((v, i, a) => {
-        message += v.text;
-      });
+      message += v.text;
+    });
   return message;
 }
 

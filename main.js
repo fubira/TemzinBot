@@ -5,10 +5,10 @@ const readline = require('readline');
 console.log('Connecting to [' + process.env.MC_HOST +':' + process.env.MC_PORT + ']');
 console.log('User [' + process.env.MC_USERNAME + ']');
 
-var mineflayer = require('mineflayer');
-var botutil = require('./src/botutil');
+const mineflayer = require('mineflayer');
+const botutil = require('./src/botutil');
 
-var bot = mineflayer.createBot({
+const bot = mineflayer.createBot({
   host: process.env.MC_HOST,
   port: process.env.MC_PORT,
   username: process.env.MC_USERNAME,
@@ -16,10 +16,14 @@ var bot = mineflayer.createBot({
   verbose: true
 });
 
+
 bot.on('connect', () => {
   console.log("[bot.connect] connected.");
   setup_readline();
   botutil.setup(bot);
+
+  bot.chatAddPattern(/^(?:\[[^\]]*\])?<([^ :]*)> (.*)$/, 'chat', 'Skyblock.net chat');
+  bot.chatAddPattern(/^([^ ]*) whispers: (.*)$/, 'whisper', 'ChatCo whisper');
 });
 
 bot.on('chat', (username, message, translate, jsonMsg, matches) => {
@@ -46,6 +50,9 @@ bot.on('end', () => {
     process.exit(0);
   })
 });
+
+function parse_message(message) {
+}
 
 function setup_readline() {
   const rl = readline.createInterface({input: process.stdin, output: process.stdout});
