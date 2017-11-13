@@ -1,0 +1,23 @@
+{
+  "name": "temzinbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {
+    "mineflayer": "^2.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fubira/TemzinBot.git"
+  },
+  "author": "fubira@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fubira/TemzinBot/issues"
+  },
+  "homepage": "https://github.com/fubira/TemzinBot#readme"
+}
