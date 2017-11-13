@@ -1,3 +1,6 @@
+const readline = require('readline');
+const delay = require('delay');
+
 var mineflayer = require('mineflayer');
 require('dotenv').config();
 
@@ -12,36 +15,40 @@ var bot = mineflayer.createBot({
   verbose: true
 });
 
-bot.on('connect', function() {
+bot.on('connect', () => {
   console.log("[bot.connect] connected.");
 });
 
-bot.on('chat', function(username, message, translate, jsonMsg, matches) {
+bot.on('chat', (username, message, translate, jsonMsg, matches) => {
   console.log('[bot.chat] <' + username + '>: ' + message);
 });
 
-bot.on('whisper', function(username, message, translate, jsonMsg, matches) {
+bot.on('whisper', (username, message, translate, jsonMsg, matches) => {
   console.log('[bot.whisper] <' + username + '>: ' + message);
   bot.chat(message);
 });
 
-bot.on('message', function(jmes) {
+bot.on('message', (jmes) => {
   var message = jmes_to_text(jmes);
   console.log('[bot.message] ' + message);
 });
 
-bot.on('end', function () {
+bot.on('end', () => {
   console.log('[bot.end] ');
 });
 
-const readline = require('readline');
-const rl = readline.createInterface({input: process.stdin, output: process.stdout});
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout});
 rl.setPrompt('> ');
-rl.on('line', function(line) {
+rl.on('line', (line) => {
   bot.chat(line);
 })
-rl.on('close', function() {
-  bot.quit();
+rl.on('close', () => {
+  bot.chat('bye');
+  delay(1000).then(() => {
+    bot.quit();
+  })
 })
 
 
@@ -51,12 +58,12 @@ function jmes_to_text(jmes) {
     message = jmes.text;
 
   if (jmes.extra)
-    jmes.extra.forEach(function(v, i, a){
+    jmes.extra.forEach((v, i, a) => {
         message += v.text;
       });
   return message;
 }
 
-function safe_chat() {
+function safe_chat(text) {
 
 }
