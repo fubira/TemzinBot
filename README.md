@@ -22,12 +22,11 @@ USERNAME="myname@foo.bar"
 PASSWORD="passwd"
 ```
 
-
 Usage
 -----
 
 ```
-npm run
+npm start
 ```
 
 Update
