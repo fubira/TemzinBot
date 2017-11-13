@@ -22,7 +22,7 @@ bot.on('connect', () => {
   setup_readline();
   botutil.setup(bot);
 
-  bot.chatAddPattern(/^(?:\[[^\]]*\])?<([^ :]*)> (.*)$/, 'chat', 'Skyblock.net chat');
+  bot.chatAddPattern(/^(?:\[[^\]]*\])?<([^ :]*)> (.*)$/, 'chat', 'kenmomine.biz chat');
   bot.chatAddPattern(/^([^ ]*) whispers: (.*)$/, 'whisper', 'ChatCo whisper');
 });
 
