@@ -1,8 +1,36 @@
+const delay = require('delay');
+const readline = require('readline');
+
 module.exports = function(bot) {
   this.bot = bot;
 
+  // 入力処理を有効にする
+  this.bot.init_readline = () => {
+    this.rl = readline.createInterface({input: process.stdin, output: process.stdout});
+    this.rl.setPrompt('> ');
+
+    // 入力はチャットに流す
+    this.rl.on('line', (line) => {
+      bot.chat(line);
+    });
+
+    // CTRL+DまたはCTRL+CでSTDINが閉じたらbotも閉じる
+    this.rl.on('close', () => {
+      delay(1000).then(() => { bot.quit(); })
+    })
+  }
+
+  // prompt処理とかをちゃんとやるログ出力
+  this.bot.log = (...args) => {
+    readline.cursorTo(process.stdout, 0);
+    console.log.apply(console, args);
+
+    if (typeof this.rl !== 'undefined')
+      this.rl.prompt();
+  }
+
   // jmes形式のメッセージからテキスト成分だけを抜き出して文字列で返す
-  bot.jmes_to_text = (jmes) => {
+  this.bot.jmes_to_text = (jmes) => {
     var message = '';
     if (jmes.text)
       message = jmes.text;
@@ -19,7 +47,7 @@ module.exports = function(bot) {
   this.safechat_last_send_text = "";
   this.safechat_last_send_time = new Date().getTime();
 
-  bot.safechat = (text) => {
+  this.bot.safechat = (text) => {
     var current_time = new Date().getTime();
     var is_elapsed_ms = (delay) => {
       return (current_time - safechat_last_send_time) > delay;
@@ -29,7 +57,7 @@ module.exports = function(bot) {
       return;
 
     if (!is_elapsed_ms(500)) {
-      console.log('[WARNING] 短時間の連続したメッセージ送信が拒否されました');
+      this.bot.log('[WARNING] 短時間の連続したメッセージ送信が拒否されました');
       return;
     }
 
@@ -39,12 +67,12 @@ module.exports = function(bot) {
     }
 
     if (text === safechat_last_send_text) {
-      console.log('[WARNING] 同一文章の連続送信が拒否されました');
+      this.bot.log('[WARNING] 同一文章の連続送信が拒否されました');
       return;
     }
 
     this.safechat_last_send_text = text;
     this.safechat_last_send_time = current_time;
-    bot.chat(text);
+    this.bot.chat(text);
   }
 }
