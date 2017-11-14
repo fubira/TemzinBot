@@ -16,3 +16,6 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# cache data
+data.*.json

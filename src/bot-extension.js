@@ -16,7 +16,8 @@ module.exports = function(bot) {
 
     // CTRL+DまたはCTRL+CでSTDINが閉じたらbotも閉じる
     this.rl.on('close', () => {
-      delay(1000).then(() => { bot.quit(); })
+      this.bot.log('[readline] input closed');
+      delay(1000).then(() => { this.bot.quit(); })
     })
   }
 
