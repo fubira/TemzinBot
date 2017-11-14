@@ -19,8 +19,8 @@ module.exports = function(bot) {
         bot.safechat('わんへ', 2000);
       if (message.match(/^こん/))
         bot.safechat('こん', 2000);
-    }
 
-    this.last_joined_player = null;
+      this.last_joined_player = null;
+    }
   })
 }

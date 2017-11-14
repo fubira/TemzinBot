@@ -40,12 +40,14 @@ module.exports = function(bot) {
   bot.on('chat', (username, message) => {
     // 記憶データの各キーワードとマッチ判定を行い、
     // 該当する文言があればvalueをチャットに出力する
-    if (this.record) {
-      this.record.forEach((r) => {
-        if (message.match(new RegExp('^' + r.key + "$"))) {
-          bot.safechat(r.value);
-        }
-      });
+    if (username !== bot.username ) {
+      if (this.record) {
+        this.record.forEach((r) => {
+          if (message.match(new RegExp('^' + r.key + "$"))) {
+            bot.safechat(r.value);
+          }
+        });
+      }
     }
 
     // うそです(適当なUndo機能)
