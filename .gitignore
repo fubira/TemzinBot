@@ -19,3 +19,4 @@ node_modules/
 
 # cache data
 data.*.json
+config.*.json
