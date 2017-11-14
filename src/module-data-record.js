@@ -63,7 +63,7 @@ module.exports = function(bot) {
     if (message.match(/^記憶$/)) {
       if (this.record && this.record.length > 0) {
         this.record.forEach((r) => {
-          bot.safechat('/r [' + r.key + ']: ' + r.value);
+          bot.safechat('/r ' + r.key + ' は ' + r.value);
         });
       } else {
         bot.safechat('/r なにも知らないよ');
