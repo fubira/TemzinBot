@@ -3,17 +3,19 @@ TemzinBot
 
 mineflayerを利用した適当bot
 
-Initialize
-----------
 
-```
-npm install
-```
+## Features
 
-Setup
------
+  - I'M BOT!
 
-.env.sample をコピーして .env というファイルを作成し、内容を書き換えてください。
+## Installation
+
+    $ git clone https://github.com/fubira/TemzinBot
+    $ npm install
+
+## Environment
+
+.env.sample をコピーして .env を作成し、環境に合わせて内容を書き換えてください。
 
 ```
 MC_HOST="localhost"
@@ -22,18 +24,14 @@ MC_USERNAME="user@foo.bar"
 MC_PASSWORD="password"
 ```
 
-Usage
------
+## Usage
 
-```
-npm start
-```
+    $ npm start
 
-Update
-------
+## License
 
-新しいバージョンに対応するには、mineflayerをアップデートしてください。
+[MIT](https://github.com/fubira/TemzinBot/blob/master/LICENSE,md)
 
-```
-npm update
-```
+## Author
+
+[fubira](https://github.com/fubira)
