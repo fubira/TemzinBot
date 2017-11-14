@@ -1,10 +1,10 @@
 module.exports = function(bot) {
   bot.on('chat', (username, message, translate, jsonMsg, matches) => {
-    bot.log('[chat] <' + username + '>: ' + message);
+    // bot.log('[chat] <' + username + '>: ' + message);
   });
 
   bot.on('whisper', (username, message, translate, jsonMsg, matches) => {
-    bot.log('[whisper] <' + username + '>: ' + message);
+    // bot.log('[whisper] <' + username + '>: ' + message);
   });
 
   bot.on('message', (jmes) => {

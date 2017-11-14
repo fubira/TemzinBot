@@ -44,14 +44,14 @@ module.exports = function(bot) {
       if (this.record) {
         this.record.forEach((r) => {
           if (message.match(new RegExp('^' + r.key + "$"))) {
-            bot.safechat(r.value);
+            bot.safechat(r.value.replace(new RegExp('^\/', '')));
           }
         });
       }
     }
 
     // うそです(適当なUndo機能)
-    if (username === last_record_user && message.match(/^うそです/)) {
+    if (username === last_record_user && message.match(/^(?:うそ|ウソ|嘘)(?:だよ|です)/)) {
       bot.safechat('なんだうそか');
       remove(this.last_record_key);
 
@@ -78,11 +78,17 @@ module.exports = function(bot) {
       var value = RegExp.$2;
       record(key, value, username);
 
-      bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は' + value + 'なんだって');
-      bot.log('[record] sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
+      if (value.trim().startsWith('/'))
+      {
+        bot.safechat('/r コマンドは覚えられないよ')
+        bot.log('[REJECTED] ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
+      } else {
+        bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は' + value + 'なんだって');
+        bot.log('[record] sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
 
-      this.last_record_user = username;
-      this.last_record_key = key;
+        this.last_record_user = username;
+        this.last_record_key = key;
+      }
     }
 
     // 記憶の削除

@@ -45,9 +45,10 @@ module.exports = function(bot) {
 
   /// 同じメッセージのループ送信、短時間での大量送信などを
   /// 防ぐ仕組みを入れたチャット送信メソッド
-  this.safechat_last_send_text = "";
+  this.safechat_send_text_cache = [];
   this.safechat_last_send_time = new Date().getTime();
   this.safechat_continuous_count = 0;
+
   this.safechat = (text) => {
     var current_time = new Date().getTime();
     var elapsed_ms = current_time - safechat_last_send_time;
@@ -55,27 +56,27 @@ module.exports = function(bot) {
     if (!text)
       return;
 
-    if (elapsed_ms > 500) {
+    if (elapsed_ms > 1000) {
       this.safechat_continuous_count = 0;
     }
 
     this.safechat_continuous_count++;
     if (this.safechat_continuous_count > 10) {
-      this.bot.log('[REJECTED] 短時間での大量メッセージ送信が拒否されました');
+      this.bot.log('[REJECTED] 短時間での大量メッセージが送信がされました');
       return;
     }
-  
+
     if (elapsed_ms > 3000) {
       // 一定時間経過したら直前のメッセージは忘れる
-      this.safechat_last_send_text = "";
+      this.safechat_send_text_cache = [];
     }
 
-    if (text === safechat_last_send_text) {
-      this.bot.log('[REJECTED] 同一文章の連続送信が拒否されました');
+    if (this.safechat_send_text_cache.find((value)=>{ return value === text; })) {
+      this.bot.log('[REJECTED] 一定時間内に同一の文章が複数回送信されました');
       return;
     }
+    this.safechat_send_text_cache.push(text);
 
-    this.safechat_last_send_text = text;
     this.safechat_last_send_time = current_time;
     this.bot.chat(text);
   }
