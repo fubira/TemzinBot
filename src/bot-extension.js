@@ -11,7 +11,7 @@ module.exports = function(bot) {
 
     // 入力はチャットに流す
     this.rl.on('line', (line) => {
-      bot.chat(line);
+      this.safechat(line);
     });
 
     // CTRL+DまたはCTRL+CでSTDINが閉じたらbotも閉じる
@@ -47,8 +47,7 @@ module.exports = function(bot) {
   this.safechat_last_send_text = "";
   this.safechat_last_send_time = new Date().getTime();
   this.safechat_continuous_count = 0;
-
-  this.bot.safechat = (text) => {
+  this.safechat = (text) => {
     var current_time = new Date().getTime();
     var elapsed_ms = current_time - safechat_last_send_time;
 
@@ -77,6 +76,10 @@ module.exports = function(bot) {
 
     this.safechat_last_send_text = text;
     this.safechat_last_send_time = current_time;
-    delay(200).then(() => { this.bot.chat(text); });
+    this.bot.chat(text);
+  }
+
+  this.bot.safechat = (text, delay_ms = 500) => {
+    delay(delay_ms).then(() => { this.safechat(text); });
   }
 }

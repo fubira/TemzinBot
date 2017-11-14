@@ -16,8 +16,18 @@ console.log('User [' + process.env.MC_USERNAME + ']');
 
 function chatAddPattern(bot) {
   // kenmomine.club向けchat/whisperパターン
-  bot.chatAddPattern(/^(?:\[[^\]]*\])?<([^ :]*)> (.*)$/, 'chat', 'kenmomine.club chat');
+  bot.chatAddPattern(/^(?:\[[^\]]*\])<([^ :]*)> (.*)$/, 'chat', 'kenmomine.club chat');
   bot.chatAddPattern(/^([^ ]*) whispers: (.*)$/, 'whisper', 'kenmomine.club whisper(Chatco)');
+}
+
+function match_chat(bot, sender_name, message) {
+  if (message.match(/^きよし$/)) {
+    bot.safechat('フォン');
+  }
+}
+
+function match_whisper(text) {
+  
 }
 
 bot.on('connect', () => {
@@ -26,16 +36,16 @@ bot.on('connect', () => {
   
   // 入力を有効にする
   bot.init_readline();
+  bot.safechat('hi', 2000);
 
   bot.on('chat', (username, message, translate, jsonMsg, matches) => {
-    // bot.log('[bot.chat] <' + username + '>: ' + message);
+    bot.log('[chat] <' + username + '>: ' + message);
+    match_chat(bot, username, message);
   });
   
   bot.on('whisper', (username, message, translate, jsonMsg, matches) => {
     bot.log('[whisper] <' + username + '>: ' + message);
-    delay(500).then(()=> {
-      bot.safechat(username + "さんが" + message + "って言ってるよ");
-    });
+    bot.safechat(username + "さんが" + message + "って言ってるよ");
   });
 
   bot.on('message', (jmes) => {
