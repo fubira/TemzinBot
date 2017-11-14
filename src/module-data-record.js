@@ -2,43 +2,48 @@ const jsonfile = require('jsonfile');
 const filename = 'data.record.json'
 
 module.exports = function(bot) {
-  var record = [];
+  this.record = [];
 
   jsonfile.readFile(filename, (err, obj) => {
-    record = obj;
+    if (err) {
+      this.record = [];
+    } else {
+      this.record = obj;
+    }
   });
 
   bot.on('chat', (username, message) => {
     // 記憶データの各キーワードとマッチ判定を行い、
     // 該当する文言があればvalueをチャットに出力する
-    record.foreach((r) => {
-      if (message.match(new RegExp('^' + r.key + "$"))) {
-        bot.safechat(r.value);
-        break;
-      }
-    });
+    if (this.record) {
+      this.record.forEach((r) => {
+        if (message.match(new RegExp('^' + r.key + "$"))) {
+          bot.safechat(r.value);
+        }
+      });
+    }
 
     // 記憶があるかどうかの確認
     if (message.match(/(\w*)[,.。、 ]?(?:記憶|記録)(?:は？|ある？)/)) { 
-      if (record.length > 0) {
-        bot.safechat(record[0].key + 'とか' + record.length + '個ぐらい');
+      if (this.record && record.length > 0) {
+        bot.safechat(this.record[0].key + 'とか' + this.record.length + '個ぐらい');
       } else {
         bot.safechat('ないよ');
       }
     }
 
     // 記憶の追加
-    if (message.match(/(\w*)[,.。、 ]?(?:記憶|記録|覚えて|おぼえて)[。\.\w]?([^\w=は]+)(?:[\s=は]+)(.*)/)) {
+    if (message.match(/(\w*)[,.。、 ]?(?:記憶|記録|覚えて|おぼえて)[。\.\w]?([^\w=は]+)+(?:[\s=は]+)(.+)/)) {
       var target = RegExp.$1;
       var key = RegExp.$2;
       var value = RegExp.$3;
 
       if (target === bot.username) {
-        bot.log('[record] <' + key + ">:" + data);
+        bot.log('[record] <' + key + ">:" + value);
       }
 
-      record.push({key: key, value: value});
-      jsonfile.writeFileSync(filename, record);
+      this.record.push({key: key, value: value});
+      jsonfile.writeFileSync(filename, this.record);
 
       bot.safechat(key + 'は' + value + '、' + target + '覚えた');
     }
@@ -51,12 +56,12 @@ module.exports = function(bot) {
         bot.log('[delete] <' + key + ">");
       }
 
-      var new_record = record.filter((item, index) => {
+      var new_record = this.record.filter((item, index) => {
         if (item.key != key) return true;
       });
-      record = new_record;
+      this.record = new_record;
 
-      jsonfile.writeFileSync(filename, record);
+      jsonfile.writeFileSync(filename, this.record);
 
       bot.safechat(key + 'はもう消した');
     }
