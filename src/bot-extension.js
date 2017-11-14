@@ -46,33 +46,37 @@ module.exports = function(bot) {
   /// 防ぐ仕組みを入れたチャット送信メソッド
   this.safechat_last_send_text = "";
   this.safechat_last_send_time = new Date().getTime();
+  this.safechat_continuous_count = 0;
 
   this.bot.safechat = (text) => {
     var current_time = new Date().getTime();
-    var is_elapsed_ms = (delay) => {
-      return (current_time - safechat_last_send_time) > delay;
-    }
-    
+    var elapsed_ms = current_time - safechat_last_send_time;
+
     if (!text)
       return;
 
-    if (!is_elapsed_ms(500)) {
-      this.bot.log('[WARNING] 短時間の連続したメッセージ送信が拒否されました');
-      return;
+    if (elapsed_ms > 500) {
+      this.safechat_continuous_count = 0;
     }
 
-    if (is_elapsed_ms(3000)) {
+    this.safechat_continuous_count++;
+    if (this.safechat_continuous_count > 10) {
+      this.bot.log('[REJECTED] 短時間での大量メッセージ送信が拒否されました');
+      return;
+    }
+  
+    if (elapsed_ms > 3000) {
       // 一定時間経過したら直前のメッセージは忘れる
       this.safechat_last_send_text = "";
     }
 
     if (text === safechat_last_send_text) {
-      this.bot.log('[WARNING] 同一文章の連続送信が拒否されました');
+      this.bot.log('[REJECTED] 同一文章の連続送信が拒否されました');
       return;
     }
 
     this.safechat_last_send_text = text;
     this.safechat_last_send_time = current_time;
-    this.bot.chat(text);
+    delay(200).then(() => { this.bot.chat(text); });
   }
 }
