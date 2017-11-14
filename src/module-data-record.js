@@ -12,9 +12,9 @@ module.exports = function(bot) {
     }
   });
 
-  function record(key, value) {
+  function record(key, value, sender) {
     remove(key);
-    this.record.push({key: key, value: value});
+    this.record.push({key: key, value: value, sender: sender, date: new Date()});
     jsonfile.writeFileSync(filename, this.record);
   }
 
@@ -24,8 +24,10 @@ module.exports = function(bot) {
     });
     this.record = new_record;
     jsonfile.writeFileSync(filename, this.record);
-}
+  }
 
+  this.last_record_user = null;
+  this.last_record_key = null;
 
   bot.on('chat', (username, message) => {
     // 記憶データの各キーワードとマッチ判定を行い、
@@ -38,39 +40,43 @@ module.exports = function(bot) {
       });
     }
 
+    if (username === last_record_user && message.match(/^うそです/)) {
+      bot.safechat('なんだうそか');
+      remove(this.last_record_key);
+
+      this.last_record_user = null;
+      this.last_record_key = null;
+  }
+  });
+
+  bot.on('whisper', (username, message) => {
     // 記憶があるかどうかの確認
-    if (message.match(/(\w*)[,.。、 ]?記憶(?:は？|ある？)/)) {
+    if (message.match(/^記憶$/)) {
       if (this.record && this.record.length > 0) {
-        bot.safechat(this.record[0].key + 'とか' + this.record.length + '個ぐらい');
+        this.record.forEach((r) => {
+          bot.safechat('/r [' + r.key + ']: ' + r.value);
+        });
       } else {
-        bot.safechat('ないよ');
+        bot.safechat('/r なにも知らないよ');
       }
     }
 
-    // 記憶の追加
-    if (message.match(/(\w*)[,.。、 ]?(?:記憶|保存|覚えて|おぼえて)[。\.\w]?([^\w=は ]+)+(?:[\s=は ]+)(.+)/)) {
-      var target = RegExp.$1;
-      var key = RegExp.$2;
-      var value = RegExp.$3;
+    if (message.match(/^(?:記憶|記録|保存)\s+(\S+)\s+(\S*)/)) {
+      var key = RegExp.$1;
+      var value = RegExp.$2;
 
-      if (target === bot.username) {
-        bot.log('[record] target: ' + target + ', key: {' + key + '}, value: {' + value + '}');
-        record(key, value);
+      bot.log('[record] sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
+      bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は' + value + 'なんだって');
+      record(key, value, username);
 
-        bot.safechat(key + 'は' + value + '、' + target + '覚えた');
-      }
+      this.last_record_user = username;
+      this.last_record_key = key;
     }
 
-    // 記憶の削除
-    if (message.match(/(\w*)[,.。、 ]?(?:削除|消去|忘れて|わすれて)[。\.\w]?([^\w=]+)/)) {
-      var target = RegExp.$1;
-      var key = RegExp.$2;
-
-      if (target === bot.username) {
-        bot.log('[record] target: ' + target + ', key: {' + key + '}');
-        remove(key, value);
-        bot.safechat(key + 'はもう消した');
-      }
+    if (message.match(/^(?:削除|消去|忘却)\s+(\S*)/)) {
+      var key = RegExp.$1;
+      bot.log('[remove] sender: ' + username + ', key: {' + key + '}');
+      remove(key);
     }
   });
 }

@@ -12,7 +12,7 @@ module.exports = function(bot) {
   });
 
   bot.on('chat', (username, message) => {
-    if (username !== bot.username && username === this.last_joined_player.username) {
+    if (username !== bot.username && username === this.last_joined_player) {
       if (message.match(/^hi|hai|ひ|日|はい/))
         bot.safechat('hi', 2000);
       if (message.match(/^わんへ/))
