@@ -27,6 +27,7 @@ bot.on('connect', () => {
 
   // モジュール化された機能を読み込む
   require('./src/module-logger')(bot);
+  require('./src/module-chat-hage')(bot);
   require('./src/module-chat-hi')(bot);
   require('./src/module-chat-kiyoshi')(bot);
   require('./src/module-whisper-broadcast')(bot);
