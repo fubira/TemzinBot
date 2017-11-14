@@ -2,6 +2,7 @@ require('dotenv').config();
 const delay = require('delay');
 const jsonfile = require('jsonfile');
 const mineflayer = require('mineflayer');
+const navigate = require('mineflayer-navigate')(mineflayer);
 const bot = mineflayer.createBot({
   host: process.env.MC_HOST,
   port: process.env.MC_PORT,
@@ -24,6 +25,7 @@ function chatAddPattern(bot) {
 bot.on('connect', () => {
   bot.log('[connect] connected.');
   chatAddPattern(bot);
+  navigate(bot);
 
   // モジュール化された機能を読み込む
   require('./src/module-logger')(bot);
@@ -32,6 +34,8 @@ bot.on('connect', () => {
   // require('./src/module-chat-kiyoshi')(bot);
   require('./src/module-chat-death')(bot);
   require('./src/module-data-record')(bot);
+  require('./src/module-update')(bot);
+  require('./src/module-navigate')(bot);
   // require('./src/module-whisper-broadcast')(bot);
 
   // 入力を有効にする
@@ -41,6 +45,6 @@ bot.on('connect', () => {
     bot.log('[end]');
     delay(1000).then(() => {
       process.exit(0);
-    })
+    });
   });
 });

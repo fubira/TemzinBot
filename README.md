@@ -7,6 +7,7 @@ mineflayerを利用した適当bot
 ## Features
 
   - I'M BOT!
+  - commandline interface
 
 ## Installation
 
