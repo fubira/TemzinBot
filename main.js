@@ -30,6 +30,7 @@ bot.on('connect', () => {
   require('./src/module-chat-hage')(bot);
   require('./src/module-chat-hi')(bot);
   require('./src/module-chat-kiyoshi')(bot);
+  require('./src/module-chat-death')(bot);
   require('./src/module-whisper-broadcast')(bot);
 
   // 入力を有効にする

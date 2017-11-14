@@ -5,10 +5,10 @@ module.exports = function(bot) {
 
     if (message.match(/(\w*)(?:は|の|is|って)?(?:ハゲ|はげ|禿|hage)/) && RegExp.$1 === bot.username) {
       var answers = [ null, 'ハ、ハゲちゃうわ！', 'はげてないよ？', 'むしろ' + username + 'がハゲ'];
-      var answer = answers[Math.floor(Math.random() * answers.length)];
+      var choice = answers[Math.floor(Math.random() * answers.length)];
 
-      if (answer)
-        bot.safechat(answer);
+      if (choice)
+        bot.safechat(choice);
     }
   });
 }

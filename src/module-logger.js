@@ -15,4 +15,7 @@ module.exports = function(bot) {
     bot.log('[kicked] reason: ' + reason);
   });
 
+  bot.on('death', () => {
+    bot.log('[death] ' + bot.username + ' is dead.');
+  });
 }
