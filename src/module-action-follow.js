@@ -1,4 +1,5 @@
 const delay = require('delay');
+const Vec3 = require('vec3').Vec3;
 
 module.exports = function(bot) {
   var follow_target = undefined;
@@ -13,7 +14,7 @@ module.exports = function(bot) {
     return {
       'pitch': Vec3ToPitch(vec),
       'yaw': Vec3ToYaw(vec),
-      'radius': v.distanceTo(Vec3.zero)
+      'radius': vec.distanceTo(new Vec3(null))
     };
   }
 
@@ -33,12 +34,12 @@ module.exports = function(bot) {
   }
 
   bot.on('entitySwingArm', (entity) => {
-    var distance = bot.position.distanceTo(entity.position);
+    var distance = bot.entity.position.distanceTo(entity.position);
 
     if (entity.type === 'player') {
       if (distance < 4) {
         var lookat = RotToVec3(entity.pitch, entity.yaw, distance);
-        var dt = bot.position.distanceTo(lookat.add(entity.position));
+        var dt = bot.entity.position.distanceTo(lookat.add(entity.position));
 
         if (dt < 0.25) {
           // 近接距離で顔を見て殴られたら追いかける対象として認識する
@@ -52,7 +53,7 @@ module.exports = function(bot) {
   // 3秒に1回のインターバル処理
   setInterval(() => {
     if (follow_target) {
-      var dp = bot.position.subtract(follow_target.position);
+      var dp = bot.entity.position.subtract(follow_target.position);
       var rot = Vec3ToRot(dp);
 
       if (Math.abs(rot.yaw - bot.yaw) > 0.05 || Math.abs(rot.pitch - bot.pitch) > 0.05) {
@@ -61,7 +62,7 @@ module.exports = function(bot) {
       }
 
       // TODO: BehaviourTreeで実装したい
-      var dist = bot.position.distanceTo(follow_target.position);
+      var dist = bot.entity.position.distanceTo(follow_target.position);
       if(dist > 2) {
         bot.setControlState('sneak', false);
         bot.setControlState("swing", false);

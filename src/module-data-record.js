@@ -1,6 +1,6 @@
 const jsonfile = require('jsonfile');
 const filename = 'data.record.json'
-const record_lifetime_ms = 7 * 24 * 60 * 60;
+const record_lifetime_ms = 3 * 24 * 60 * 60;
 
 module.exports = function(bot) {
   this.record = [];
@@ -102,7 +102,7 @@ module.exports = function(bot) {
       var value = RegExp.$2.trim();
       
       if (key === value) {
-        bot.safechat('/tell ' + username + ' 言っていることがよくわからないな')
+        bot.safechat('/tell ' + username + ' なにを言っているのかよくわからないな')
       } else if (key.startsWith('/') || value.startsWith('/')) {
         bot.safechat('/tell ' + username + ' コマンドは覚えられないよ')
         bot.log('<record> *REJECTED* ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
