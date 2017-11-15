@@ -6,7 +6,7 @@ module.exports = function(bot) {
       bot.safechat('また髪の話してる');
 
     if (message.match(/(\w*)(?:は|の|is|って)?(?:ハゲ|はげ|禿|hage)/) && RegExp.$1 === bot.username) {
-      bot.randomchat([ null, 'ハ、ハゲちゃうわ！', 'はげてないよ？', 'むしろ' + username + 'がハゲ']);
+      bot.randomchat([null, 'ハ、ハゲちゃうわ！', 'はげてないよ？', 'むしろ' + username + 'がハゲ']);
     }
   });
 }

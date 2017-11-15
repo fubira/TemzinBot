@@ -23,7 +23,7 @@ function chatAddPattern(bot) {
 }
 
 bot.on('connect', () => {
-  bot.log('<bot.connect>');
+  bot.log('[bot.connect]');
   chatAddPattern(bot);
   navigate(bot);
 
@@ -44,7 +44,7 @@ bot.on('connect', () => {
   bot.init_readline();
 
   bot.on('end', () => {
-    bot.log('<bot.end>');
+    bot.log('[bot.end]');
     delay(1000).then(() => {
       process.exit(0);
     });

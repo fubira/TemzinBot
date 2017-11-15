@@ -47,9 +47,9 @@ module.exports = function(bot) {
   function expire() {
     var expired = [];
     this.record.forEach((r) => {
-      bot.log('<record> ' + Date.now() + ': ' + r.expire_at)
+      bot.log('[data-record] ' + Date.now() + ': ' + r.expire_at)
       if (Date.now() > r.expire_at) {
-        bot.log('<record> expired [' + r.key + ']: ' + r.value)
+        bot.log('[data-record] expired [' + r.key + ']: ' + r.value)
         expired.push(r.key);
       }
     });
@@ -105,12 +105,12 @@ module.exports = function(bot) {
         bot.safechat('/tell ' + username + ' なにを言っているのかよくわからないな')
       } else if (key.startsWith('/') || value.startsWith('/')) {
         bot.safechat('/tell ' + username + ' コマンドは覚えられないよ')
-        bot.log('<record> *REJECTED* ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
+        bot.log('[data-record] *REJECTED* ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
       } else {
         record(key, value, username);
 
         bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は' + value + 'なんだって');
-        bot.log('<record> sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
+        bot.log('[data-record] sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
 
         this.last_record_user = username;
         this.last_record_key = key;
@@ -122,7 +122,7 @@ module.exports = function(bot) {
       var key = RegExp.$1;
       remove(key);
       
-      bot.log('<remove> sender: ' + username + ', key: {' + key + '}');
+      bot.log('[data-record] sender: ' + username + ', key: {' + key + '}');
     }
   });
 }

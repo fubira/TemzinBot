@@ -17,7 +17,7 @@ module.exports = function(bot) {
 
     // CTRL+DまたはCTRL+CでSTDINが閉じたらbotも閉じる
     this.rl.on('close', () => {
-      this.bot.log('[readline] input closed');
+      this.bot.log('[bot.readline] input closed');
       delay(1000).then(() => { this.bot.quit(); })
     })
   }
@@ -68,7 +68,7 @@ module.exports = function(bot) {
 
     this.safechat_continuous_count++;
     if (this.safechat_continuous_count > 10) {
-      this.bot.log('[REJECTED] 短時間での大量メッセージが送信がされました');
+      this.bot.log('[bot.safechat] *REJECTED* 短時間での大量メッセージが送信がされました');
       return;
     }
 
@@ -78,7 +78,7 @@ module.exports = function(bot) {
     }
 
     if (this.safechat_send_text_cache.find((value)=>{ return value === text; })) {
-      this.bot.log('[REJECTED] 一定時間内に同一の文章が複数回送信されました');
+      this.bot.log('[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました');
       return;
     }
     this.safechat_send_text_cache.push(text);

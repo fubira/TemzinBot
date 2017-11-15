@@ -43,7 +43,7 @@ module.exports = function(bot) {
 
         if (dt < 0.25) {
           // 近接距離で顔を見て殴られたら追いかける対象として認識する
-          bot.log('<bot.entitySwingArm> ' + entity.username + ' hit me!');
+          bot.log('[bot.entitySwingArm] ' + entity.username + ' hit me!');
           follow_target = (entity !== follow_target) ? follow_target : undefined;
         }
       }
@@ -57,7 +57,7 @@ module.exports = function(bot) {
       var rot = Vec3ToRot(dp);
 
       if (Math.abs(rot.yaw - bot.yaw) > 0.05 || Math.abs(rot.pitch - bot.pitch) > 0.05) {
-        bot.log('<look> target:' + follow_target.username);
+        bot.log('[look] target:' + follow_target.username);
         bot.look(rot.yaw, 0, false, false);
       }
 
