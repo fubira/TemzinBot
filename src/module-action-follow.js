@@ -20,16 +20,16 @@ module.exports = function(bot) {
   }
 
   function Vec3ToPitch(vec) {
-    var groundDist = Math.sqrt(v.x * v.x + v.z * v.z);
-    return Math.atan2(-v.y, groundDist);
+    var groundDist = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
+    return Math.atan2(-vec.y, groundDist);
   }
 
   function Vec3ToYaw(vec) {
     var yaw;
     if (vec.x != 0.0) {
-      yaw = Math.atan2(v.x, v.z)
+      yaw = Math.atan2(vec.x, vec.z)
     } else {
-      yaw = (v.z >= 0) ? Math.PI / 2 : -Math.PI / 2;
+      yaw = (vec.z >= 0) ? Math.PI / 2 : -Math.PI / 2;
     }
     return yaw;
   }
