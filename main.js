@@ -23,7 +23,7 @@ function chatAddPattern(bot) {
 }
 
 bot.on('connect', () => {
-  bot.log('[connect] connected.');
+  bot.log('<bot.connect>');
   chatAddPattern(bot);
   navigate(bot);
 
@@ -33,16 +33,17 @@ bot.on('connect', () => {
   require('./src/module-chat-hi')(bot);
   // require('./src/module-chat-kiyoshi')(bot);
   require('./src/module-chat-death')(bot);
-  require('./src/module-data-record')(bot);
+  // require('./src/module-data-record')(bot);
   require('./src/module-update')(bot);
   require('./src/module-navigate')(bot);
+  require('./src/module-help')(bot);
   // require('./src/module-whisper-broadcast')(bot);
 
   // 入力を有効にする
   bot.init_readline();
 
   bot.on('end', () => {
-    bot.log('[end]');
+    bot.log('<bot.end>');
     delay(1000).then(() => {
       process.exit(0);
     });

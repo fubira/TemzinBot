@@ -1,3 +1,4 @@
+const dateformat = require('dateformat');
 const delay = require('delay');
 const readline = require('readline');
 
@@ -24,10 +25,15 @@ module.exports = function(bot) {
   // prompt処理とかをちゃんとやるログ出力
   this.bot.log = (...args) => {
     readline.cursorTo(process.stdout, 0);
+
+    if (typeof args[0] === 'string') {
+      // 出力の頭に現在時刻を挿入
+      args[0] = '[' + dateformat(new Date(), 'isoTime') + '] ' + args[0];
+    }
     console.log.apply(console, args);
 
     if (typeof this.rl !== 'undefined')
-      this.rl.prompt();
+      this.rl.prompt(true);
   }
 
   // jmes形式のメッセージからテキスト成分だけを抜き出して文字列で返す

@@ -1,7 +1,6 @@
 module.exports = function(bot) {
   bot.on('chat', (username, message) => {
-    if (bot.username === username)
-      return;
+    if (bot.username === username) return;
 
     if (message.match(/^毛根|もうこん/))
       bot.safechat('また髪の話してる');

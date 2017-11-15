@@ -38,16 +38,16 @@ module.exports = function(bot) {
   }
 
   bot.on('chat', (username, message) => {
+    if (username === bot.username) return;
+
     // 記憶データの各キーワードとマッチ判定を行い、
     // 該当する文言があればvalueをチャットに出力する
-    if (username !== bot.username ) {
-      if (this.record) {
-        this.record.forEach((r) => {
-          if (message.match(new RegExp('^' + r.key + "$"))) {
-            bot.safechat(r.value.replace(new RegExp('^\/', '')));
-          }
-        });
-      }
+    if (this.record) {
+      this.record.forEach((r) => {
+        if (message.match(new RegExp('^' + r.key + "$"))) {
+          bot.safechat(r.value.replace(new RegExp('^\/', '')));
+        }
+      });
     }
 
     // うそです(適当なUndo機能)
@@ -57,7 +57,7 @@ module.exports = function(bot) {
 
       this.last_record_user = null;
       this.last_record_key = null;
-  }
+    }
   });
 
   bot.on('whisper', (username, message) => {
@@ -78,9 +78,8 @@ module.exports = function(bot) {
       var value = RegExp.$2;
       record(key, value, username);
 
-      if (value.trim().startsWith('/'))
-      {
-        bot.safechat('/r コマンドは覚えられないよ')
+      if (value.trim().startsWith('/')) {
+        bot.safechat('/tell ' + username + ' コマンドは覚えられないよ')
         bot.log('[REJECTED] ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
       } else {
         bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は' + value + 'なんだって');

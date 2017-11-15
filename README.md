@@ -12,6 +12,7 @@ mineflayerを利用した適当bot
 ## Installation
 
     $ git clone https://github.com/fubira/TemzinBot
+    $ cd TemzinBot
     $ npm install
 
 ## Environment

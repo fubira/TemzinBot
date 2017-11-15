@@ -4,6 +4,7 @@
   "description": "Temzinbot, minecraft bot implementation with mineflayer.",
   "main": "main.js",
   "dependencies": {
+    "dateformat": "^3.0.2",
     "delay": "^2.0.0",
     "dotenv": "^4.0.0",
     "jsonfile": "^4.0.0",

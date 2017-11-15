@@ -8,14 +8,14 @@ module.exports = function(bot) {
   });
 
   bot.on('message', (jmes) => {
-    bot.log('[message] ' + bot.jmes_to_text(jmes));
+    bot.log(bot.jmes_to_text(jmes));
   });
 
   bot.on('kicked', (reason, loggedIn) => {
-    bot.log('[kicked] reason: ' + reason);
+    bot.log('<bot.kicked> reason: ' + reason);
   });
 
   bot.on('death', () => {
-    bot.log('[death] ' + bot.username + ' is dead.');
+    bot.log('<bot.death> ' + bot.username + ' dead at ' + bot.position + '.');
   });
 }
