@@ -28,14 +28,15 @@ bot.on('connect', () => {
   navigate(bot);
 
   // モジュール化された機能を読み込む
+  require('./src/module-action-move')(bot);
+  require('./src/module-action-follow')(bot);
   require('./src/module-logger')(bot);
   require('./src/module-chat-hage')(bot);
   require('./src/module-chat-hi')(bot);
   // require('./src/module-chat-kiyoshi')(bot);
   require('./src/module-chat-death')(bot);
-  // require('./src/module-data-record')(bot);
+  require('./src/module-data-record')(bot);
   require('./src/module-update')(bot);
-  require('./src/module-navigate')(bot);
   require('./src/module-help')(bot);
   // require('./src/module-whisper-broadcast')(bot);
 

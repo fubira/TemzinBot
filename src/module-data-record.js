@@ -1,5 +1,6 @@
 const jsonfile = require('jsonfile');
 const filename = 'data.record.json'
+const record_lifetime_ms = 7 * 24 * 60 * 60;
 
 module.exports = function(bot) {
   this.record = [];
@@ -10,8 +11,13 @@ module.exports = function(bot) {
   jsonfile.readFile(filename, (err, obj) => {
     if (!err) {
       this.record = obj;
+      expire();
     }
   });
+
+  function get_expire_at() {
+    return Date.now() + record_lifetime_ms;
+  }
 
   // 指定されたキーと結び付けられたデータを記憶する
   function record(key, value, teacher) {
@@ -21,7 +27,7 @@ module.exports = function(bot) {
       key: key,
       value: value,
       teacher: teacher,
-      date: new Date().getTime()
+      expire_at: get_expire_at()
     });
 
     jsonfile.writeFileSync(filename, this.record);
@@ -37,6 +43,21 @@ module.exports = function(bot) {
     jsonfile.writeFileSync(filename, this.record);
   }
 
+  // 一定期間使われなかった記憶は消滅する
+  function expire() {
+    var expired = [];
+    this.record.forEach((r) => {
+      bot.log('<record> ' + Date.now() + ': ' + r.expire_at)
+      if (Date.now() > r.expire_at) {
+        bot.log('<record> expired [' + r.key + ']: ' + r.value)
+        expired.push(r.key);
+      }
+    });
+    expired.forEach((key) => {
+      remove(key);
+    });
+  }
+
   bot.on('chat', (username, message) => {
     if (username === bot.username) return;
 
@@ -45,7 +66,10 @@ module.exports = function(bot) {
     if (this.record) {
       this.record.forEach((r) => {
         if (message.match(new RegExp('^' + r.key + "$"))) {
-          bot.safechat(r.value.replace(new RegExp('^\/', '')));
+          bot.safechat(r.key + 'は' + r.value.replace(new RegExp('^\/', '')));
+
+          // 使われた記憶は寿命を延ばす
+          r.expire_at = get_expire_at();
         }
       });
     }
@@ -74,16 +98,19 @@ module.exports = function(bot) {
 
     // 記憶の追加
     if (message.match(/^(?:記憶|覚える|保存)\s+(\S+)\s+(\S*)/)) {
-      var key = RegExp.$1;
-      var value = RegExp.$2;
-      record(key, value, username);
-
-      if (value.trim().startsWith('/')) {
+      var key = RegExp.$1.trim();
+      var value = RegExp.$2.trim();
+      
+      if (key === value) {
+        bot.safechat('/tell ' + username + ' 言っていることがよくわからないな')
+      } else if (key.startsWith('/') || value.startsWith('/')) {
         bot.safechat('/tell ' + username + ' コマンドは覚えられないよ')
-        bot.log('[REJECTED] ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
+        bot.log('<record> *REJECTED* ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
       } else {
+        record(key, value, username);
+
         bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は' + value + 'なんだって');
-        bot.log('[record] sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
+        bot.log('<record> sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
 
         this.last_record_user = username;
         this.last_record_key = key;
@@ -95,7 +122,7 @@ module.exports = function(bot) {
       var key = RegExp.$1;
       remove(key);
       
-      bot.log('[remove] sender: ' + username + ', key: {' + key + '}');
+      bot.log('<remove> sender: ' + username + ', key: {' + key + '}');
     }
   });
 }

@@ -90,4 +90,16 @@ module.exports = function(bot) {
   this.bot.safechat = (text, delay_ms = 500) => {
     delay(delay_ms).then(() => { this.safechat(text); });
   }
+
+  // 配列で定義された複数の文言のうちの一つをランダム選択してチャット送信する
+  this.bot.randomchat = (messages) => {
+    var message;
+    if (typeof messages === 'array') {
+      message = messages[Math.floor(Math.random() * messages.length)]
+    } else {
+      message = messages;
+    }
+    if (typeof message === 'string')
+      this.safechat(message);
+  }
 }
