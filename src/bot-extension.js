@@ -94,12 +94,11 @@ module.exports = function(bot) {
   // 配列で定義された複数の文言のうちの一つをランダム選択してチャット送信する
   this.bot.randomchat = (messages) => {
     var message;
-    if (typeof messages === 'array') {
+    if (Array.isArray(messages)) {
       message = messages[Math.floor(Math.random() * messages.length)]
     } else {
       message = messages;
     }
-    if (typeof message === 'string')
-      this.safechat(message);
+    this.safechat(message);
   }
 }

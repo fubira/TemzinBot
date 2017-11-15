@@ -45,7 +45,8 @@ module.exports = function(bot) {
         if (dt < 0.25) {
           // 近接距離で顔を見て殴られたら追いかける対象として認識する
           bot.log('[bot.entitySwingArm] ' + entity.username + ' hit me!');
-          target_entity = (entity !== target_entity) ? target_entity : undefined;
+          target_entity = (entity !== target_entity) ? entity : undefined;
+          bot.log('[bot.entitySwingArm] ' + target_entity);
         }
       }
     }
@@ -78,49 +79,51 @@ module.exports = function(bot) {
 
   setInterval(() => {
     if (target_entity) {
+      bot.log('target: ' + target_entity.username);
       var dp = bot.entity.position.subtract(target_entity.position);
       var rot = Vec3ToRot(dp);
 
-      if (Math.abs(rot.yaw - bot.yaw) > 0.05 || Math.abs(rot.pitch - bot.pitch) > 0.05) {
+      if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
         bot.log('[look] target:' + target_entity.username);
-        bot.look(rot.yaw, 0, false, false);
+        bot.look(rot.yaw, rot.pitch, false, false);
       }
 
       // TODO: BehaviourTreeで実装したい
       var dist = bot.entity.position.distanceTo(target_entity.position);
       if(dist > 2) {
-        bot.setControlState('sneak', false);
+        bot.clearControlStates();
+        bot.setControlState("sneak", false);
         bot.setControlState("swing", false);
-        bot.setControlState('forward', true);
-        bot.setControlState('jump', true);
+        bot.setControlState("forward", true);
+        bot.setControlState("jump", false);
       } else {
         bot.clearControlStates();
         bot.setControlState("swing", true);
       }
 
       if (target_entity.metadata['0'] === 2) {
-        bot.setControlState('sneak', true);
-        delay(500).then(()=> {
-          bot.setControlState('sneak', false);
+        bot.setControlState("sneak", true);
+        delay(1000).then(()=> {
+          bot.setControlState("sneak", false);
         })
       }
     } else if (interest_entity) {
       var dp = bot.entity.position.subtract(interest_entity.position);
       var rot = Vec3ToRot(dp);
 
-      if (Math.abs(rot.yaw - bot.yaw) > 0.05 || Math.abs(rot.pitch - bot.pitch) > 0.05) {
+      if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
         bot.log('[look] interest:' + interest_entity.username);
         bot.look(rot.yaw, 0, false, false);
       }
 
       if (interest_entity.metadata['0'] === 2) {
         bot.setControlState('sneak', true);
-        delay(500).then(()=> {
+        delay(1000).then(()=> {
           bot.setControlState('sneak', false);
         })
       }
     } else {
       bot.clearControlStates();
     }
-  }, 1000);
+  }, 500);
 }
