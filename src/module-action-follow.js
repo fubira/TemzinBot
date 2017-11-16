@@ -11,11 +11,6 @@ module.exports = function(bot) {
   function setTarget(entity = undefined) {
     if (target_entity !== entity) {
       target_entity = entity;
-      if (entity) {
-        bot.log('[bot.setTarget] ' + entity.username);
-      } else {
-        bot.log('[bot.setTarget] target cleared');
-      }
     }
   }
   
@@ -28,11 +23,6 @@ module.exports = function(bot) {
   function setInterest(entity = undefined) {
     if (interest_entity !== entity) {
       interest_entity = entity;
-      if (entity) {
-        bot.log('[bot.setInterest] ' + entity.username);
-      } else {
-        bot.log('[bot.setInterest] interest cleared');
-      }
     }
   }
 
@@ -73,7 +63,7 @@ module.exports = function(bot) {
         var lookat = RotToVec3(entity.pitch, entity.yaw, distance);
         var dt = bot.entity.position.distanceTo(lookat.add(entity.position));
 
-        if (dt < 0.4) {
+        if (dt < 0.3) {
           // 近接距離で顔を見て殴られたら追いかける対象として認識する
           bot.log('[bot.entitySwingArm] ' + entity.username + ' hit me!');
           setTarget((getTarget() !== entity) ? entity : undefined);
@@ -89,8 +79,10 @@ module.exports = function(bot) {
     if (distance < 0.8) {
       var botpos = bot.entity.position;
       var entpos = entity.position;
+      botpos.y = entpos.y = 0;
       botpos.subtract(entpos);
-      bot.entity.velocity.add(botpos.scaled(60));
+      bot.log('velocity:' + botpos.scaled(5));
+      bot.entity.velocity.add(botpos.scaled(5));
     }
     
     
@@ -117,7 +109,9 @@ module.exports = function(bot) {
     var interest = getInterest();
     
     if (target) {
-      var rot = Vec3ToRot(bot.entity.position.subtract(target.position));
+      var pos = bot.entity.position;
+      pos.subtract(target.position);
+      var rot = Vec3ToRot(pos);
 
       if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
         bot.look(rot.yaw, rot.pitch, false, false);
@@ -125,7 +119,7 @@ module.exports = function(bot) {
 
       // TODO: BehaviourTreeで実装したい
       var dist = bot.entity.position.distanceTo(target.position);
-      if(dist > 2) {
+      if(dist > 3) {
         bot.setControlState("forward", true);
       } else {
         bot.setControlState("forward", false);
@@ -137,14 +131,17 @@ module.exports = function(bot) {
         bot.setControlState("sneak", false);
       }
     }
-
-    if (interest) {
-      var rot = Vec3ToRot(bot.entity.position.subtract(interest.position));
+    else if (interest) {
+      var pos = bot.entity.position;
+      pos = pos.subtract(interest.position);
+      var rot = Vec3ToRot(pos);
 
       if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
         bot.look(rot.yaw, rot.pitch, false, false);
       }
 
+      bot.setControlState("forward", false);
+      
       if (interest.metadata['0'] === 2) {
         bot.setControlState('sneak', true);
       } else {
@@ -155,5 +152,5 @@ module.exports = function(bot) {
     {
       // bot.clearControlStates();
     }
-  }, 100);
+  }, 5000);
 }

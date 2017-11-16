@@ -10,7 +10,7 @@ module.exports = function(bot) {
       bot.navigate.to(target.position);
     }
     if (message.match(/(\w*)\W*(?:とまれ|ストップ|停止)/) && RegExp.$1 === bot.username) {
-      bot.log('[bot.navigate stop');
+      bot.log('[bot.navigate] stop');
       bot.navigate.stop();
     }
   });
