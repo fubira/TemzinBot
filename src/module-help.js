@@ -1,4 +1,12 @@
 module.exports = function(bot) {
+  bot.on('chat', (username, message) => {
+    if (bot.username === username) return;
+
+    if (message.match(/BOT|ボット/)) {
+      bot.randomchat(['ぼくぼっとです。', 'BOTですが何か？', 'BOTじゃないよアンドロイドだよ']);
+    }
+  });
+
   bot.on('whisper', (username, message) => {
     if (bot.username === username) return;
 
