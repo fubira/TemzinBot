@@ -2,40 +2,37 @@ const delay = require('delay');
 const Vec3 = require('vec3').Vec3;
 
 module.exports = function(bot) {
-  var target_entity = undefined;      // ロックされたターゲットエンティティ
-  var interest_entity = undefined;    // 興味を持っているエンティティ
-  
+  // ロックして追いかけるtarget
+  var target_entity = undefined;
+
   function getTarget() {
     return target_entity;
   }
-
   function setTarget(entity = undefined) {
-    if (entity === undefined) {
-      taget_entity = undefined;
-      bot.log('[bot.setTarget] target cleared');
-      return;
-    }
-
     if (target_entity !== entity) {
       target_entity = entity;
-      bot.log('[bot.setTarget] ' + entity.username);
+      if (entity) {
+        bot.log('[bot.setTarget] ' + entity.username);
+      } else {
+        bot.log('[bot.setTarget] target cleared');
+      }
     }
   }
   
+  // 追いかけないが注目するinterest
+  var interest_entity = undefined;
+
   function getInterest() {
     return interest_entity;
   }
-
   function setInterest(entity = undefined) {
-    if (entity === undefined) {
-      interest_entity = undefined;
-      bot.log('[bot.setInterest] interest cleared');
-      return;
-    }
-
     if (interest_entity !== entity) {
       interest_entity = entity;
-      bot.log('[bot.setInterest] ' + entity.username);
+      if (entity) {
+        bot.log('[bot.setInterest] ' + entity.username);
+      } else {
+        bot.log('[bot.setInterest] interest cleared');
+      }
     }
   }
 
