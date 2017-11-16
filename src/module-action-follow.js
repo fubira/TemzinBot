@@ -5,6 +5,40 @@ module.exports = function(bot) {
   var target_entity = undefined;      // ロックされたターゲットエンティティ
   var interest_entity = undefined;    // 興味を持っているエンティティ
   
+  function getTarget() {
+    return target_entity;
+  }
+
+  function setTarget(entity = undefined) {
+    if (entity === undefined) {
+      taget_entity = undefined;
+      bot.log('[bot.setTarget] target cleared');
+      return;
+    }
+
+    if (target_entity !== entity) {
+      target_entity = entity;
+      bot.log('[bot.setTarget] ' + entity.username);
+    }
+  }
+  
+  function getInterest() {
+    return interest_entity;
+  }
+
+  function setInterest(entity = undefined) {
+    if (entity === undefined) {
+      interest_entity = undefined;
+      bot.log('[bot.setInterest] interest cleared');
+      return;
+    }
+
+    if (interest_entity !== entity) {
+      interest_entity = entity;
+      bot.log('[bot.setInterest] ' + entity.username);
+    }
+  }
+
   function RotToVec3(pitch, yaw, rad) {
     return new Vec3(-rad * Math.cos(pitch) * Math.sin(yaw),
                      rad * Math.sin(pitch),
@@ -42,11 +76,10 @@ module.exports = function(bot) {
         var lookat = RotToVec3(entity.pitch, entity.yaw, distance);
         var dt = bot.entity.position.distanceTo(lookat.add(entity.position));
 
-        if (dt < 0.25) {
+        if (dt < 0.4) {
           // 近接距離で顔を見て殴られたら追いかける対象として認識する
           bot.log('[bot.entitySwingArm] ' + entity.username + ' hit me!');
-          target_entity = (entity !== target_entity) ? entity : undefined;
-          bot.log('[bot.entitySwingArm] ' + target_entity);
+          setTarget((getTarget() !== entity) ? entity : undefined);
         }
       }
     }
@@ -63,67 +96,67 @@ module.exports = function(bot) {
       bot.entity.velocity.add(botpos.scaled(60));
     }
     
-    // 注目中のエンティティへの対処
-    if (interest_entity === entity) {
-      // 一定よりも離れると注目をやめる
-      if (distance > 2)
-        interest_entity = undefined;
-    } else {
-      // interest_entityよりも近くに来たエンティティに興味を移す
-      if (distance < 2) {
-        if (!interest_entity || distance < bot.entity.position.distanceTo(interest_entity.position))
-          interest_entity = entity;
+    
+    if (distance < 3) {
+      if (!getInterest()) {
+        // 注目している人がいないなら注目
+        setInterest(entity);
+      } else {
+        // 既に注目している人が居る場合、その人よりも近ければ注目を切り替える
+        if (bot.entity.position.distanceTo(getInterest().position) > distance)
+          setInterest(entity);
       }
+    }
+
+    if (distance > 6) {
+      // 注目している人が一定以上離れたら注目解除
+      if (getInterest() === entity)
+        setInterest();
     }
   });
 
   setInterval(() => {
-    if (target_entity) {
-      bot.log('target: ' + target_entity.username);
-      var dp = bot.entity.position.subtract(target_entity.position);
-      var rot = Vec3ToRot(dp);
+    var target = getTarget();
+    var interest = getInterest();
+    
+    if (target) {
+      var rot = Vec3ToRot(bot.entity.position.subtract(target.position));
 
       if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
-        bot.log('[look] target:' + target_entity.username);
         bot.look(rot.yaw, rot.pitch, false, false);
       }
 
       // TODO: BehaviourTreeで実装したい
-      var dist = bot.entity.position.distanceTo(target_entity.position);
+      var dist = bot.entity.position.distanceTo(target.position);
       if(dist > 2) {
-        bot.clearControlStates();
-        bot.setControlState("sneak", false);
-        bot.setControlState("swing", false);
         bot.setControlState("forward", true);
-        bot.setControlState("jump", false);
       } else {
-        bot.clearControlStates();
-        bot.setControlState("swing", true);
+        bot.setControlState("forward", false);
       }
 
-      if (target_entity.metadata['0'] === 2) {
+      if (target.metadata['0'] === 2) {
         bot.setControlState("sneak", true);
-        delay(1000).then(()=> {
-          bot.setControlState("sneak", false);
-        })
+      } else {
+        bot.setControlState("sneak", false);
       }
-    } else if (interest_entity) {
-      var dp = bot.entity.position.subtract(interest_entity.position);
-      var rot = Vec3ToRot(dp);
+    }
+
+    if (interest) {
+      var rot = Vec3ToRot(bot.entity.position.subtract(interest.position));
 
       if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
-        bot.log('[look] interest:' + interest_entity.username);
-        bot.look(rot.yaw, 0, false, false);
+        bot.look(rot.yaw, rot.pitch, false, false);
       }
 
-      if (interest_entity.metadata['0'] === 2) {
+      if (interest.metadata['0'] === 2) {
         bot.setControlState('sneak', true);
-        delay(1000).then(()=> {
-          bot.setControlState('sneak', false);
-        })
+      } else {
+        bot.setControlState('sneak', false);
       }
-    } else {
-      bot.clearControlStates();
     }
-  }, 500);
+     
+    {
+      // bot.clearControlStates();
+    }
+  }, 100);
 }

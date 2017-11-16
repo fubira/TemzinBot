@@ -102,7 +102,7 @@ module.exports = function(bot) {
       var value = RegExp.$2.trim();
       
       if (key === value) {
-        bot.safechat('/tell ' + username + ' なにを言っているのかよくわからないな')
+        bot.safechat('/tell ' + username + ' おまえは何を言っているんだ')
       } else if (key.startsWith('/') || value.startsWith('/')) {
         bot.safechat('/tell ' + username + ' コマンドは覚えられないよ')
         bot.log('[data-record] *REJECTED* ' + username + ' による ' + key + ':' + value + ' の登録が拒否されました');
