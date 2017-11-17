@@ -2,25 +2,25 @@ const delay = require('delay');
 const Vec3 = require('vec3').Vec3;
 
 module.exports = function(bot) {
-  // ロックして追いかけるtarget
+  // ロックして追いかける対象target
   var target_entity = undefined;
 
-  function getTarget() {
+  function getTargetEntity() {
     return target_entity;
   }
-  function setTarget(entity = undefined) {
+  function setTargetEntity(entity = undefined) {
     if (target_entity !== entity) {
       target_entity = entity;
     }
   }
   
-  // 追いかけないが注目するinterest
+  // 追いかけないが注目する対象 interest
   var interest_entity = undefined;
 
-  function getInterest() {
+  function getInterestEntity() {
     return interest_entity;
   }
-  function setInterest(entity = undefined) {
+  function setInterestEntity(entity = undefined) {
     if (interest_entity !== entity) {
       interest_entity = entity;
     }
@@ -66,7 +66,7 @@ module.exports = function(bot) {
         if (dt < 0.3) {
           // 近接距離で顔を見て殴られたら追いかける対象として認識する
           bot.log('[bot.entitySwingArm] ' + entity.username + ' hit me!');
-          setTarget((getTarget() !== entity) ? entity : undefined);
+          setTargetEntity((getTargetEntity() !== entity) ? entity : undefined);
         }
       }
     }
@@ -77,39 +77,37 @@ module.exports = function(bot) {
 
     // 至近距離にエンティティがいる場合少し動く
     if (distance < 0.8) {
-      var botpos = bot.entity.position;
-      var entpos = entity.position;
-      botpos.y = entpos.y = 0;
+      var botpos = bot.entity.position.clone();
+      var entpos = entity.position.clone();
       botpos.subtract(entpos);
-      bot.log('velocity:' + botpos.scaled(5));
-      bot.entity.velocity.add(botpos.scaled(5));
+      bot.entity.velocity.add(botpos.scaled(60));
     }
     
     
     if (distance < 3) {
-      if (!getInterest()) {
+      if (!getInterestEntity()) {
         // 注目している人がいないなら注目
-        setInterest(entity);
+        setInterestEntity(entity);
       } else {
         // 既に注目している人が居る場合、その人よりも近ければ注目を切り替える
-        if (bot.entity.position.distanceTo(getInterest().position) > distance)
-          setInterest(entity);
+        if (bot.entity.position.distanceTo(getInterestEntity().position) > distance)
+          setInterestEntity(entity);
       }
     }
 
     if (distance > 6) {
       // 注目している人が一定以上離れたら注目解除
-      if (getInterest() === entity)
-        setInterest();
+      if (getInterestEntity() === entity)
+        setInterestEntity();
     }
   });
 
   setInterval(() => {
-    var target = getTarget();
-    var interest = getInterest();
+    var target = getTargetEntity();
+    var interest = getInterestEntity();
     
     if (target) {
-      var pos = bot.entity.position;
+      var pos = bot.entity.position.clone();
       pos.subtract(target.position);
       var rot = Vec3ToRot(pos);
 
@@ -132,8 +130,8 @@ module.exports = function(bot) {
       }
     }
     else if (interest) {
-      var pos = bot.entity.position;
-      pos = pos.subtract(interest.position);
+      var pos = bot.entity.position.clone();
+      pos.subtract(interest.position);
       var rot = Vec3ToRot(pos);
 
       if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
@@ -145,12 +143,15 @@ module.exports = function(bot) {
       if (interest.metadata['0'] === 2) {
         bot.setControlState('sneak', true);
       } else {
-        bot.setControlState('sneak', false);
+        // bot.setControlState('sneak', false);
+
+        // 注目先が自分よりも下の位置にいたらしゃがむ
+        bot.setControlState("sneak", (interest.position.y < bot.entity.position.y));
       }
     }
      
     {
       // bot.clearControlStates();
     }
-  }, 5000);
+  }, 200);
 }

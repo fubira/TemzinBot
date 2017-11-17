@@ -101,7 +101,9 @@ module.exports = function(bot) {
       var key = RegExp.$1.trim();
       var value = RegExp.$2.trim();
       
-      if (key === value) {
+      if (key === bot.username) {
+        bot.safechat('/tell ' + username + ' ぼくは' + value + 'じゃないよ？');
+      } else if (key === value) {
         bot.safechat('/tell ' + username + ' おまえは何を言っているんだ')
       } else if (key.startsWith('/') || value.startsWith('/')) {
         bot.safechat('/tell ' + username + ' コマンドは覚えられないよ')

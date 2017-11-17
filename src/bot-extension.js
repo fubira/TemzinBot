@@ -87,18 +87,18 @@ module.exports = function(bot) {
     this.bot.chat(text);
   }
 
-  this.bot.safechat = (text, delay_ms = 500) => {
+  this.bot.safechat = (text, delay_ms = 800) => {
     delay(delay_ms).then(() => { this.safechat(text); });
   }
 
   // 配列で定義された複数の文言のうちの一つをランダム選択してチャット送信する
-  this.bot.randomchat = (messages) => {
+  this.bot.randomchat = (messages, delay_ms = 800) => {
     var message;
     if (Array.isArray(messages)) {
       message = messages[Math.floor(Math.random() * messages.length)]
     } else {
       message = messages;
     }
-    this.safechat(message);
+    this.safechat(message, delay_ms);
   }
 }

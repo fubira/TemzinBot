@@ -16,7 +16,7 @@ module.exports = function(bot) {
   });
 
   bot.navigate.on('cannotFind', (closestPath) => {
-      bot.randomchat(['むりだわ',　'むりじゃね', 'いけない']);
+      bot.randomchat(['むりだわ',　'むりじゃね', 'いけない'], 1500);
       bot.navigate.walk(closestPath);
   })
 }
