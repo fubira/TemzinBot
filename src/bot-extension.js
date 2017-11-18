@@ -99,6 +99,6 @@ module.exports = function(bot) {
     } else {
       message = messages;
     }
-    this.safechat(message, delay_ms);
+    delay(delay_ms).then(() => { this.safechat(message); });
   }
 }

@@ -74,11 +74,12 @@ module.exports = function(bot) {
 
   bot.on('entityMoved', (entity) => {
     var distance = bot.entity.position.distanceTo(entity.position);
-
+    
     // 至近距離にエンティティがいる場合少し動く
     if (distance < 0.8) {
       var botpos = bot.entity.position.clone();
       var entpos = entity.position.clone();
+      botpos.y = entpos.y = 0;
       botpos.subtract(entpos);
       bot.entity.velocity.add(botpos.scaled(60));
     }
@@ -118,8 +119,10 @@ module.exports = function(bot) {
       // TODO: BehaviourTreeで実装したい
       var dist = bot.entity.position.distanceTo(target.position);
       if(dist > 3) {
+        // bot.navigate.to(target.position);
         bot.setControlState("forward", true);
       } else {
+        // bot.navigate.stop();
         bot.setControlState("forward", false);
       }
 
@@ -146,7 +149,7 @@ module.exports = function(bot) {
         // bot.setControlState('sneak', false);
 
         // 注目先が自分よりも下の位置にいたらしゃがむ
-        bot.setControlState("sneak", (interest.position.y < bot.entity.position.y));
+        bot.setControlState("sneak", (bot.entity.position.y - interest.position.y > 0.1 ));
       }
     }
      
