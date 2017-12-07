@@ -23,6 +23,9 @@ module.exports = function(bot) {
   function setInterestEntity(entity = undefined) {
     if (interest_entity !== entity) {
       interest_entity = entity;
+      if (interest_entity) {
+        bot.log('[bot.setInterestEntity] interested in ' + interest_entity.name);
+      }
     }
   }
 
@@ -107,54 +110,58 @@ module.exports = function(bot) {
     var target = getTargetEntity();
     var interest = getInterestEntity();
     
+    var entity;
     if (target) {
-      var pos = bot.entity.position.clone();
-      pos.subtract(target.position);
-      var rot = Vec3ToRot(pos);
-
-      if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
-        bot.look(rot.yaw, rot.pitch, false, false);
-      }
-
-      // TODO: BehaviourTreeで実装したい
-      var dist = bot.entity.position.distanceTo(target.position);
-      if(dist > 3) {
-        // bot.navigate.to(target.position);
-        bot.setControlState("forward", true);
-      } else {
-        // bot.navigate.stop();
-        bot.setControlState("forward", false);
-      }
-
-      if (target.metadata['0'] === 2) {
-        bot.setControlState("sneak", true);
-      } else {
-        bot.setControlState("sneak", false);
-      }
+      entity = target;
+    } else if (interest) {
+      entity = interest;
     }
-    else if (interest) {
-      var pos = bot.entity.position.clone();
-      pos.subtract(interest.position);
-      var rot = Vec3ToRot(pos);
 
-      if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
-        bot.look(rot.yaw, rot.pitch, false, false);
-      }
-
-      bot.setControlState("forward", false);
-      
-      if (interest.metadata['0'] === 2) {
-        bot.setControlState('sneak', true);
-      } else {
-        // bot.setControlState('sneak', false);
-
-        // 注目先が自分よりも下の位置にいたらしゃがむ
-        bot.setControlState("sneak", (bot.entity.position.y - interest.position.y > 0.1 ));
-      }
-    }
-     
+    if (entity)
     {
-      // bot.clearControlStates();
+      var pos = bot.entity.position.clone();
+      pos.subtract(entity.position);
+      var rot = Vec3ToRot(pos);
+  
+      // 対象に向く
+      if (Math.abs(rot.yaw - bot.entity.yaw) > 0.05 || Math.abs(rot.pitch - bot.entity.pitch) > 0.05) {
+        bot.look(rot.yaw, rot.pitch, false, false);
+      }
+  
+      if (target && target.onGround /*&& target.controlState['jump'] === false*/) {
+        // 対象との距離に応じて移動する
+        var dist = bot.entity.position.distanceTo(entity.position);
+        if(dist > 3) {
+          bot.navigate.to(entity.position);
+        } else {
+          bot.navigate.stop();
+        }
+      }
+    }
+  }, 1000);
+
+  setInterval(() => {
+    var interest = getInterestEntity();
+    if (interest) {
+
+      if (interest.kind === 'Drops') {
+        // 足元に落し物がある場合しゃがむ
+        bot.setControlState("sneak", true);
+      } else if (interest.kind) {
+        if (bot.controlState['front'] === true) {
+          // モノ以外が足元にある場合ジャンプする
+          bot.setControlState("jump", true);
+        }
+      } else {
+        if (interest.metadata['0'] === 2) {
+          // 相手がしゃがんでいたらしゃがむ
+          bot.setControlState("sneak", true);
+        } else {
+          // 注目先が自分よりも2m以上下の位置にいたらしゃがむ
+          bot.setControlState("sneak", (bot.entity.position.y - interest.position.y > 2 ));
+        }
+        // bot.log('[bot.interval] interest.y = ' + interest.entityType + ' : ' + interest.kind + ' : ' + interest.objectType + ' : ' + interest.onGround);
+      }
     }
   }, 200);
 }

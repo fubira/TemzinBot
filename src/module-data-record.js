@@ -66,8 +66,9 @@ module.exports = function(bot) {
     if (this.record) {
       this.record.forEach((r) => {
         if (message.match(new RegExp('^' + r.key + "$"))) {
-          bot.safechat(r.key + 'は' + r.value.replace(new RegExp('^\/', '')));
-
+          var m = r.key + 'は' + r.value.replace(new RegExp('^\/', '')) + ' ';
+          bot.randomchat([m, m + ' だって' + r.teacher + 'が言ってた', r.teacher + 'によると ' + m + ' なんだって']);
+  
           // 使われた記憶は寿命を延ばす
           r.expire_at = get_expire_at();
         }
@@ -111,7 +112,7 @@ module.exports = function(bot) {
       } else {
         record(key, value, username);
 
-        bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は' + value + 'なんだって');
+        bot.safechat('いま' + username + 'が教えてくれたんだけど、' + key + 'は ' + value + ' なんだって');
         bot.log('[data-record] sender: ' + username + ', key: {' + key + '}, value: {' + value + '}');
 
         this.last_record_user = username;

@@ -21,7 +21,8 @@ module.exports = function(bot) {
   });
 
   bot.navigate.on('cannotFind', (closestPath) => {
-    bot.randomchat(['うーん',　'途中までなら'], 1000);
+    // bot.randomchat(['うーん',　'途中までなら'], 1000);
+    bot.log('[bot.navigate] cannotFind');
     bot.navigate.walk(closestPath);
   })
 }
