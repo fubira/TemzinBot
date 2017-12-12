@@ -4,7 +4,8 @@ const readline = require('readline');
 
 module.exports = function(bot) {
   this.bot = bot;
-
+  this.bot.hasInterrupt = false;
+  
   // 入力処理を有効にする
   this.bot.init_readline = () => {
     this.rl = readline.createInterface({input: process.stdin, output: process.stdout});
@@ -18,10 +19,13 @@ module.exports = function(bot) {
     // CTRL+DまたはCTRL+CでSTDINが閉じたらbotも閉じる
     this.rl.on('close', () => {
       this.bot.log('[bot.readline] input closed');
-      delay(1000).then(() => { this.bot.quit(); })
+      this.bot.hasInterrupt = true;
+      delay(1000).then(() => { 
+        this.bot.quit();
+      });
     })
   }
-
+  
   // prompt処理とかをちゃんとやるログ出力
   this.bot.log = (...args) => {
     readline.cursorTo(process.stdout, 0);
