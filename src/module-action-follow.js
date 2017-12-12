@@ -24,7 +24,9 @@ module.exports = function(bot) {
     if (interest_entity !== entity) {
       interest_entity = entity;
       if (interest_entity) {
-        bot.log('[bot.setInterestEntity] interested in ' + interest_entity.name);
+        var name = interest_entity.name !== undefined ? interest_entity.name : interest_entity.username;
+        var type = interest_entity.type;
+        bot.log('[bot.setInterestEntity] ' + bot.username + ' is interested in ' + name + ' (' + type + ')');
       }
     }
   }
@@ -75,11 +77,23 @@ module.exports = function(bot) {
     }
   });
 
+  bot.on('playerCollect', (collector, collected) => {
+    // 注目しているアイテムが誰かに拾われたら注目を解除する
+    if (getInterestEntity() === collected) {
+      setInterestEntity();
+
+      // 拾ったのが自分以外なら拾った人を注目する
+      if (collector !== bot.entity) {
+        setInterestEntity(collector);      
+      }
+    }
+  });
+
   bot.on('entityMoved', (entity) => {
     var distance = bot.entity.position.distanceTo(entity.position);
-    
-    // 至近距離にエンティティがいる場合少し動く
-    if (distance < 0.8) {
+
+    // 至近距離にプレイヤーがいる場合少し動く
+    if (entity.type === 'player'　&& distance < 0.8) {
       var botpos = bot.entity.position.clone();
       var entpos = entity.position.clone();
       botpos.y = entpos.y = 0;
@@ -143,25 +157,27 @@ module.exports = function(bot) {
   setInterval(() => {
     var interest = getInterestEntity();
     if (interest) {
-
+      var isSneaking = false;
+      var isJumping = false;
+      
       if (interest.kind === 'Drops') {
-        // 足元に落し物がある場合しゃがむ
-        bot.setControlState("sneak", true);
+        isSneaking = true;
       } else if (interest.kind) {
         if (bot.controlState['front'] === true) {
           // モノ以外が足元にある場合ジャンプする
-          bot.setControlState("jump", true);
+          isJumping = true;
         }
       } else {
         if (interest.metadata['0'] === 2) {
           // 相手がしゃがんでいたらしゃがむ
-          bot.setControlState("sneak", true);
+          isSneaking = true;
         } else {
           // 注目先が自分よりも2m以上下の位置にいたらしゃがむ
-          bot.setControlState("sneak", (bot.entity.position.y - interest.position.y > 2 ));
+          isSneaking = (bot.entity.position.y - interest.position.y > 2 );
         }
-        // bot.log('[bot.interval] interest.y = ' + interest.entityType + ' : ' + interest.kind + ' : ' + interest.objectType + ' : ' + interest.onGround);
       }
+      bot.setControlState("sneak", isSneaking);
+      bot.setControlState("jump", isJumping);
     }
   }, 200);
 }
