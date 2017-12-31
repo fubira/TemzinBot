@@ -27,7 +27,7 @@ module.exports = function(bot) {
         var name = interest_entity.name !== undefined ? interest_entity.name : interest_entity.username;
         var type = interest_entity.type;
         var kind = interest_entity.kind;
-        bot.log('[bot.setInterestEntity] ' + bot.username + ' is interested in ' + name + ' (' + type + (kind !== undefined ) ? ':' + kind : '' + ')');
+        bot.log('[bot.setInterestEntity] ' + bot.username + ' is interested in ' + name + ' (' + type + (kind !== undefined ? ':' + kind : '') + ')');
       }
     }
   }

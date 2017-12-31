@@ -1,6 +1,6 @@
 const jsonfile = require('jsonfile');
 const filename = 'data.record.json'
-const record_lifetime_ms = 3 * 24 * 60 * 60 * 1000;
+const record_lifetime_ms = 7 * 24 * 60 * 60 * 1000;
 
 module.exports = function(bot) {
   this.record = [];
@@ -65,7 +65,7 @@ module.exports = function(bot) {
     // 該当する文言があればvalueをチャットに出力する
     if (this.record) {
       this.record.forEach((r) => {
-        if (message.match(new RegExp('^' + r.key + "$"))) {
+        if (message.match(new RegExp('^' + r.key + "$", 'i'))) {
           var m = r.key + 'は' + r.value.replace(new RegExp('^\/', '')) + ' ';
           bot.randomchat([m, m + ' だって' + r.teacher + 'が言ってた', r.teacher + 'によると ' + m + ' なんだって']);
   
