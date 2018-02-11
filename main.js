@@ -24,6 +24,18 @@ function start() {
     bot.chatAddPattern(/^([^ ]*) whispers: (.*)$/, 'whisper', 'kenmomine.club whisper(Chatco)');
   }
 
+  bot.on('end', () => {
+    bot.log('[bot.end]');
+    if (bot.hasInterrupt) {
+      process.exit(0);
+    } else {
+      // 自分で止めた時以外は再起動を試みる
+      delay(60000).then(() => {
+        start();
+      });
+    }
+  });
+
   bot.on('connect', () => {
     bot.log('[bot.connect]');
     chatAddPattern(bot);
@@ -42,23 +54,7 @@ function start() {
     require('./src/module-update')(bot);
     require('./src/module-help')(bot);
     // require('./src/module-whisper-broadcast')(bot);
-
-    // 入力を有効にする
-    bot.init_readline();
-
-    bot.on('end', () => {
-      bot.log('[bot.end]');
-      // 自分で止めた時以外は再起動を試みる
-      if (bot.hasInterrupt) {
-        process.exit(0);
-      } else {
-        delay(60000).then(() => {
-          start();
-        });
-      }
-    });
   });
-
 }
 
 start();
