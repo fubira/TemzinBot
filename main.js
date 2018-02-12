@@ -15,13 +15,17 @@ function start() {
 
   require('./src/bot-extension')(bot);
 
-  console.log('Connecting to [' + process.env.MC_HOST +':' + process.env.MC_PORT + ']');
+  console.log('Connecting to [' + process.env.MC_HOST + ':' + process.env.MC_PORT + ']');
   console.log('User [' + process.env.MC_USERNAME + ']');
 
   function chatAddPattern(bot) {
     // kenmomine.club向けchat/whisperパターン
-    bot.chatAddPattern(/^(?:\[[^\]]*\])<([^ :]*)> (.*)$/, 'chat', 'kenmomine.club chat');
-    bot.chatAddPattern(/^([^ ]*) whispers: (.*)$/, 'whisper', 'kenmomine.club whisper(Chatco)');
+    try {
+      bot.chatAddPattern(/^(?:\[[^\]]*\])<([^ :]*)> (.*)$/, 'chat', 'kenmomine.club chat');
+      bot.chatAddPattern(/^([^ ]*) whispers: (.*)$/, 'whisper', 'kenmomine.club whisper(Chatco)');
+    } catch (e) {
+      console.log('[bot.error] ' + e);
+    }
   }
 
   bot.on('end', () => {
@@ -39,6 +43,7 @@ function start() {
 
   bot.on('connect', () => {
     bot.log('[bot.connect]');
+
     chatAddPattern(bot);
     navigate(bot);
 
