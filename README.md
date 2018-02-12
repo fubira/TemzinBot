@@ -30,6 +30,27 @@ MC_PASSWORD="password"
 
     $ npm start
 
+
+## Dockerize
+
+### Build docker image
+
+```bash
+docker build -t <yourname>/temzinbot .
+```
+
+### Run docker container
+
+```bash
+docker run -d -it \
+  -e MC_HOST=localhost \
+  -e MC_PORT=25565 \
+  -e MC_USERNAME=username \
+  -e MC_PASSWORD=password \
+  --name temzinbot \
+  <yourname>/temzinbot
+```
+
 ## License
 
 [MIT](https://github.com/fubira/TemzinBot/blob/master/LICENSE,md)
