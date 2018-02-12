@@ -7,7 +7,14 @@ mineflayerを利用した適当bot
 ## Features
 
   - I'M BOT!
-  - commandline interface
+  - Modulized functions
+    - move to the designated position
+    - follow player
+    - greeting responce
+    - 3sec countdown
+    - data recorder
+  - Commandline interface
+  - Dockerize support
 
 ## Installation
 
