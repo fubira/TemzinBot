@@ -1,6 +1,6 @@
 const jsonfile = require('jsonfile');
 const filename = 'data.record.json'
-const record_lifetime_ms = 7 * 24 * 60 * 60 * 1000;
+const record_lifetime_ms = 30 * 24 * 60 * 60 * 1000;
 
 module.exports = function(bot) {
   this.record = [];
