@@ -35,9 +35,7 @@ function start() {
     } else {
       // 自分で止めた時以外は再起動を試みる
       bot.log('[bot.end] Trying reconnection 1 min later...');
-      delay(60000).then(() => {
-        start();
-      });
+      delay(60000).then(() => { start(); });
     }
   });
 
@@ -62,5 +60,11 @@ function start() {
     // require('./src/module-whisper-broadcast')(bot);
   });
 }
+
+process.on('uncaughtException', (err) => {
+  bot.log('[process.uncaughtException] ' + err);
+  bot.log('[process.uncaughtException] Trying reconnection 1 min later...');
+  delay(60000).then(() => { start(); });
+});
 
 start();
