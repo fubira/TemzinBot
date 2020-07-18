@@ -1,7 +1,13 @@
 const delay = require('delay');
 const Vec3 = require('vec3').Vec3;
+const Movements = require('mineflayer-pathfinder').Movements
+const { GoalNear, GoalFollow, GoalInvert } = require('mineflayer-pathfinder').goals
 
 module.exports = function(bot) {
+  const mcData = require('minecraft-data')(bot.version);
+  const defaultMove = new Movements(bot, mcData);
+  defaultMove.allowFreeMotion = true;
+  
   // ロックして追いかける対象target
   var target_entity = undefined;
 
@@ -147,9 +153,10 @@ module.exports = function(bot) {
         // 対象との距離に応じて移動する
         var dist = bot.entity.position.distanceTo(entity.position);
         if(dist > 3) {
-          bot.navigate.to(entity.position);
+          bot.pathfinder.setMovements(defaultMove);
+          bot.pathfinder.setGoal(new GoalInvert(new GoalFollow(target, 1)), true);
         } else {
-          bot.navigate.stop();
+          bot.pathfinder.setGoal(null);
         }
       }
     }

@@ -2,7 +2,7 @@ require('dotenv').config();
 const delay = require('delay');
 const jsonfile = require('jsonfile');
 const mineflayer = require('mineflayer');
-const navigate = require('mineflayer-navigate')(mineflayer);
+const pathfinder = require('mineflayer-pathfinder').pathfinder;
 
 function start() {
   const bot = mineflayer.createBot({
@@ -10,13 +10,16 @@ function start() {
     port: process.env.MC_PORT,
     username: process.env.MC_USERNAME,
     password: process.env.MC_PASSWORD,
+    version: process.env.MC_VERSION || '1.15.2',
     verbose: true
   });
 
+  bot.loadPlugin(pathfinder);
+
   require('./src/bot-extension')(bot);
 
-  console.log('Connecting to [' + process.env.MC_HOST + ':' + process.env.MC_PORT + ']');
-  console.log('User [' + process.env.MC_USERNAME + ']');
+  console.log('Connecting to [' + bot.host + ':' + bot.port + '] (' + bot.version + ')');
+  console.log('User [' + bot.username + ']');
 
   function chatAddPattern(bot) {
     // kenmomine.club向けchat/whisperパターン
@@ -43,7 +46,6 @@ function start() {
     bot.log('[bot.connect]');
 
     chatAddPattern(bot);
-    navigate(bot);
 
     // モジュール化された機能を読み込む
     require('./src/module-action-move')(bot);
