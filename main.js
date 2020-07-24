@@ -14,12 +14,11 @@ function start() {
     verbose: true
   });
 
+  console.log('Connecting to [' + process.env.MC_HOST + ':' + process.env.MC_PORT + '] (' + bot.version + ')');
+
   bot.loadPlugin(pathfinder);
 
   require('./src/bot-extension')(bot);
-
-  console.log('Connecting to [' + bot.host + ':' + bot.port + '] (' + bot.version + ')');
-  console.log('User [' + bot.username + ']');
 
   function chatAddPattern(bot) {
     // kenmomine.club向けchat/whisperパターン
@@ -43,7 +42,7 @@ function start() {
   });
 
   bot.on('connect', () => {
-    bot.log('[bot.connect]');
+    bot.log('[bot.connect] user: [' + bot.username + ']');
 
     chatAddPattern(bot);
 
