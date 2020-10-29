@@ -10,7 +10,7 @@ function start() {
     port: process.env.MC_PORT,
     username: process.env.MC_USERNAME,
     password: process.env.MC_PASSWORD,
-    version: process.env.MC_VERSION || '1.15.2',
+    version: process.env.MC_VERSION || '1.16.3',
     verbose: true
   });
 
