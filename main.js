@@ -63,7 +63,11 @@ function start() {
 }
 
 process.on('uncaughtException', (err) => {
-  bot.log('[process.uncaughtException] ' + err);
+  if (bot) {
+    bot.log('[process.uncaughtException] ' + err);
+  } else {
+    console.log('[process.uncaughtException] ' + err);
+  }
   // bot.log('[process.uncaughtException] Trying reconnection 1 min later...');
   // delay(60000).then(() => { start(); });
 });
