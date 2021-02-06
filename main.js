@@ -1,6 +1,5 @@
 require('dotenv').config();
 const delay = require('delay');
-const jsonfile = require('jsonfile');
 const mineflayer = require('mineflayer');
 const pathfinder = require('mineflayer-pathfinder').pathfinder;
 
@@ -10,7 +9,7 @@ function start() {
     port: process.env.MC_PORT,
     username: process.env.MC_USERNAME,
     password: process.env.MC_PASSWORD,
-    version: process.env.MC_VERSION || '1.16.3',
+    version: process.env.MC_VERSION || '1.16.5',
     verbose: true
   });
 
@@ -47,8 +46,8 @@ function start() {
     chatAddPattern(bot);
 
     // モジュール化された機能を読み込む
-    // require('./src/module-action-move')(bot);
-    // require('./src/module-action-follow')(bot);
+    require('./src/module-action-move')(bot);
+    require('./src/module-action-follow')(bot);
     require('./src/module-logger')(bot);
     // require('./src/module-chat-hage')(bot);
     require('./src/module-chat-hi')(bot);
@@ -60,16 +59,18 @@ function start() {
     require('./src/module-help')(bot);
     // require('./src/module-whisper-broadcast')(bot);
   });
+
+  bot.on('error', err => console.log(err));
 }
 
 process.on('uncaughtException', (err) => {
-  if (bot) {
-    bot.log('[process.uncaughtException] ' + err);
-  } else {
-    console.log('[process.uncaughtException] ' + err);
-  }
+  console.log('[process.uncaughtException] ' + err);
   // bot.log('[process.uncaughtException] Trying reconnection 1 min later...');
   // delay(60000).then(() => { start(); });
 });
 
-start();
+try {
+  start();
+} catch(e) {
+  console.error(e);
+}
