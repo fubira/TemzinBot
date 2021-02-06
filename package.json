@@ -5,11 +5,11 @@
   "main": "main.js",
   "dependencies": {
     "dateformat": "^3.0.3",
-    "delay": "^4.4.0",
+    "delay": "^4.4.1",
     "dotenv": "^8.2.0",
-    "jsonfile": "^6.0.1",
-    "mineflayer": "^2.33.0",
-    "mineflayer-pathfinder": "^1.0.11",
+    "jsonfile": "^6.1.0",
+    "mineflayer": "^2.41.0",
+    "mineflayer-pathfinder": "^1.4.0",
     "readline": "^1.3.0"
   },
   "devDependencies": {},
