@@ -28,9 +28,9 @@ module.exports = function(bot) {
     if (bot.username === username) return;
 
     // 行頭"天気" or "tenki"を処理する
-    if (message.match(/^(天気|tenki)(.*)$/g)) {
+    if (message.match(/(^|\()(天気|tenki)\s*[\(]?([^\(\)]*)[\)]?/gi)) {
       // 天気のあとに続く文字列を場所として探す なければ東京
-      const [,...locations] = RegExp.$2.replace(/[\(\)]/g,'').split(/[ 　,]/);
+      const [,...locations] = RegExp.$3.replace(/[\(\)]/g,'').split(/[ 　,]/);
 
       if (locations.length === 0) {
         locations.push('東京');
