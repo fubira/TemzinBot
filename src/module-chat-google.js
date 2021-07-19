@@ -18,7 +18,7 @@ module.exports = function(bot) {
         bot.safechat(url, 1000);
       }
   
-      if (mode.match(/(map|まｐ)/g)) {
+      if (mode.match(/(map|まｐ|マップ|地図)/g)) {
         const url = `https://www.google.co.jp/maps?q=${text}`;
         bot.safechat(url, 1000);
       }
