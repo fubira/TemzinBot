@@ -17,6 +17,11 @@ module.exports = function(bot) {
         const url = `https://www.google.co.jp/search?tbm=isch&q=${text}`;
         bot.safechat(url, 1000);
       }
+  
+      if (mode.match(/(map|まｐ)/g)) {
+        const url = `https://www.google.co.jp/maps?q=${text}`;
+        bot.safechat(url, 1000);
+      }
     }
 
   });
