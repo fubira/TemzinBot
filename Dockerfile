@@ -9,6 +9,7 @@ ENV MC_PASSWORD="password"
 COPY package*.json ./
 
 RUN npm install -g npm
+RUN npm upgrade
 RUN npm install
 
 COPY . .
