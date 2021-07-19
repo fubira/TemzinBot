@@ -22,8 +22,8 @@ function start() {
   function chatAddPattern(bot) {
     // kenmomine.club向けchat/whisperパターン
     try {
-      bot.chatAddPattern(/^(?:\[[^\]]*\])<([^ :]*)> (.*)$/, 'chat', 'kenmomine.club chat');
-      bot.chatAddPattern(/^([^ ]*) whispers: (.*)$/, 'whisper', 'kenmomine.club whisper(Chatco)');
+      bot.addChatPattern('chat', /^(?:\[[^\]]*\])<([^ :]*)> (.*)$/);
+      bot.addChatPattern('whisper', /^([^ ]*) whispers: (.*)$/);
     } catch (e) {
       console.log('[bot.error] ' + e);
     }

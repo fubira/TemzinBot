@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const area = require('../area.json');
 
-function parseForecastJson(json) {
+function makeForecastMessageFromJson(json) {
   const { city } = json.location;
 
   const forecastData = json.forecasts.find((f) => f.temperature.min.celsius !== null && f.temperature.max.celsius !== null);
@@ -21,11 +21,15 @@ function parseForecastJson(json) {
 }
 
 module.exports = function(bot) {
+  this.last_called = Date.now();
   
   bot.on('chat', (username, message) => {
+    // 自分の発言は無視
     if (bot.username === username) return;
 
-    if (message.match(/(天気|tenki)(.*)$/)) {
+    // 行頭"天気" or "tenki"を処理する
+    if (message.match(/^(天気|tenki)(.*)$/g)) {
+      // 天気のあとに続く文字列を場所として探す なければ東京
       const [,...locations] = RegExp.$2.replace(/[\(\)]/g,'').split(/[ 　,]/);
 
       if (locations.length === 0) {
@@ -33,6 +37,7 @@ module.exports = function(bot) {
       }
 
       const locationSet = new Set();
+      // 指定された文字列をエリアデータの場所名から探す
       locations.map((loc) => {
         const re = new RegExp(loc || '東京', "i");
         const value = Object.values(area).find((a) => (a.name + a.enName).match(re));
@@ -40,21 +45,29 @@ module.exports = function(bot) {
           locationSet.add(value.children[0]);
         }
       });
+
+      // 重複のない気象庁IDでの場所リスト
       const locationIds = Array.from(locationSet);
 
+      // ここでIDが一つもない場合、場所名が見つからなかった
       if (locationIds.length === 0) {
         bot.safechat(`知らない場所です: ${locations}`);
       }
 
-      const getLocationForecastMessage = async (id) => {
-        const res = await fetch(`https://weather.tsukumijima.net/api/forecast/city/${id}`);
-        const json = await res.json();
-        return parseForecastJson(json);
-      };
+      // API呼び出しには1秒以上時間をあける
+      if (this.last_called > Date.now() - 1000) {
+        bot.safechat(`ちょっとまって早い`);
+        return;
+      }
+      this.last_called = Date.now();
 
+      // API呼び出し
       try {
         locationIds.forEach(async (id) => {
-          const message = await getLocationForecastMessage(id);
+          const res = await fetch(`https://weather.tsukumijima.net/api/forecast/city/${id}`, { headers: { 'User-Agent': 'WeatherApp/1.0.0' }});
+          const json = await res.json();
+          const message = makeForecastMessageFromJson(json);
+
           if(message) {
             bot.safechat(message);
           }
