@@ -58,6 +58,7 @@ function start() {
     require('./src/module-update')(bot);
     require('./src/module-help')(bot);
     require('./src/module-chat-weather')(bot);
+    require('./src/module-chat-google')(bot);
     // require('./src/module-whisper-broadcast')(bot);
   });
 
