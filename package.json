@@ -4,12 +4,13 @@
   "description": "Temzinbot, minecraft bot implementation with mineflayer.",
   "main": "main.js",
   "dependencies": {
-    "dateformat": "^3.0.3",
-    "delay": "^4.4.1",
-    "dotenv": "^8.2.0",
+    "dateformat": "^4.5.1",
+    "delay": "^5.0.0",
+    "dotenv": "^10.0.0",
     "jsonfile": "^6.1.0",
-    "mineflayer": "^2.41.0",
-    "mineflayer-pathfinder": "^1.5.0",
+    "mineflayer": "^3.8.0",
+    "mineflayer-pathfinder": "^1.6.3",
+    "node-fetch": "^2.6.1",
     "readline": "^1.3.0"
   },
   "devDependencies": {},

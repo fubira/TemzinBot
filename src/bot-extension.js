@@ -95,7 +95,7 @@ module.exports = function(bot) {
     }
 
     if (this.safechat_send_text_cache.find((value)=>{ return value === text; })) {
-      this.bot.log('[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました');
+      this.bot.log('[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました: ' + text);
       return;
     }
     this.safechat_send_text_cache.push(text);
