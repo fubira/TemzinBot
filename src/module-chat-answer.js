@@ -2,7 +2,7 @@ module.exports = function(bot) {
   bot.on('chat', (username, message) => {
     const answers = [
       {
-        keyword: /^(map|dynmap|まｐ|ダイナ|マップ|地図)/i,
+        keyword: /^(map|dynmap|まp|まｐ|ダイナ|マップ|地図)/i,
         answer: 'http://kenmomine.club:8123/'
       },
       {
