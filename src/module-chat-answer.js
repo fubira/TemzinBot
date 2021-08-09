@@ -3,7 +3,7 @@ module.exports = function(bot) {
     const answers = [
       {
         keyword: /^(map|dynmap|まｐ|ダイナ|マップ|地図)/i,
-        answer: 'https://kenmomine.club:8123/'
+        answer: 'http://kenmomine.club:8123/'
       },
       {
         keyword: /^(event|イベント|ev|いべんと)/i,
