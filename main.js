@@ -51,6 +51,7 @@ function start() {
     require('./src/module-logger')(bot);
     // require('./src/module-chat-hage')(bot);
     require('./src/module-chat-hi')(bot);
+    require('./src/module-chat-answer')(bot);
     // require('./src/module-chat-kiyoshi')(bot);
     require('./src/module-chat-death')(bot);
     require('./src/module-chat-countdown')(bot);
