@@ -55,11 +55,12 @@ module.exports = function(bot) {
       },
       {
         keyword: /^(jisin|jishin|地震|自信|じしん|自身)/gi,
-        answer: 'https://www.jma.go.jp/jp/quake/'
+        answer: 'http://www.kmoni.bosai.go.jp/'
       },
       {
         keyword: /^(taifu|taifuu|taihu|台風)/gi,
-        answer: 'https://www.jma.go.jp/jp/bosai/map.html#contents=typhoon'
+        // answer: 'https://www.jma.go.jp/jp/bosai/map.html#contents=typhoon'
+        answer: 'http://www.micosfit.jp/hachioji/typhoon_dpx/index.html'
       },
       {
         keyword: /^(ra[dj]io|ら[じぢ]お|ラ[ヂジ]オ|ラディオ|レディオ|ラヂヲ|レイディオ)/gi,
