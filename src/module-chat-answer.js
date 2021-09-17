@@ -59,8 +59,7 @@ module.exports = function(bot) {
       },
       {
         keyword: /^(taifu|taifuu|taihu|台風)/gi,
-        // answer: 'https://www.jma.go.jp/jp/bosai/map.html#contents=typhoon'
-        answer: 'http://www.micosfit.jp/hachioji/typhoon_dpx/index.html'
+        answer: 'https://www.jma.go.jp/bosai/map.html#contents=typhoon'
       },
       {
         keyword: /^(ra[dj]io|ら[じぢ]お|ラ[ヂジ]オ|ラディオ|レディオ|ラヂヲ|レイディオ)/gi,
