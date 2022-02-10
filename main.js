@@ -1,7 +1,6 @@
 require('dotenv').config();
 const delay = require('delay');
 const mineflayer = require('mineflayer');
-const pathfinder = require('mineflayer-pathfinder').pathfinder;
 
 function start() {
   const bot = mineflayer.createBot({
@@ -10,12 +9,13 @@ function start() {
     username: process.env.MC_USERNAME,
     password: process.env.MC_PASSWORD,
     version: process.env.MC_VERSION || '1.17.1',
+    auth: process.env.MC_AUTH || 'mojang',
     verbose: true
   });
 
   console.log('Connecting to [' + process.env.MC_HOST + ':' + process.env.MC_PORT + '] (' + bot.version + ')');
 
-  bot.loadPlugin(pathfinder);
+  // bot.loadPlugin(pathfinder);
 
   require('./src/bot-extension')(bot);
 
