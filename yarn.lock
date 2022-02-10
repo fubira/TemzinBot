@@ -337,10 +337,10 @@ minecraft-protocol@^1.26.5:
     uuid-1345 "^1.0.1"
     yggdrasil "^1.4.0"
 
-mineflayer@3.16.0:
-  version "3.16.0"
-  resolved "https://registry.yarnpkg.com/mineflayer/-/mineflayer-3.16.0.tgz#b7ecc7c6550fcb8c6b3a04bc65158cd6d695deb3"
-  integrity sha512-EH3V2dQDn0q1PWDEErW5ZYBfKX5x5jWu5LzSIPDF0oBrMahtPE3dN9LaVckVBddvEbOSgw6Z8nAV7Umx+RMw4w==
+mineflayer@^3.11.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/mineflayer/-/mineflayer-3.18.0.tgz#d134ab088f52b5f64477472f6e21e12f3735329d"
+  integrity sha512-eHLr3rPqGtZuoAWrocMY+WBGxZ1ao8OHAxBr3L8XFT4cZVybjLbEqs/NAa2RFTKTzhO23kzxt+qsmxkLL7Oxiw==
   dependencies:
     minecraft-data "^2.109.0"
     minecraft-protocol "^1.26.5"
