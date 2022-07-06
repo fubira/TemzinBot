@@ -4,17 +4,18 @@ const area = require('../area.json');
 function makeForecastMessageFromJson(json) {
   const { city } = json.location;
 
-  const forecastData = json.forecasts.find((f) => f.temperature.min.celsius !== null && f.temperature.max.celsius !== null);
-  const chanceOfRain = Object.values(forecastData.chanceOfRain).reduce((a, b) => parseInt(a) > parseInt(b) ? a : b);
-  const date = new Date(forecastData.date);
+  const primaryForecastData = json.forecasts.find((f) => f.temperature.max.celsius !== null);
+  const secondaryForecastData = json.forecasts.find((f) => f.temperature.min.celsius !== null);
+  const chanceOfRain = Object.values(primaryForecastData.chanceOfRain).reduce((a, b) => parseInt(a) > parseInt(b) ? a : b);
+  const date = new Date(primaryForecastData.date);
 
   const title = `[${date.getMonth()+1}/${date.getDate()} ${city}の天気]`
-  const label = forecastData.dateLabel;
-  const telop = forecastData.telop;
-  const tempMax = forecastData.temperature.max.celsius || '--';
-  const tempMin = forecastData.temperature.min.celsius || '--';
+  const label = primaryForecastData.dateLabel;
+  const telop = primaryForecastData.telop;
+  const tempMax = primaryForecastData.temperature.max.celsius || secondaryForecastData.temperature.max.celsius || '--';
+  const tempMin = primaryForecastData.temperature.min.celsius || secondaryForecastData.temperature.min.celsius || '--';
 
-  const forecastText = forecastData &&
+  const forecastText = primaryForecastData &&
     `${label}の${city}の天気は ${telop} 気温は${tempMax}℃/${tempMin}℃ 降水確率は ${chanceOfRain || '--'} です。`;
 
   return `${title} ${forecastText}`;
