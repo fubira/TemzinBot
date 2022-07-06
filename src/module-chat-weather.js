@@ -40,7 +40,14 @@ module.exports = function(bot) {
       const locationSet = new Set();
       // 指定された文字列をエリアデータの場所名から探す
       locations.map((loc) => {
-        const value = Object.values(area).find((a) => (a.keyword.find((word) => word.startsWith(loc || '東京'))));
+        // まず完全一致で探す
+        let value = Object.values(area).find((a) => (a.keyword.find((word) => word === loc)));
+
+        // 完全一致がなかった場合、前方一致で探す
+        if (!value) {
+          value = Object.values(area).find((a) => (a.keyword.find((word) => word.startsWith(loc))));
+        }
+        
         if (value) {
           locationSet.add(value.id);
         }
