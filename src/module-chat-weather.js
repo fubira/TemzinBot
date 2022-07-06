@@ -41,7 +41,7 @@ module.exports = function(bot) {
       locations.map((loc) => {
         const value = Object.values(area).find((a) => (a.keyword.find((word) => word.startsWith(loc || '東京'))));
         if (value) {
-          locationSet.add(value.children[0]);
+          locationSet.add(value.id);
         }
       });
 
