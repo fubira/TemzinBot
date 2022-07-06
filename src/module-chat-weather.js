@@ -39,8 +39,8 @@ module.exports = function(bot) {
       const locationSet = new Set();
       // 指定された文字列をエリアデータの場所名から探す
       locations.map((loc) => {
-        const re = new RegExp(loc || '東京', "i");
-        const value = Object.values(area).find((a) => (a.name + a.enName).match(re));
+        const re = new RegExp(`^${loc || '東京'}`, "i");
+        const value = Object.values(area).find((a) => (a.keyword.join(',')).match(re));
         if (value) {
           locationSet.add(value.children[0]);
         }

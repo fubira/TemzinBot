@@ -1,408 +1,712 @@
-{
-  "011000": {
-    "name": "稚内・宗谷地方",
-    "enName": "Soya",
-    "officeName": "稚内地方気象台",
-    "parent": "010100",
-    "children": ["011000"]
+[
+  {
+    "title": "稚内",
+    "keyword": ["稚内", "wakkanai", "道北", "dohoku", "douhoku"],
+    "id": "011000"
   },
-  "012000": {
-    "name": "旭川・上川・留萌地方",
-    "enName": "Kamikawa Rumoi",
-    "officeName": "旭川地方気象台",
-    "parent": "010100",
-    "children": ["012010", "012020"]
+  {
+    "title": "旭川",
+    "keyword": ["旭川", "asahikawa"],
+    "id": "012010"
   },
-  "013000": {
-    "name": "網走・北見・紋別地方",
-    "enName": "Abashiri Kitami Mombetsu",
-    "officeName": "網走地方気象台",
-    "parent": "010100",
-    "children": ["013010", "013020", "013030"]
+  {
+    "title": "留萌",
+    "keyword": ["留萌", "rumoi"],
+    "id": "012020"
   },
-  "014030": {
-    "name": "十勝・帯広地方",
-    "enName": "Tokachi",
-    "officeName": "帯広測候所",
-    "parent": "010100",
-    "children": ["014030"]
+  {
+    "title": "網走",
+    "keyword": ["網走", "abashiri", "abasiri", "道東", "doutou", "doto"],
+    "id": "013010"
   },
-  "014100": {
-    "name": "釧路・根室地方",
-    "enName": "Kushiro Nemuro",
-    "officeName": "釧路地方気象台",
-    "parent": "010100",
-    "children": ["014010", "014020"]
+  {
+    "title": "北見",
+    "keyword": ["北見", "kitami"],
+    "id": "013020"
   },
-  "015000": {
-    "name": "室蘭・胆振・日高地方",
-    "enName": "Iburi Hidaka",
-    "officeName": "室蘭地方気象台",
-    "parent": "010100",
-    "children": ["015010", "015020"]
+  {
+    "title": "紋別",
+    "keyword": ["紋別", "monbetsu", "monbetu"],
+    "id": "013030"
   },
-  "016000": {
-    "name": "北海道・石狩・空知・後志・札幌地方",
-    "enName": "Ishikari Sorachi Shiribeshi",
-    "officeName": "札幌管区気象台",
-    "parent": "010100",
-    "children": ["016010", "016020", "016030"]
+  {
+    "title": "根室",
+    "keyword": ["根室", "nemuro"],
+    "id": "014010"
   },
-  "017000": {
-    "name": "函館・渡島・檜山地方",
-    "enName": "Oshima Hiyama",
-    "officeName": "函館地方気象台",
-    "parent": "010100",
-    "children": ["017010", "017020"]
+  {
+    "title": "釧路",
+    "keyword": ["釧路", "kushiro", "kusiro"],
+    "id": "014020"
   },
-  "020000": {
-    "name": "青森県",
-    "enName": "Aomori",
-    "officeName": "青森地方気象台",
-    "parent": "010200",
-    "children": ["020010", "020020", "020030"]
+  {
+    "title": "帯広",
+    "keyword": ["帯広", "obihiro"],
+    "id": "014030"
   },
-  "030000": {
-    "name": "岩手県",
-    "enName": "Iwate",
-    "officeName": "盛岡地方気象台",
-    "parent": "010200",
-    "children": ["030010", "030020", "030030"]
+  {
+    "title": "室蘭",
+    "keyword": ["室蘭", "muroran"],
+    "id": "015010"
   },
-  "040000": {
-    "name": "宮城県",
-    "enName": "Miyagi",
-    "officeName": "仙台管区気象台",
-    "parent": "010200",
-    "children": ["040010", "040020"]
+  {
+    "title": "浦河",
+    "keyword": ["浦河", "urakawa"],
+    "id": "015020"
   },
-  "050000": {
-    "name": "秋田県",
-    "enName": "Akita",
-    "officeName": "秋田地方気象台",
-    "parent": "010200",
-    "children": ["050010", "050020"]
+  {
+    "title": "札幌",
+    "keyword": ["札幌", "sapporo", "サッポロ", "道央", "douou", "dohoh"],
+    "id": "016010"
   },
-  "060000": {
-    "name": "山形県",
-    "enName": "Yamagata",
-    "officeName": "山形地方気象台",
-    "parent": "010200",
-    "children": ["060010", "060020", "060030", "060040"]
+  {
+    "title": "岩見沢",
+    "keyword": ["岩見沢", "iwamizawa"],
+    "id": "016020"
   },
-  "070000": {
-    "name": "福島県",
-    "enName": "Fukushima",
-    "officeName": "福島地方気象台",
-    "parent": "010200",
-    "children": ["070010", "070020", "070030"]
+  {
+    "title": "倶知安",
+    "keyword": ["倶知安", "kuttyan", "kucchan", "kutchan"],
+    "id": "016030"
   },
-  "080000": {
-    "name": "茨城県",
-    "enName": "Ibaraki",
-    "officeName": "水戸地方気象台",
-    "parent": "010300",
-    "children": ["080010", "080020"]
+  {
+    "title": "函館",
+    "keyword": ["函館", "hakodate", "道南", "donan", "dounan"],
+    "id": "017010"
   },
-  "090000": {
-    "name": "栃木県",
-    "enName": "Tochigi",
-    "officeName": "宇都宮地方気象台",
-    "parent": "010300",
-    "children": ["090010", "090020"]
+  {
+    "title": "江差",
+    "keyword": ["江差", "esashi", "esasi"],
+    "id": "017020"
   },
-  "100000": {
-    "name": "群馬県",
-    "enName": "Gunma",
-    "officeName": "前橋地方気象台",
-    "parent": "010300",
-    "children": ["100010", "100020"]
+  {
+    "title": "青森",
+    "keyword": ["青森", "aomori"],
+    "id": "020010"
   },
-  "110000": {
-    "name": "埼玉県",
-    "enName": "Saitama",
-    "officeName": "熊谷地方気象台",
-    "parent": "010300",
-    "children": ["110010", "110020", "110030"]
+  {
+    "title": "むつ",
+    "keyword": ["むつ", "陸奥", "mutsu", "mutu"],
+    "id": "020020"
   },
-  "120000": {
-    "name": "千葉県",
-    "enName": "Chiba",
-    "officeName": "銚子地方気象台",
-    "parent": "010300",
-    "children": ["120010", "120020", "120030"]
+  {
+    "title": "八戸",
+    "keyword": ["八戸", "hachinohe", "hatinohe"],
+    "id": "020030"
   },
-  "130000": {
-    "name": "東京都",
-    "enName": "Tokyo",
-    "officeName": "気象庁",
-    "parent": "010300",
-    "children": ["130010", "130020", "130030", "130040"]
+  {
+    "title": "盛岡",
+    "keyword": ["盛岡", "morioka", "岩手", "iwate"],
+    "id": "030010"
   },
-  "140000": {
-    "name": "神奈川県",
-    "enName": "Kanagawa",
-    "officeName": "横浜地方気象台",
-    "parent": "010300",
-    "children": ["140010", "140020"]
+  {
+    "title": "宮古",
+    "keyword": ["宮古", "miyako"],
+    "id": "030020"
   },
-  "150000": {
-    "name": "新潟県",
-    "enName": "Niigata",
-    "officeName": "新潟地方気象台",
-    "parent": "010500",
-    "children": ["150010", "150020", "150030", "150040"]
+  {
+    "title": "大船渡",
+    "keyword": ["大船渡", "oofunato"],
+    "id": "030030"
   },
-  "160000": {
-    "name": "富山県",
-    "enName": "Toyama",
-    "officeName": "富山地方気象台",
-    "parent": "010500",
-    "children": ["160010", "160020"]
+  {
+    "title": "仙台",
+    "keyword": ["仙台", "sendai", "宮城", "miyagi"],
+    "id": "040010"
   },
-  "170000": {
-    "name": "石川県",
-    "enName": "Ishikawa",
-    "officeName": "金沢地方気象台",
-    "parent": "010500",
-    "children": ["170010", "170020"]
+  {
+    "title": "白石",
+    "keyword": ["白石", "siroisi", "siroisi"],
+    "id": "040020"
   },
-  "180000": {
-    "name": "福井県",
-    "enName": "Fukui",
-    "officeName": "福井地方気象台",
-    "parent": "010500",
-    "children": ["180010", "180020"]
+  {
+    "title": "秋田",
+    "keyword": ["秋田", "akita"],
+    "id": "050010"
   },
-  "190000": {
-    "name": "山梨県",
-    "enName": "Yamanashi",
-    "officeName": "甲府地方気象台",
-    "parent": "010300",
-    "children": ["190010", "190020"]
+  {
+    "title": "横手",
+    "keyword": ["横手", "yokote"],
+    "id": "050020"
   },
-  "200000": {
-    "name": "長野県",
-    "enName": "Nagano",
-    "officeName": "長野地方気象台",
-    "parent": "010300",
-    "children": ["200010", "200020", "200030"]
+  {
+    "title": "山形",
+    "keyword": ["山形", "yamagata"],
+    "id": "060010"
   },
-  "210000": {
-    "name": "岐阜県",
-    "enName": "Gifu",
-    "officeName": "岐阜地方気象台",
-    "parent": "010400",
-    "children": ["210010", "210020"]
+  {
+    "title": "米沢",
+    "keyword": ["米沢", "yonezawa"],
+    "id": "060020"
   },
-  "220000": {
-    "name": "静岡県",
-    "enName": "Shizuoka",
-    "officeName": "静岡地方気象台",
-    "parent": "010400",
-    "children": ["220010", "220020", "220030", "220040"]
+  {
+    "title": "酒田",
+    "keyword": ["酒田", "sakata"],
+    "id": "060030"
   },
-  "230000": {
-    "name": "愛知県",
-    "enName": "Aichi",
-    "officeName": "名古屋地方気象台",
-    "parent": "010400",
-    "children": ["230010", "230020"]
+  {
+    "title": "新庄",
+    "keyword": ["新庄", "sinjo", "sinjyo", "sinjho"],
+    "id": "060040"
   },
-  "240000": {
-    "name": "三重県",
-    "enName": "Mie",
-    "officeName": "津地方気象台",
-    "parent": "010400",
-    "children": ["240010", "240020"]
+  {
+    "title": "福島",
+    "keyword": ["福島", "fukusima", "fukushima"],
+    "id": "070010"
   },
-  "250000": {
-    "name": "滋賀県",
-    "enName": "Shiga",
-    "officeName": "彦根地方気象台",
-    "parent": "010600",
-    "children": ["250010", "250020"]
+  {
+    "title": "小名浜",
+    "keyword": ["小名浜", "onahama"],
+    "id": "070020"
   },
-  "260000": {
-    "name": "京都府",
-    "enName": "Kyoto",
-    "officeName": "京都地方気象台",
-    "parent": "010600",
-    "children": ["260010", "260020"]
+  {
+    "title": "若松",
+    "keyword": ["若松", "wakamatu", "wakamatsu"],
+    "id": "070030"
   },
-  "270000": {
-    "name": "大阪府",
-    "enName": "Osaka",
-    "officeName": "大阪管区気象台",
-    "parent": "010600",
-    "children": ["270000"]
+  {
+    "title": "水戸",
+    "keyword": ["水戸", "mito", "茨城", "ibaraki", "ibaragi"],
+    "id": "080010"
   },
-  "280000": {
-    "name": "兵庫県",
-    "enName": "Hyogo",
-    "officeName": "神戸地方気象台",
-    "parent": "010600",
-    "children": ["280010", "280020"]
+  {
+    "title": "土浦",
+    "keyword": ["土浦", "tutiura", "tsuchiura"],
+    "id": "080020"
   },
-  "290000": {
-    "name": "奈良県",
-    "enName": "Nara",
-    "officeName": "奈良地方気象台",
-    "parent": "010600",
-    "children": ["290010", "290020"]
+  {
+    "title": "宇都宮",
+    "keyword": ["宇都宮", "utunomiya", "utsunomiya", "utsu", "栃木", "tochigi", "totigi"],
+    "id": "090010"
   },
-  "300000": {
-    "name": "和歌山県",
-    "enName": "Wakayama",
-    "officeName": "和歌山地方気象台",
-    "parent": "010600",
-    "children": ["300010", "300020"]
+  {
+    "title": "大田原",
+    "keyword": ["大田原", "ohtawara", "ootawara"],
+    "id": "090020"
   },
-  "310000": {
-    "name": "鳥取県",
-    "enName": "Tottori",
-    "officeName": "鳥取地方気象台",
-    "parent": "010700",
-    "children": ["310010", "310020"]
+  {
+    "title": "前橋",
+    "keyword": ["前橋", "maebashi", "maebasi", "群馬", "gunnma", "gunma"],
+    "id": "100010"
   },
-  "320000": {
-    "name": "島根県",
-    "enName": "Shimane",
-    "officeName": "松江地方気象台",
-    "parent": "010700",
-    "children": ["320010", "320020", "320030"]
+  {
+    "title": "みなかみ",
+    "keyword": ["みなかみ", "minakami"],
+    "id": "100020"
   },
-  "330000": {
-    "name": "岡山県",
-    "enName": "Okayama",
-    "officeName": "岡山地方気象台",
-    "parent": "010700",
-    "children": ["330010", "330020"]
+  {
+    "title": "さいたま",
+    "keyword": ["さいたま", "saitama", "埼玉"],
+    "id": "110010"
   },
-  "340000": {
-    "name": "広島県",
-    "enName": "Hiroshima",
-    "officeName": "広島地方気象台",
-    "parent": "010700",
-    "children": ["340010", "340020"]
+  {
+    "title": "熊谷",
+    "keyword": ["熊谷", "kumagaya"],
+    "id": "110020"
   },
-  "350000": {
-    "name": "山口県",
-    "enName": "Yamaguchi",
-    "officeName": "下関地方気象台",
-    "parent": "010900",
-    "children": ["350010", "350020", "350030", "350040"]
+  {
+    "title": "秩父",
+    "keyword": ["秩父", "titibu", "chichibu"],
+    "id": "110030"
   },
-  "360000": {
-    "name": "徳島県",
-    "enName": "Tokushima",
-    "officeName": "徳島地方気象台",
-    "parent": "010800",
-    "children": ["360010", "360020"]
+  {
+    "title": "千葉",
+    "keyword": ["千葉", "tiba", "chiba"],
+    "id": "120010"
   },
-  "370000": {
-    "name": "香川県",
-    "enName": "Kagawa",
-    "officeName": "高松地方気象台",
-    "parent": "010800",
-    "children": ["370000"]
+  {
+    "title": "銚子",
+    "keyword": ["銚子", "chosi", "tyousi", "chousi", "tyosi"],
+    "id": "120020"
   },
-  "380000": {
-    "name": "愛媛県",
-    "enName": "Ehime",
-    "officeName": "松山地方気象台",
-    "parent": "010800",
-    "children": ["380010", "380020", "380030"]
+  {
+    "title": "館山",
+    "keyword": ["館山", "tateyama"],
+    "id": "120030"
   },
-  "390000": {
-    "name": "高知県",
-    "enName": "Kochi",
-    "officeName": "高知地方気象台",
-    "parent": "010800",
-    "children": ["390010", "390020", "390030"]
+  {
+    "title": "東京",
+    "keyword": ["東京", "tokyo", "toukyou"],
+    "id": "130010"
   },
-  "400000": {
-    "name": "福岡県",
-    "enName": "Fukuoka",
-    "officeName": "福岡管区気象台",
-    "parent": "010900",
-    "children": ["400010", "400020", "400030", "400040"]
+  {
+    "title": "大島",
+    "keyword": ["大島", "oshima", "ohshima", "osima", "ohsima", "oosima", "ooshima"],
+    "id": "130020"
   },
-  "410000": {
-    "name": "佐賀県",
-    "enName": "Saga",
-    "officeName": "佐賀地方気象台",
-    "parent": "010900",
-    "children": ["410010", "410020"]
+  {
+    "title": "八丈島",
+    "keyword": ["八丈島", "hachijoujima", "hatijoujima", "hachijojima", "hatijojima"],
+    "id": "130030"
   },
-  "420000": {
-    "name": "長崎県",
-    "enName": "Nagasaki",
-    "officeName": "長崎地方気象台",
-    "parent": "010900",
-    "children": ["420010", "420020", "420030", "420040"]
+  {
+    "title": "父島",
+    "keyword": ["父島", "titijima", "chichijima"],
+    "id": "130040"
   },
-  "430000": {
-    "name": "熊本県",
-    "enName": "Kumamoto",
-    "officeName": "熊本地方気象台",
-    "parent": "010900",
-    "children": ["430010", "430020", "430030", "430040"]
+  {
+    "title": "横浜",
+    "keyword": ["横浜", "yokohama", "神奈川", "kanagawa"],
+    "id": "140010"
   },
-  "440000": {
-    "name": "大分県",
-    "enName": "Oita",
-    "officeName": "大分地方気象台",
-    "parent": "010900",
-    "children": ["440010", "440020", "440030", "440040"]
+  {
+    "title": "小田原",
+    "keyword": ["小田原", "odawara"],
+    "id": "140020"
   },
-  "450000": {
-    "name": "宮崎県",
-    "enName": "Miyazaki",
-    "officeName": "宮崎地方気象台",
-    "parent": "011000",
-    "children": ["450010", "450020", "450030", "450040"]
+  {
+    "title": "新潟",
+    "keyword": ["新潟", "niigata"],
+    "id": "150010"
   },
-  "460040": {
-    "name": "奄美地方",
-    "enName": "Amami",
-    "officeName": "名瀬測候所",
-    "parent": "011000",
-    "children": ["460040"]
+  {
+    "title": "長岡",
+    "keyword": ["長岡", "nagaoka"],
+    "id": "150020"
   },
-  "460100": {
-    "name": "鹿児島県（奄美地方除く）",
-    "enName": "Kagoshima (Excluding Amami)",
-    "officeName": "鹿児島地方気象台",
-    "parent": "011000",
-    "children": ["460010", "460020", "460030"]
+  {
+    "title": "高田",
+    "keyword": ["高田", "takada"],
+    "id": "150030"
   },
-  "471000": {
-    "name": "沖縄本島地方・那覇",
-    "enName": "Okinawa Main Island",
-    "officeName": "沖縄気象台",
-    "parent": "011100",
-    "children": ["471010", "471020", "471030"]
+  {
+    "title": "相川",
+    "keyword": ["相川", "aikawa", "佐渡", "sado"],
+    "id": "150040"
   },
-  "472000": {
-    "name": "大東島地方",
-    "enName": "Daitojima",
-    "officeName": "南大東島地方気象台",
-    "parent": "011100",
-    "children": ["472000"]
+  {
+    "title": "富山",
+    "keyword": ["富山", "toyama"],
+    "id": "160010"
   },
-  "473000": {
-    "name": "宮古島地方",
-    "enName": "Miyakojima",
-    "officeName": "宮古島地方気象台",
-    "parent": "011100",
-    "children": ["473000"]
+  {
+    "title": "伏木",
+    "keyword": ["伏木", "fusiki", "fushiki"],
+    "id": "160020"
   },
-  "474000": {
-    "name": "八重山地方・石垣島",
-    "enName": "Yaeyama",
-    "officeName": "石垣島地方気象台",
-    "parent": "011100",
-    "children": ["474010", "474020"]
+  {
+    "title": "金沢",
+    "keyword": ["金沢", "kanazawa", "石川", "ishikawa", "isikawa"],
+    "id": "170010"
+  },
+  {
+    "title": "輪島",
+    "keyword": ["輪島", "wajima"],
+    "id": "170020"
+  },
+  {
+    "title": "福井",
+    "keyword": ["福井", "fukui"],
+    "id": "180010"
+  },
+  {
+    "title": "敦賀",
+    "keyword": ["敦賀", "turuga", "tsuruga"],
+    "id": "180020"
+  },
+  {
+    "title": "甲府",
+    "keyword": ["甲府", "koufu", "kofu", "山梨", "yamanashi"],
+    "id": "190010"
+  },
+  {
+    "title": "河口湖",
+    "keyword": ["河口湖", "kawaguchiko", "kawagutiko"],
+    "id": "190020"
+  },
+  {
+    "title": "長野",
+    "keyword": ["長野", "nagano"],
+    "id": "200010"
+  },
+  {
+    "title": "松本",
+    "keyword": ["松本", "matumoto", "matsumoto"],
+    "id": "200020"
+  },
+  {
+    "title": "飯田",
+    "keyword": ["飯田", "iida"],
+    "id": "200030"
+  },
+  {
+    "title": "岐阜",
+    "keyword": ["岐阜", "gifu"],
+    "id": "210010"
+  },
+  {
+    "title": "高山",
+    "keyword": ["高山", "takayama"],
+    "id": "210020"
+  },
+  {
+    "title": "静岡",
+    "keyword": ["静岡", "shizuoka", "sizuoka"],
+    "id": "220010"
+  },
+  {
+    "title": "網代",
+    "keyword": ["網代", "ajiro", "熱海", "atami"],
+    "id": "220020"
+  },
+  {
+    "title": "三島",
+    "keyword": ["三島", "misima", "mishima", "伊豆", "izu"],
+    "id": "220030"
+  },
+  {
+    "title": "浜松",
+    "keyword": ["浜松", "hamamatu", "hamamatsu"],
+    "id": "220040"
+  },
+  {
+    "title": "名古屋",
+    "keyword": ["名古屋", "nagoya", "愛知", "aiti", "aichi"],
+    "id": "230010"
+  },
+  {
+    "title": "豊橋",
+    "keyword": ["豊橋", "toyohasi", "toyohashi"],
+    "id": "230020"
+  },
+  {
+    "title": "津",
+    "keyword": ["津", "tsu", "三重", "mie"],
+    "id": "240010"
+  },
+  {
+    "title": "尾鷲",
+    "keyword": ["尾鷲", "owase"],
+    "id": "240020"
+  },
+  {
+    "title": "大津",
+    "keyword": ["大津", "ootu", "ootsu", "ohtsu", "ohtu", "滋賀", "shiga", "siga"],
+    "id": "250010"
+  },
+  {
+    "title": "彦根",
+    "keyword": ["彦根", "hikone"],
+    "id": "250020"
+  },
+  {
+    "title": "京都",
+    "keyword": ["京都", "kyoto", "kyouto"],
+    "id": "260010"
+  },
+  {
+    "title": "舞鶴",
+    "keyword": ["舞鶴", "maiduru", "maizuru", "maitsuru", "maituru"],
+    "id": "260020"
+  },
+  {
+    "title": "大阪",
+    "keyword": ["大阪", "osaka", "ohsaka"],
+    "id": "270000"
+  },
+  {
+    "title": "神戸",
+    "keyword": ["神戸", "kobe", "koube", "兵庫", "hyogo", "hyougo"],
+    "id": "280010"
+  },
+  {
+    "title": "豊岡",
+    "keyword": ["豊岡", "toyooka"],
+    "id": "280020"
+  },
+  {
+    "title": "奈良",
+    "keyword": ["奈良", "nara"],
+    "id": "290010"
+  },
+  {
+    "title": "風屋",
+    "keyword": ["風屋", "kazeya"],
+    "id": "290020"
+  },
+  {
+    "title": "和歌山",
+    "keyword": ["和歌山", "wakayama"],
+    "id": "300010"
+  },
+  {
+    "title": "潮岬",
+    "keyword": ["潮岬", "sionomisaki", "shionomisaki"],
+    "id": "300020"
+  },
+  {
+    "title": "鳥取",
+    "keyword": ["鳥取", "tottori"],
+    "id": "310010"
+  },
+  {
+    "title": "米子",
+    "keyword": ["米子", "yonago"],
+    "id": "310020"
+  },
+  {
+    "title": "松江",
+    "keyword": ["松江", "matue", "matsue", "島根", "shimane", "simane"],
+    "id": "320010"
+  },
+  {
+    "title": "浜田",
+    "keyword": ["浜田", "hamada"],
+    "id": "320020"
+  },
+  {
+    "title": "西郷",
+    "keyword": ["西郷", "saigo", "saigou"],
+    "id": "320030"
+  },
+  {
+    "title": "岡山",
+    "keyword": ["岡山", "okayama", "大都会", "daitokai"],
+    "id": "330010"
+  },
+  {
+    "title": "津山",
+    "keyword": ["津山", "tuyama", "tsuyama"],
+    "id": "330020"
+  },
+  {
+    "title": "広島",
+    "keyword": ["広島", "hirosima", "hiroshima"],
+    "id": "340010"
+  },
+  {
+    "title": "庄原",
+    "keyword": ["庄原", "shobara", "shoubara"],
+    "id": "340020"
+  },
+  {
+    "title": "下関",
+    "keyword": ["下関", "simonoseki", "shimonoseki"],
+    "id": "350010"
+  },
+  {
+    "title": "山口",
+    "keyword": ["山口", "yanmaguchi", "yamaguti"],
+    "id": "350020"
+  },
+  {
+    "title": "柳井",
+    "keyword": ["柳井", "yanai"],
+    "id": "350030"
+  },
+  {
+    "title": "萩",
+    "keyword": ["萩", "hagi"],
+    "id": "350040"
+  },
+  {
+    "title": "徳島",
+    "keyword": ["徳島", "tokusima", "tokushima"],
+    "id": "360010"
+  },
+  {
+    "title": "日和佐",
+    "keyword": ["日和佐", "hiwasa"],
+    "id": "360020"
+  },
+  {
+    "title": "高松",
+    "keyword": ["高松", "takamatu", "takamatsu", "香川", "kagawa", "うどん", "udon"],
+    "id": "370000"
+  },
+  {
+    "title": "松山",
+    "keyword": ["松山", "matuyama", "matsuyama", "愛媛", "ehime", "みかん", "mikan"],
+    "id": "380010"
+  },
+  {
+    "title": "新居浜",
+    "keyword": ["新居浜", "niihama"],
+    "id": "380020"
+  },
+  {
+    "title": "宇和島",
+    "keyword": ["宇和島", "uwajima"],
+    "id": "380030"
+  },
+  {
+    "title": "高知",
+    "keyword": ["高知", "kouchi", "kouti", "koti", "kochi"],
+    "id": "390010"
+  },
+  {
+    "title": "室戸岬",
+    "keyword": ["室戸岬", "murotomisaki"],
+    "id": "390020"
+  },
+  {
+    "title": "清水",
+    "keyword": ["清水", "shimizu"],
+    "id": "390030"
+  },
+  {
+    "title": "福岡",
+    "keyword": ["福岡", "fukuoka"],
+    "id": "400010"
+  },
+  {
+    "title": "八幡",
+    "keyword": ["八幡", "yahata"],
+    "id": "400020"
+  },
+  {
+    "title": "飯塚",
+    "keyword": ["飯塚", "iizuka", "iiduka"],
+    "id": "400030"
+  },
+  {
+    "title": "久留米",
+    "keyword": ["久留米", "kurume"],
+    "id": "400040"
+  },
+  {
+    "title": "佐賀",
+    "keyword": ["佐賀", "saga"],
+    "id": "410010"
+  },
+  {
+    "title": "伊万里",
+    "keyword": ["伊万里", "imari"],
+    "id": "410020"
+  },
+  {
+    "title": "長崎",
+    "keyword": ["長崎", "nagasaki"],
+    "id": "420010"
+  },
+  {
+    "title": "佐世保",
+    "keyword": ["佐世保", "sasebo"],
+    "id": "420020"
+  },
+  {
+    "title": "厳原",
+    "keyword": ["厳原", "izuhara", "iduhara"],
+    "id": "420030"
+  },
+  {
+    "title": "福江",
+    "keyword": ["福江", "fukue"],
+    "id": "420040"
+  },
+  {
+    "title": "熊本",
+    "keyword": ["熊本", "kumamoto"],
+    "id": "430010"
+  },
+  {
+    "title": "阿蘇乙姫",
+    "keyword": ["阿蘇乙姫", "asootohime"],
+    "id": "430020"
+  },
+  {
+    "title": "牛深",
+    "keyword": ["牛深", "ushibuka", "usibuka"],
+    "id": "430030"
+  },
+  {
+    "title": "人吉",
+    "keyword": ["人吉", "hitoyosi", "hitoyoshi"],
+    "id": "430040"
+  },
+  {
+    "title": "大分",
+    "keyword": ["大分", "ooita"],
+    "id": "440010"
+  },
+  {
+    "title": "中津",
+    "keyword": ["中津", "nakatu", "nakatsu"],
+    "id": "440020"
+  },
+  {
+    "title": "日田",
+    "keyword": ["日田", "hita"],
+    "id": "440030"
+  },
+  {
+    "title": "佐伯",
+    "keyword": ["佐伯", "saeki"],
+    "id": "440040"
+  },
+  {
+    "title": "宮崎",
+    "keyword": ["宮崎", "miyazaki"],
+    "id": "450010"
+  },
+  {
+    "title": "延岡",
+    "keyword": ["延岡", "nobeoka"],
+    "id": "450020"
+  },
+  {
+    "title": "都城",
+    "keyword": ["都城", "miyakonojyo"],
+    "id": "450030"
+  },
+  {
+    "title": "高千穂",
+    "keyword": ["高千穂", "takachiho", "takatiho"],
+    "id": "450040"
+  },
+  {
+    "title": "鹿児島",
+    "keyword": ["鹿児島", "kagoshima"],
+    "id": "460010"
+  },
+  {
+    "title": "鹿屋",
+    "keyword": ["鹿屋", "kanoya"],
+    "id": "460020"
+  },
+  {
+    "title": "種子島",
+    "keyword": ["種子島", "tanegasima", "tanegashima"],
+    "id": "460030"
+  },
+  {
+    "title": "名瀬",
+    "keyword": ["名瀬", "naze"],
+    "id": "460040"
+  },
+  {
+    "title": "那覇",
+    "keyword": ["那覇", "naha", "沖縄", "okinawa"],
+    "id": "471010"
+  },
+  {
+    "title": "名護",
+    "keyword": ["名護", "nago"],
+    "id": "471020"
+  },
+  {
+    "title": "久米島",
+    "keyword": ["久米島", "kumejima", "kumeshima"],
+    "id": "471030"
+  },
+  {
+    "title": "南大東",
+    "keyword": ["南大東", "minamidaito"],
+    "id": "472000"
+  },
+  {
+    "title": "宮古島",
+    "keyword": ["宮古島", "miyakojima"],
+    "id": "473000"
+  },
+  {
+    "title": "石垣島",
+    "keyword": ["石垣", "ishigaki", "isigaki"],
+    "id": "474010"
+  },
+  {
+    "title": "与那国島",
+    "keyword": ["与那国", "yonakuni", "yonaguni"],
+    "id": "474020"
   }
-}
+]
