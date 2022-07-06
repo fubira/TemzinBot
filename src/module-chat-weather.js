@@ -45,7 +45,7 @@ module.exports = function(bot) {
 
         // 完全一致がなかった場合、前方一致で探す
         if (!value) {
-          value = Object.values(area).find((a) => (a.keyword.find((word) => word.startsWith(loc))));
+          value = Object.values(area).find((a) => (a.keyword.find((word) => word.startsWith(loc) || loc.startsWith(word))));
         }
         
         if (value) {
