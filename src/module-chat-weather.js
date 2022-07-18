@@ -41,11 +41,11 @@ module.exports = function(bot) {
       // 指定された文字列をエリアデータの場所名から探す
       locations.map((loc) => {
         // まず完全一致で探す
-        let value = Object.values(area).find((a) => (a.keyword.find((word) => word === loc)));
+        let value = area.find((a) => (a.keyword.find((word) => word === loc)));
 
         // 完全一致がなかった場合、前方一致で探す
         if (!value) {
-          value = Object.values(area).find((a) => (a.keyword.find((word) => word?.startsWith(loc) || loc?.startsWith(word))));
+          value = area.find((a) => (a.keyword.find((word) => word?.startsWith(loc) || loc?.startsWith(word))));
         }
         
         if (value) {
