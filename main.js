@@ -8,7 +8,7 @@ function start() {
     port: process.env.MC_PORT,
     username: process.env.MC_USERNAME,
     password: process.env.MC_PASSWORD,
-    version: process.env.MC_VERSION || '1.17.1',
+    version: process.env.MC_VERSION || '1.19',
     auth: process.env.MC_AUTH || 'mojang',
     verbose: true
   });
@@ -52,6 +52,7 @@ function start() {
     // require('./src/module-chat-hage')(bot);
     require('./src/module-chat-hi')(bot);
     require('./src/module-chat-answer')(bot);
+    require('./src/module-chat-url-repeat')(bot);
     // require('./src/module-chat-kiyoshi')(bot);
     require('./src/module-chat-death')(bot);
     require('./src/module-chat-countdown')(bot);
