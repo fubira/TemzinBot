@@ -30,6 +30,10 @@ module.exports = function(bot) {
         answer: 'https://sekai-kabuka.com/kawase.html'
       },
       {
+        keyword: /^(時刻|時間|JST)/gi,
+        answer: 'https://www.nict.go.jp/JST/JST5.html'
+      },
+      {
         keyword: /^(kabuka|株価)/gi,
         answer: 'https://sekai-kabuka.com/'
       },
