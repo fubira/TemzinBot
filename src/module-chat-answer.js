@@ -6,6 +6,10 @@ module.exports = function(bot) {
         answer: 'http://kenmomine.club:8123/'
       },
       {
+        keyword: /^(路線|線路|路線図|鉄道)/i,
+        answer: 'http://kenmomine.wiki.fc2.com/wiki/%E8%B7%AF%E7%B7%9A%E5%9B%B3'
+      },
+      {
         keyword: /^(event|イベント|ev|いべんと)/i,
         answer: 'http://kenmomine.wiki.fc2.com/wiki/%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E4%BC%81%E7%94%BB/'
       },
