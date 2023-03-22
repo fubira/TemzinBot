@@ -1,12 +1,13 @@
-const fetch = require('node-fetch');
-const area = require('../area.json');
+import axios from 'axios';
+import { TemzinBot } from '..';
+import * as area from '../../../area.json';
 
-function makeForecastMessageFromJson(json) {
+function makeForecastMessageFromJson(json: any) {
   const { city } = json.location;
 
-  const primaryForecastData = json.forecasts.find((f) => f.temperature.max.celsius !== null);
-  const secondaryForecastData = json.forecasts.find((f) => f.temperature.min.celsius !== null);
-  const chanceOfRain = Object.values(primaryForecastData.chanceOfRain).reduce((a, b) => parseInt(a) > parseInt(b) ? a : b);
+  const primaryForecastData = json.forecasts.find((f: any) => f.temperature.max.celsius !== null);
+  const secondaryForecastData = json.forecasts.find((f: any) => f.temperature.min.celsius !== null);
+  const chanceOfRain = Object.values(primaryForecastData.chanceOfRain).reduce((a: string, b: string) => parseInt(a) > parseInt(b) ? a : b);
   const date = new Date(primaryForecastData.date);
 
   const title = `[${date.getMonth()+1}/${date.getDate()} ${city}の天気]`
@@ -21,17 +22,19 @@ function makeForecastMessageFromJson(json) {
   return `${title} ${forecastText}`;
 }
 
-module.exports = function(bot) {
-  this.last_called = Date.now();
+let last_called = 0;
+
+export default (bot: TemzinBot) => {
+  last_called = Date.now();
   
-  bot.on('chat', (username, message) => {
+  bot.instance.on('chat', (username, message) => {
     // 自分の発言は無視
-    if (bot.username === username) return;
+    if (bot.instance.username === username) return;
 
     // 行頭"天気" or "tenki"を処理する
-    if (message.match(/(^|\()(天気|tenki)\s*[\(]?([^\(\)]*)[\)]?/gi)) {
+    if (message.match(/(^|\()(天気|tenki)\s*[(]?([^()]*)[)]?/gi)) {
       // 天気のあとに続く文字列を場所として探す なければ東京
-      const [...locations] = RegExp.$3.split(/[ 　,]/);
+      const [...locations] = RegExp.$3.split(/[ ,]/);
 
       if (locations.length === 0) {
         locations.push('東京');
@@ -41,11 +44,11 @@ module.exports = function(bot) {
       // 指定された文字列をエリアデータの場所名から探す
       locations.map((loc) => {
         // まず完全一致で探す
-        let value = area.find((a) => (a.keyword.find((word) => word === loc)));
+        let value = area.find((a: any) => (a.keyword.find((word: string) => word === loc)));
 
         // 完全一致がなかった場合、前方一致で探す
         if (!value) {
-          value = area.find((a) => (a.keyword.find((word) => word?.startsWith(loc) || loc?.startsWith(word))));
+          value = area.find((a: any) => (a.keyword.find((word: string) => word?.startsWith(loc) || loc?.startsWith(word))));
         }
         
         if (value) {
@@ -62,18 +65,17 @@ module.exports = function(bot) {
       }
 
       // API呼び出しには1秒以上時間をあける
-      if (this.last_called > Date.now() - 1000) {
+      if (last_called > Date.now() - 1000) {
         bot.safechat(`ちょっとまって早い`);
         return;
       }
-      this.last_called = Date.now();
+      last_called = Date.now();
 
       // API呼び出し
       try {
         locationIds.forEach(async (id) => {
-          const res = await fetch(`https://weather.tsukumijima.net/api/forecast/city/${id}`, { headers: { 'User-Agent': 'WeatherApp/1.0.0' }});
-          const json = await res.json();
-          const message = makeForecastMessageFromJson(json);
+          const res = await axios.get(`https://weather.tsukumijima.net/api/forecast/city/${id}`, { headers: { 'User-Agent': 'WeatherApp/1.0.0' }});
+          const message = makeForecastMessageFromJson(res.data);
 
           if(message) {
             bot.safechat(message);

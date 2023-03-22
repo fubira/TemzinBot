@@ -1,5 +1,7 @@
-module.exports = function(bot) {
-  bot.on('chat', (username, message) => {
+import { TemzinBot } from 'temzinbot';
+
+export default (bot: TemzinBot) => {
+  bot.instance.on('chat', (username: string, message: string) => {
     const answers = [
       {
         keyword: /^(map|dynmap|まp|まｐ|ダイナ|マップ|地図)/i,
@@ -75,7 +77,7 @@ module.exports = function(bot) {
       },
     ];
 
-    if (username === bot.username) return;
+    if (username === bot.instance.username) return;
 
     answers.forEach((q) => {
       if (message.match(q.keyword)) {
