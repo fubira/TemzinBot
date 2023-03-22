@@ -90,12 +90,15 @@ readline.on('SIGINT', () => {
  * System event
  */
 process.on('uncaughtException', (err) => {
+  /*
   if (temzinBot) {
     temzinBot.log('[error] UncaughtException: Trying reconnection 1 min later...');
     delay(60000).then(() => { start(); });
   } else {
     console.log('[error] ' + err);
   }
+  */
+  console.log('[error] ' + err);
 });
 
 /**
