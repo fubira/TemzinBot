@@ -3,7 +3,7 @@ import delay from 'delay';
 import * as Readline from 'readline';
 import TemzinBot from 'temzinbot';
 
-import moduleChatHi from 'temzinbot/modules/module-chat-hi';
+// import moduleChatHi from 'temzinbot/modules/module-chat-hi';
 import moduleChatAnswer from 'temzinbot/modules/module-chat-answer';
 import moduleChatCountdown from 'temzinbot/modules/module-chat-countdown';
 import moduleChatDeath from 'temzinbot/modules/module-chat-death';
@@ -44,7 +44,7 @@ function start() {
     { name: 'whisper', regexp: /^([^ ]*) whispers: (.*)$/ },
   ])
 
-  temzinBot.loadModule(moduleChatHi);
+  // temzinBot.loadModule(moduleChatHi);
   temzinBot.loadModule(moduleChatAnswer);
   temzinBot.loadModule(moduleChatCountdown);
   temzinBot.loadModule(moduleChatDeath);
