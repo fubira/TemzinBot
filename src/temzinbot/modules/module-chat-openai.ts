@@ -1,6 +1,8 @@
 import { TemzinBot } from '..';
 import { Configuration, OpenAIApiFactory } from "openai";
 
+let isApiCalling = false;
+
 export default (bot: TemzinBot) => {
   const API_KEY = process.env.OPENAI_API_KEY;
 
@@ -18,23 +20,37 @@ export default (bot: TemzinBot) => {
 
     const match = message.match(/(AI|ai)\s+(.*)/);
 
-    if (match && match[1].toLocaleLowerCase() === "ai") {
-      const content = match[2];
+    if (match && match[1].toLocaleLowerCase() !== "ai") {
+      return;
+    }
 
-      try {
-        const response = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: [{
-            role: "user",
-            content: content
-          }]
-        })
-        
-        const answer = response.data.choices[0].message?.content;
-        bot.safechat(answer, 500);
-      } catch (err) {
-        console.error(err.toString());
-      }
+    const content = match[2];
+    if (!content) {
+      bot.safechat("内容がないようです。", 500)
+      return;
+    }
+
+    if (isApiCalling) {
+      bot.safechat("前の質問の処理中です。しばらくお待ちください。", 500)
+    }
+
+    try {
+      isApiCalling = true;
+      const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{
+          role: "user",
+          content: `次の質問に対してできるだけ簡潔に、短い文章で回答してください。 「${content}」`
+        }]
+      });
+      
+      const answer = response.data.choices[0].message?.content;
+      bot.safechat(answer, 500);
+    } catch (err) {
+      bot.safechat("OpenAI APIの呼び出し中にエラーが起きました", 500);
+      console.error(err.toString());
+    } finally  {
+      isApiCalling = false;
     }
   })
 }
