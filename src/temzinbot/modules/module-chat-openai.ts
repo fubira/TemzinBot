@@ -14,8 +14,8 @@ export default (bot: TemzinBot) => {
   const openai = OpenAIApiFactory(config);
 
   bot.instance.on('chat', async (username: string, message: string) => {
-    // if (username === bot.instance.username) return;
-        
+    if (username === bot.instance.username) return;
+
     const match = message.match(/(AI|ai)\s+(.*)/);
 
     if (match && match[1].toLocaleLowerCase() === "ai") {
@@ -29,7 +29,6 @@ export default (bot: TemzinBot) => {
             content: content
           }]
         })
-        console.log(JSON.stringify(response.data));
         
         const answer = response.data.choices[0].message?.content;
         bot.safechat(answer, 500);

@@ -58,6 +58,14 @@ docker run -d -it \
   <yourname>/temzinbot
 ```
 
+### Open-AI Chat Bot
+
+OpenAI API Keyを指定することで、BOTによるAIチャットを実行できます。
+"AI [質問文]" と話しかけると、BOTが質問文に対する回答を発言します。
+
+環境変数 OPENAI_API_KEY にAPI Keyの値を設定し、
+temzinbot/modules/module-chat-openaiを有効にしてBOTを起動してください。
+
 ## License
 
 [MIT](https://github.com/fubira/TemzinBot/blob/master/LICENSE,md)

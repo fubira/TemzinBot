@@ -5,6 +5,7 @@ ENV MC_HOST="localhost"
 ENV MC_PORT="25565"
 ENV MC_USERNAME="anonymous"
 ENV MC_PASSWORD="password"
+ENV OPENAI_API_KEY=""
 
 COPY package*.json ./
 
