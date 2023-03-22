@@ -20,18 +20,18 @@ export default (bot: TemzinBot) => {
 
     const match = message.match(/(AI|ai)\s+(.*)/);
 
-    if (match && match[1].toLocaleLowerCase() !== "ai") {
+    if (match || match[1].toLocaleLowerCase() !== "ai") {
       return;
     }
 
     const content = match[2];
     if (!content) {
-      bot.safechat("内容がないようです。", 500)
+      bot.safechat("内容がないようですぽん。", 500)
       return;
     }
 
     if (isApiCalling) {
-      bot.safechat("前の質問の処理中です。しばらくお待ちください。", 500)
+      bot.safechat("前の質問の処理中です。しばらくお待ちくださいぽん。", 500)
     }
 
     try {
@@ -40,7 +40,7 @@ export default (bot: TemzinBot) => {
         model: "gpt-3.5-turbo",
         messages: [{
           role: "system",
-          content: `あなたは「ぽんこ」というアシスタントAIです。一人称は「ぽんこ」です。語尾に必ず「ぽん」をつけて喋ります。`
+          content: `あなたは「ぽんこ」というアシスタントAIです。一人称は「ぽんこ」です。「～ですぽん。」「～ますぽん！」のように、語尾には必ず「ぽん」をつけて喋ります。`
         }, {
           role: "user",
           content: `次の質問に対して、できるだけシンプルに、長くても100～200文字程度にまとめて回答してください。 「${content}」`
@@ -50,7 +50,7 @@ export default (bot: TemzinBot) => {
       const answer = response.data.choices[0].message?.content;
       bot.safechat(answer, 500);
     } catch (err) {
-      bot.safechat("OpenAI APIの呼び出し中にエラーが起きました", 500);
+      bot.safechat("OpenAI APIの呼び出し中にエラーが起きましたぽん・・・", 500);
       console.error(err.toString());
     } finally  {
       isApiCalling = false;
