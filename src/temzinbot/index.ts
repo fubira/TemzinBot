@@ -55,7 +55,7 @@ export class TemzinBot {
     this.instance = Mineflayer.createBot({ ...opts });
     this.readline = readline;
 
-    console.log(`[${this.instance.username}] Connecting to [${opts.host}:${opts.port}] (${this.instance.version})`);
+    console.log(`Connecting to [${opts.host}:${opts.port}] (${this.instance.version})`);
 
     /**
      * 基本的なイベントの処理

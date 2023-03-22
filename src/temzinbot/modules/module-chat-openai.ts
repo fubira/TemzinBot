@@ -2,9 +2,16 @@ import { TemzinBot } from '..';
 import { Configuration, OpenAIApiFactory } from "openai";
 
 export default (bot: TemzinBot) => {
-  const config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
+  const API_KEY = process.env.OPENAI_API_KEY;
+
+  if (!API_KEY) {
+    return;
+  }
+
+  bot.log('Open-AI api-key found.');
+
+  const config = new Configuration({ apiKey: API_KEY });
   const openai = OpenAIApiFactory(config);
-  console.log(process.env.OPENAI_API_KEY);
 
   bot.instance.on('chat', async (username: string, message: string) => {
     // if (username === bot.instance.username) return;
