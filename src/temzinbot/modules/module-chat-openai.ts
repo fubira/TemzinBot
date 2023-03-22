@@ -18,9 +18,9 @@ export default (bot: TemzinBot) => {
   bot.instance.on('chat', async (username: string, message: string) => {
     if (username === bot.instance.username) return;
 
-    const match = message.match(/(AI|ai)\s+(.*)/);
+    const match = message.match(/(\w+)\s+(.*)/);
 
-    if (match || match[1].toLocaleLowerCase() !== "ai") {
+    if (match || match[1].toLocaleLowerCase() !== "ponco") {
       return;
     }
 
