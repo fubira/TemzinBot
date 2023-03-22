@@ -10,6 +10,7 @@ import moduleChatDeath from 'temzinbot/modules/module-chat-death';
 import moduleChatGoogle from 'temzinbot/modules/module-chat-google';
 import moduleChatUrlRepeat from 'temzinbot/modules/module-chat-url-repeat';
 import moduleChatWeather from 'temzinbot/modules/module-chat-weather';
+import moduleChatOpenAI from 'temzinbot/modules/module-chat-openai';
 
 /**
  * Initialize Readline
@@ -50,6 +51,7 @@ function start() {
   temzinBot.loadModule(moduleChatGoogle);
   temzinBot.loadModule(moduleChatUrlRepeat);
   temzinBot.loadModule(moduleChatWeather);
+  temzinBot.loadModule(moduleChatOpenAI);
 }
 
 /**
