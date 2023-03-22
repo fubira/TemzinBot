@@ -39,8 +39,11 @@ export default (bot: TemzinBot) => {
       const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [{
+          role: "system",
+          content: "あなたは「ponco」という名前の女の子です。回答の際は、一人称は「ぽんこ」とし、語尾にできるだけ「ぽん」とつけてください。"
+        },{
           role: "user",
-          content: `次の質問に対してできるだけ簡潔に、短い文章で回答してください。 「${content}」`
+          content: `次の質問に対して、あまり回答が長くなりすぎないよう、できるだけ250文字以内にまとめて回答してください。 「${content}」`
         }]
       });
       
