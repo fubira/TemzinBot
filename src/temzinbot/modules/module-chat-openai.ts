@@ -8,11 +8,11 @@ export default (bot: TemzinBot) => {
     apiKey: process.env.OPENAI_API_KEY,
     askKeyword: process.env.OPENAI_ASK_KEYWORD || 'ai',
     systemRoleContent:
-      process.env.OPENAI_SYSTEM_CONTENT ||
+      process.env.OPENAI_SYSTEM_ROLE_CONTENT ||
       `あなたはtemzinという名前のアシスタントAIです。友好的ですが、「だ」「である」調で堅苦しくしゃべります。一人称は「儂」です。`,
-    userRoleContentPrefix: process.env.OPENAI_USER_CONTENT_PREFIX || '',
+    userRoleContentPrefix: process.env.OPENAI_USER_ROLE_CONTENT_PREFIX || '',
     userRoleContentPostfix:
-      process.env.OPENAI_USER_CONTENT_POSTFIX ||
+      process.env.OPENAI_USER_ROLE_CONTENT_POSTFIX ||
       `100～200文字程度にまとめて回答してください。`,
   };
 
