@@ -5,12 +5,12 @@ import * as Mineflayer from 'mineflayer';
 import { ChatMessage } from 'prismarine-chat';
 
 export interface TemzinBotOpts {
-  host: string,
-  port: number,
-  username: string,
-  password: string,
-  version: string,
-  auth: 'mojang' | 'microsoft' | 'offline' | undefined,
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  version: string;
+  auth: 'mojang' | 'microsoft' | 'offline' | undefined;
 }
 
 export type TemzinBotModule = (temzinBot: TemzinBot) => Promise<void> | void;
@@ -28,13 +28,12 @@ export class TemzinBot {
 
   /**
    * Json messageの文言のみ抽出して文字列を返す
-   * @param jmes 
-   * @returns 
+   * @param jmes
+   * @returns
    */
   private jmesToText(jmes: any): string {
     let message = '';
-    if (jmes.text)
-      message += jmes.text;
+    if (jmes.text) message += jmes.text;
 
     if (jmes.extra)
       jmes.extra.forEach((v: any) => {
@@ -45,7 +44,7 @@ export class TemzinBot {
 
   /**
    * Botインスタンスの初期化
-   * @param opts 
+   * @param opts
    */
   public createBot({ ...opts }: TemzinBotOpts, readline: Readline.Interface) {
     if (this.instance) {
@@ -55,7 +54,9 @@ export class TemzinBot {
     this.instance = Mineflayer.createBot({ ...opts });
     this.readline = readline;
 
-    console.log(`Connecting to [${opts.host}:${opts.port}] (${this.instance.version})`);
+    console.log(
+      `Connecting to [${opts.host}:${opts.port}] (${this.instance.version})`
+    );
 
     /**
      * 基本的なイベントの処理
@@ -63,7 +64,7 @@ export class TemzinBot {
     this.instance.on('login', () => {
       this.log('[bot.login]');
     });
-  
+
     this.instance.on('end', (reason: any) => {
       this.log(`[bot.end] reason: ${reason}`);
     });
@@ -71,11 +72,11 @@ export class TemzinBot {
     this.instance.on('message', (jmes: ChatMessage) => {
       this.log(jmes.toAnsi());
     });
-  
+
     this.instance.on('kicked', (reason: string) => {
       this.log(`[bot.kicked] reason: ${reason}`);
     });
-  
+
     this.instance.on('death', () => {
       const userName = this.instance.username;
       const position = this.instance.player.entity.position;
@@ -89,7 +90,7 @@ export class TemzinBot {
 
   /**
    * Readline処理を含むログ出力
-   * @param args 
+   * @param args
    */
   public log(...args: any[]) {
     Readline.cursorTo(process.stdout, 0);
@@ -108,11 +109,11 @@ export class TemzinBot {
   /**
    * チャットパターン
    */
-  public setChatPattern(patterns: { name: string, regexp: RegExp }[]) {
+  public setChatPattern(patterns: { name: string; regexp: RegExp }[]) {
     if (this.instance) {
       patterns.forEach((p) => {
         this.instance.addChatPattern(p.name, p.regexp);
-      })
+      });
     }
   }
 
@@ -138,7 +139,9 @@ export class TemzinBot {
 
     this.safechat_continuous_count++;
     if (this.safechat_continuous_count > 10) {
-      this.log('[bot.safechat] *REJECTED* 短時間での大量メッセージが送信がされました');
+      this.log(
+        '[bot.safechat] *REJECTED* 短時間での大量メッセージが送信がされました'
+      );
       return;
     }
 
@@ -147,8 +150,15 @@ export class TemzinBot {
       this.safechat_send_text_cache = [];
     }
 
-    if (this.safechat_send_text_cache.find((value)=>{ return value === text; })) {
-      this.log('[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました: ' + text);
+    if (
+      this.safechat_send_text_cache.find((value) => {
+        return value === text;
+      })
+    ) {
+      this.log(
+        '[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました: ' +
+          text
+      );
       return;
     }
 
@@ -158,19 +168,23 @@ export class TemzinBot {
   }
 
   public safechat(text: string, msec = 800) {
-    delay(msec).then(() => { this.safechatText(text); });
+    delay(msec).then(() => {
+      this.safechatText(text);
+    });
   }
 
   public randomchat(messages: string[], msec = 800) {
     let message: string;
 
     if (Array.isArray(messages)) {
-      message = messages[Math.floor(Math.random() * messages.length)]
+      message = messages[Math.floor(Math.random() * messages.length)];
     } else {
       message = messages;
     }
 
-    delay(msec).then(() => { this.safechatText(message); });
+    delay(msec).then(() => {
+      this.safechatText(message);
+    });
   }
 
   public async loadModule(module: TemzinBotModule) {

@@ -5,7 +5,7 @@ export default (bot: TemzinBot) => {
     if (bot.instance.username === username) return;
 
     if (message.match(/^(http|https):\/\//)) {
-      bot.safechat(`URL: ${message}` , 500);
+      bot.safechat(`URL: ${message}`, 500);
     }
   });
-}
+};

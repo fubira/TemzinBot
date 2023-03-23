@@ -13,5 +13,5 @@ export default (bot: TemzinBot) => {
       bot.safechat('> 1', 5000);
       bot.safechat('> GO!', 6000);
     }
-  })
-}
+  });
+};

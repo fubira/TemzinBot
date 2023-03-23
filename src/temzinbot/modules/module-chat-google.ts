@@ -4,7 +4,9 @@ export default (bot: TemzinBot) => {
   bot.instance.on('chat', (username, message) => {
     if (username === bot.instance.username) return;
 
-    const matchGoogle = message.match(/(^|\()(google|sksim|ggl)\s*[(]?([^()]*)[)]?/gi);
+    const matchGoogle = message.match(
+      /(^|\()(google|sksim|ggl)\s*[(]?([^()]*)[)]?/gi
+    );
     if (matchGoogle) {
       const keyword = matchGoogle[3];
 
@@ -20,7 +22,10 @@ export default (bot: TemzinBot) => {
 
       if (keyword) {
         const params = keyword.replace(/\s+/gi, '+');
-        bot.safechat(`https://www.google.co.jp/search?tbm=isch&q=${params}`, 1000);
+        bot.safechat(
+          `https://www.google.co.jp/search?tbm=isch&q=${params}`,
+          1000
+        );
       }
     }
 
@@ -34,4 +39,4 @@ export default (bot: TemzinBot) => {
       }
     }
   });
-}
+};

@@ -17,7 +17,7 @@ import moduleChatOpenAI from 'temzinbot/modules/module-chat-openai';
  */
 const readline: Readline.Interface = Readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 /**
@@ -30,19 +30,26 @@ let temzinBot: TemzinBot | undefined = undefined;
  */
 function start() {
   temzinBot = new TemzinBot();
-  temzinBot.createBot({
-    host: String(process.env.MC_HOST),
-    port: Number(process.env.MC_PORT),
-    username: String(process.env.MC_USERNAME),
-    password: String(process.env.MC_PASSWORD),
-    version: String(process.env.MC_VERSION || '1.19'),
-    auth: process.env.MC_AUTH as 'mojang' | 'microsoft' | 'offline' | undefined
-  }, readline);
-  
+  temzinBot.createBot(
+    {
+      host: String(process.env.MC_HOST),
+      port: Number(process.env.MC_PORT),
+      username: String(process.env.MC_USERNAME),
+      password: String(process.env.MC_PASSWORD),
+      version: String(process.env.MC_VERSION || '1.19'),
+      auth: process.env.MC_AUTH as
+        | 'mojang'
+        | 'microsoft'
+        | 'offline'
+        | undefined,
+    },
+    readline
+  );
+
   temzinBot.setChatPattern([
     { name: 'chat', regexp: /^(?:\[[^\]]*\])<([^ :]*)> (.*)$/ },
     { name: 'whisper', regexp: /^([^ ]*) whispers: (.*)$/ },
-  ])
+  ]);
 
   // temzinBot.loadModule(moduleChatHi);
   temzinBot.loadModule(moduleChatAnswer);
@@ -70,12 +77,11 @@ readline.on('line', (line: string) => {
  * Readline event: stop process when SIGINT
  */
 readline.on('SIGINT', () => {
-
   if (temzinBot) {
     temzinBot.log('[readline] SIGINT');
     temzinBot.log('Stopping Bot...');
     temzinBot.hasInterrupt = true;
-    delay(1000).then(() => { 
+    delay(1000).then(() => {
       temzinBot.instance.quit();
       readline.close();
       process.exit();
@@ -106,6 +112,6 @@ process.on('uncaughtException', (err) => {
  */
 try {
   start();
-} catch(e) {
+} catch (e) {
   console.error(e);
 }
