@@ -8,12 +8,8 @@ mineflayerを利用した適当bot
 
   - I'M BOT!
   - Modulized functions
-    - move to the designated position
-    - follow player
-    - greeting responce
-    - 3sec countdown
-    - data recorder
-  - Commandline interface
+  - Commandline chat interface
+  - OpenAI (gpt-3.5) support
   - Dockerize support
 
 ## Installation
@@ -60,11 +56,19 @@ docker run -d -it \
 
 ### Open-AI Chat Bot
 
-OpenAI API Keyを指定することで、BOTによるAIチャットを実行できます。
-"AI [質問文]" と話しかけると、BOTが質問文に対する回答を発言します。
+TemzinBotはOpenAIによるAIチャットBot機能をもちます。
+以下の環境変数によりOpenAIに関する情報を設定してください。
+設定したキーワードが先頭にある質問文に対して、Botが回答するようになります。
 
-環境変数 OPENAI_API_KEY にAPI Keyの値を設定し、
-temzinbot/modules/module-chat-openaiを有効にしてBOTを起動してください。
+```
+OPENAI_ASK_KEYWORD="ai"
+OPENAI_API_KEY="<Your OpenAI API Key>"
+OPENAI_SYSTEM_ROLE_CONTENT="あなたはtemzinという名前のアシスタントAIです。"
+OPENAI_USER_ROLE_CONTENT_PREFIX=""
+OPENAI_USER_ROLE_CONTENT_POSTFIX="100～200文字程度にまとめて回答してください。 "
+```
+
+上記の設定の場合、`ai 自己紹介して` と問いかけることでAIが自己紹介をします。
 
 ## License
 
