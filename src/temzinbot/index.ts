@@ -27,22 +27,6 @@ export class TemzinBot {
   }
 
   /**
-   * Json messageの文言のみ抽出して文字列を返す
-   * @param jmes
-   * @returns
-   */
-  private jmesToText(jmes: any): string {
-    let message = '';
-    if (jmes.text) message += jmes.text;
-
-    if (jmes.extra)
-      jmes.extra.forEach((v: any) => {
-        message += v.text;
-      });
-    return message;
-  }
-
-  /**
    * Botインスタンスの初期化
    * @param opts
    */
@@ -96,7 +80,7 @@ export class TemzinBot {
     Readline.cursorTo(process.stdout, 0);
 
     if (typeof args[0] === 'string') {
-      args[0] = '[' + dayjs().toDate().toLocaleString() + '] ' + args[0];
+      args[0] = `[${dayjs().format('YYYY-MM-DD hh:mm:ss')}] ${args[0]}`;
     }
 
     console.log(...args);

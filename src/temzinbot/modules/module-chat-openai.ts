@@ -20,7 +20,7 @@ export default (bot: TemzinBot) => {
     bot.log('[OPENAI] No apikey found.');
     return;
   }
-  bot.log(`[OPENAI] ${AiDefinition}`);
+  bot.log(`[OPENAI] ${JSON.stringify(AiDefinition)}`);
 
   /**
    * Initialize OpenAI
@@ -32,7 +32,7 @@ export default (bot: TemzinBot) => {
   );
 
   bot.instance.on('chat', async (username: string, message: string) => {
-    // if (username === bot.instance.username) return;
+    if (username === bot.instance.username) return;
 
     const match = message.match(/(\w+)\s+(.*)\)?/);
 
