@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import delay from 'delay';
 import * as Readline from 'readline';
 import * as Mineflayer from 'mineflayer';
 import { ChatMessage } from 'prismarine-chat';
+
+dayjs.extend(utc);
 
 export interface TemzinBotOpts {
   host: string;
@@ -80,7 +83,7 @@ export class TemzinBot {
     Readline.cursorTo(process.stdout, 0);
 
     if (typeof args[0] === 'string') {
-      args[0] = `[${dayjs().format('YYYY-MM-DD hh:mm:ss')}] ${args[0]}`;
+      args[0] = `[${dayjs.utc().local().format('YYYY-MM-DD HH:mm:ss')}] ${args[0]}`;
     }
 
     console.log(...args);
