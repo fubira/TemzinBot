@@ -104,7 +104,7 @@ process.on('uncaughtException', (err) => {
     console.log('[error] ' + err);
   }
   */
-  console.log('[error] ' + err);
+  console.log(`[error] ${err.message}: ${err.stack}`);
 });
 
 /**

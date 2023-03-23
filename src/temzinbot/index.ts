@@ -164,11 +164,23 @@ export class TemzinBot {
 
     this.safechat_send_text_cache.push(text);
     this.safechat_last_send_time = current_time;
-    this.instance.chat(text);
+
+    /**
+     * 改行コードが入っている場合、1行ごとに時間を空けて発言する
+     */
+    const lines = text.split(/\n/);
+
+    lines.forEach((line, index) => {
+      // 1行ごとに2秒 + 5行ごとに5秒
+      const wait = (index * 2000 + (index / 5) * 5000);
+      delay(wait).then(() => {
+        this.instance.chat(line);
+      });
+    })
   }
 
   public safechat(text: string, msec = 800) {
-    delay(msec).then(() => {
+    delay(msec).then(async () => {
       this.safechatText(text);
     });
   }

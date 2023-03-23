@@ -20,6 +20,7 @@ export default (bot: TemzinBot) => {
     bot.log('[OPENAI] No apikey found.');
     return;
   }
+  bot.log(`[OPENAI] ${AiDefinition}`);
 
   /**
    * Initialize OpenAI
@@ -31,7 +32,7 @@ export default (bot: TemzinBot) => {
   );
 
   bot.instance.on('chat', async (username: string, message: string) => {
-    if (username === bot.instance.username) return;
+    // if (username === bot.instance.username) return;
 
     const match = message.match(/(\w+)\s+(.*)\)?/);
 
@@ -51,10 +52,12 @@ export default (bot: TemzinBot) => {
 
     if (isApiCalling) {
       bot.safechat('[OPENAI] 前の質問の処理中です。しばらくお待ちください。');
+      return;
     }
 
     try {
       isApiCalling = true;
+      bot.log('[OPENAI]', `Q: ${content}`);
       const response = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [
@@ -69,12 +72,14 @@ export default (bot: TemzinBot) => {
       });
 
       const answer = response.data.choices[0].message?.content;
+      bot.log('[OPENAI]', `A: ${answer}`);
       bot.safechat(answer);
     } catch (err) {
       bot.safechat('[OPENAI] APIの呼び出し中にエラーが起きました。');
       console.error(err.toString());
     } finally {
       isApiCalling = false;
+      bot.log('[OPENAI]', `chat complete.`);
     }
   });
 };
