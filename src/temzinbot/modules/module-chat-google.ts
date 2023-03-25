@@ -2,26 +2,29 @@ import { TemzinBot } from '..';
 
 export default (bot: TemzinBot) => {
   bot.instance.on('chat', (username, message) => {
-    if (username === bot.instance.username) return;
+    console.log('chat', username, message,);
+    // if (username === bot.instance.username) return;
 
     const matchGoogle = message.match(
-      /(^|\()(google|sksim|ggl)\s*[(]?([^()]*)[)]?/gi
+      /(^|\(\s*)(google|sksim|ggl)\s*[(]?([^()]*)[)]?/i
     );
     if (matchGoogle) {
-      const keyword = matchGoogle[3];
+      const [, text] = matchGoogle[0].split(' ');
 
-      if (keyword) {
-        const params = keyword.replace(/\s+/gi, '+');
+      if (text) {
+        const params = text.replace(/\s+/gi, '+');
         bot.safechat(`https://www.google.co.jp/search?q=${params}`, 1000);
       }
     }
 
-    const matchImage = message.match(/(^|\()(image|img)\s*[(]?([^()]*)[)]?/gi);
+    const matchImage = message.match(
+      /(^|\()(image|img)\s*[(]?([^()]*)[)]?/i
+    );
     if (matchImage) {
-      const keyword = matchImage[3];
+      const [, text] = matchImage[0].split(' ');
 
-      if (keyword) {
-        const params = keyword.replace(/\s+/gi, '+');
+      if (text) {
+        const params = text.replace(/\s+/gi, '+');
         bot.safechat(
           `https://www.google.co.jp/search?tbm=isch&q=${params}`,
           1000
@@ -29,12 +32,14 @@ export default (bot: TemzinBot) => {
       }
     }
 
-    const matchMap = message.match(/(^|\()(map|地図)\s*[(]?([^()]*)[)]?/gi);
+    const matchMap = message.match(
+      /(^|\()(map|地図)\s*[(]?([^()]*)[)]?/i
+    );
     if (matchMap) {
-      const keyword = matchMap[3];
+      const [, text] = matchMap[0].split(' ');
 
-      if (keyword) {
-        const params = keyword.replace(/\s+/gi, '+');
+      if (text) {
+        const params = text.replace(/\s+/gi, '+');
         bot.safechat(`https://www.google.co.jp/maps?q=${params}`, 1000);
       }
     }

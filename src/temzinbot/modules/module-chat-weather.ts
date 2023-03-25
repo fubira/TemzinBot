@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { TemzinBot } from '..';
-import * as area from '../../../area.json';
+import { default as area } from '../../../area.json';
 
 function makeForecastMessageFromJson(json: any) {
   const { city } = json.location;
@@ -59,13 +59,13 @@ export default (bot: TemzinBot) => {
       // 指定された文字列をエリアデータの場所名から探す
       locations.map((loc) => {
         // まず完全一致で探す
-        let value = area.find((a: any) =>
+        let value = area?.find((a: any) =>
           a.keyword.find((word: string) => word === loc)
         );
 
         // 完全一致がなかった場合、前方一致で探す
         if (!value) {
-          value = area.find((a: any) =>
+          value = area?.find((a: any) =>
             a.keyword.find(
               (word: string) => word?.startsWith(loc) || loc?.startsWith(word)
             )
@@ -99,6 +99,7 @@ export default (bot: TemzinBot) => {
             `https://weather.tsukumijima.net/api/forecast/city/${id}`,
             { headers: { 'User-Agent': 'WeatherApp/1.0.0' } }
           );
+          console.log(id, res.data);
           const message = makeForecastMessageFromJson(res.data);
 
           if (message) {
