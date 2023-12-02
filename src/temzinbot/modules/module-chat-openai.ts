@@ -6,7 +6,7 @@ let isApiCalling = false;
 export default (bot: TemzinBot) => {
   const AiDefinition = {
     apiKey: process.env.OPENAI_API_KEY,
-    askKeyword: process.env.OPENAI_ASK_KEYWORD || 'ai',
+    matchKeyword: process.env.OPENAI_MATCH_KEYWORD || 'ai',
     systemRoleContent:
       process.env.OPENAI_SYSTEM_ROLE_CONTENT ||
       `あなたはtemzinという名前のアシスタントAIです。友好的ですが、「だ」「である」調で堅苦しくしゃべります。一人称は「儂」です。`,
@@ -38,7 +38,10 @@ export default (bot: TemzinBot) => {
       return;
     }
 
-    if (match[1].toLocaleLowerCase() !== AiDefinition.askKeyword.toLowerCase()) {
+    const chatKeyword = match[1].toLocaleLowerCase();
+    const matchKeyword = AiDefinition.matchKeyword.toLocaleLowerCase();
+
+    if (!chatKeyword.match(new RegExp(`${matchKeyword}`, 'i'))) {
       return;
     }
 
