@@ -30,19 +30,12 @@ export default (bot: TemzinBot) => {
   });
   
   bot.instance.on('chat', async (username: string, message: string) => {
-    // if (username === bot.instance.username) return;
+    if (username === bot.instance.username) return;
 
-    const match = message.match(/(\S+)\s+(.*)\)?/);
+    const matchKeyword = AiDefinition.matchKeyword.toLocaleLowerCase();
+    const match = message.match(new RegExp(`(${matchKeyword})\\s+(.*)\\)?`, 'i'));
 
     if (!match) {
-      return;
-    }
-
-    const chatKeyword = match[1].toLocaleLowerCase();
-    const matchKeyword = AiDefinition.matchKeyword.toLocaleLowerCase();
-    console.log(match, chatKeyword, matchKeyword);
-
-    if (!chatKeyword.match(new RegExp(`${matchKeyword}`, 'i'))) {
       return;
     }
 
