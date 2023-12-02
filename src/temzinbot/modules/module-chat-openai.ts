@@ -30,7 +30,7 @@ export default (bot: TemzinBot) => {
   });
   
   bot.instance.on('chat', async (username: string, message: string) => {
-    if (username === bot.instance.username) return;
+    // if (username === bot.instance.username) return;
 
     const match = message.match(/(\w+)\s+(.*)\)?/);
 
@@ -40,6 +40,7 @@ export default (bot: TemzinBot) => {
 
     const chatKeyword = match[1].toLocaleLowerCase();
     const matchKeyword = AiDefinition.matchKeyword.toLocaleLowerCase();
+    console.log(new RegExp(`${matchKeyword}`, 'i'), chatKeyword, matchKeyword);
 
     if (!chatKeyword.match(new RegExp(`${matchKeyword}`, 'i'))) {
       return;
