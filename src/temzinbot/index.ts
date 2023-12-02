@@ -13,6 +13,7 @@ export interface TemzinBotOpts {
   password: string;
   version: string;
   auth: 'mojang' | 'microsoft' | 'offline' | undefined;
+  onLogin?: () => void;
 }
 
 export type TemzinBotModule = (temzinBot: TemzinBot) => Promise<void> | void;
@@ -48,7 +49,8 @@ export class TemzinBot {
      * 基本的なイベントの処理
      */
     this.instance.on('login', () => {
-      this.log('[bot.login]');
+      this.log(`[bot.login] ${this.instance.username}`);
+      opts.onLogin?.();
     });
 
     this.instance.on('end', (reason: any) => {

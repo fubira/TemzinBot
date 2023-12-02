@@ -41,14 +41,15 @@ function start() {
         | 'microsoft'
         | 'offline'
         | undefined,
+      onLogin: () => {
+        temzinBot.setChatPattern([
+          { name: 'chat', regexp: /^(?:\[[^\]]*\])<([^ :]*)> (.*)$/ },
+          { name: 'whisper', regexp: /^([^ ]*) whispers: (.*)$/ },
+        ]);
+      },
     },
-    readline
+    readline,
   );
-
-  temzinBot.setChatPattern([
-    { name: 'chat', regexp: /^(?:\[[^\]]*\])<([^ :]*)> (.*)$/ },
-    { name: 'whisper', regexp: /^([^ ]*) whispers: (.*)$/ },
-  ]);
 
   // temzinBot.loadModule(moduleChatHi);
   temzinBot.loadModule(moduleChatAnswer);
