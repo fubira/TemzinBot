@@ -56,7 +56,7 @@ function start() {
   temzinBot.loadModule(moduleChatCountdown);
   temzinBot.loadModule(moduleChatDeath);
   temzinBot.loadModule(moduleChatGoogle);
-  temzinBot.loadModule(moduleChatUrlRepeat);
+  // temzinBot.loadModule(moduleChatUrlRepeat);
   temzinBot.loadModule(moduleChatWeather);
   temzinBot.loadModule(moduleChatOpenAI);
 }
