@@ -1,6 +1,6 @@
 {
   "name": "temzinbot",
-  "version": "1.19.2",
+  "version": "1.20.1",
   "description": "Temzinbot, minecraft bot implementation with mineflayer.",
   "main": "main.js",
   "dependencies": {
