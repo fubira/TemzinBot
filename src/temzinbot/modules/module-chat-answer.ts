@@ -1,4 +1,4 @@
-import { TemzinBot } from 'temzinbot';
+import { TemzinBot } from '@/temzinbot';
 
 export default (bot: TemzinBot) => {
   bot.instance.on('chat', (username: string, message: string) => {

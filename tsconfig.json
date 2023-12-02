@@ -10,10 +10,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "node_modules/*",
-        "src/*"
-      ]
+      "@/*": [ "./src/*" ]
     },
     "lib": [
       "es2015"

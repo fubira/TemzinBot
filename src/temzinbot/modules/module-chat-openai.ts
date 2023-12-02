@@ -1,5 +1,5 @@
 import { TemzinBot } from '..';
-import { Configuration, OpenAIApiFactory } from 'openai';
+import OpenAI from 'openai';
 
 let isApiCalling = false;
 
@@ -21,16 +21,14 @@ export default (bot: TemzinBot) => {
     return;
   }
   bot.log(`[OPENAI] ${JSON.stringify(AiDefinition)}`);
-
+  
   /**
    * Initialize OpenAI
    */
-  const openai = OpenAIApiFactory(
-    new Configuration({
-      apiKey: AiDefinition.apiKey,
-    })
-  );
-
+  const openai = new OpenAI({
+    apiKey: AiDefinition.apiKey,
+  });
+  
   bot.instance.on('chat', async (username: string, message: string) => {
     if (username === bot.instance.username) return;
 
@@ -58,8 +56,8 @@ export default (bot: TemzinBot) => {
     try {
       isApiCalling = true;
       bot.log('[OPENAI]', `Q: ${content}`);
-      const response = await openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4-1106-preview',
         messages: [
           {
             role: 'system',
@@ -71,7 +69,7 @@ export default (bot: TemzinBot) => {
         ],
       });
 
-      const answer = response.data.choices[0].message?.content;
+      const answer = response.choices[0].message?.content;
       bot.log('[OPENAI]', `A: ${answer}`);
       bot.safechat(answer);
     } catch (err) {

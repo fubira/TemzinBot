@@ -1,16 +1,15 @@
 import 'dotenv/config';
-import delay from 'delay';
 import * as Readline from 'readline';
-import TemzinBot from 'temzinbot';
+import TemzinBot from '@/temzinbot';
 
 // import moduleChatHi from 'temzinbot/modules/module-chat-hi';
-import moduleChatAnswer from 'temzinbot/modules/module-chat-answer';
-import moduleChatCountdown from 'temzinbot/modules/module-chat-countdown';
-import moduleChatDeath from 'temzinbot/modules/module-chat-death';
-import moduleChatGoogle from 'temzinbot/modules/module-chat-google';
-import moduleChatUrlRepeat from 'temzinbot/modules/module-chat-url-repeat';
-import moduleChatWeather from 'temzinbot/modules/module-chat-weather';
-import moduleChatOpenAI from 'temzinbot/modules/module-chat-openai';
+import moduleChatAnswer from '@/temzinbot/modules/module-chat-answer';
+import moduleChatCountdown from '@/temzinbot/modules/module-chat-countdown';
+import moduleChatDeath from '@/temzinbot/modules/module-chat-death';
+import moduleChatGoogle from '@/temzinbot/modules/module-chat-google';
+import moduleChatUrlRepeat from '@/temzinbot/modules/module-chat-url-repeat';
+import moduleChatWeather from '@/temzinbot/modules/module-chat-weather';
+import moduleChatOpenAI from '@/temzinbot/modules/module-chat-openai';
 
 /**
  * Initialize Readline
@@ -81,11 +80,12 @@ readline.on('SIGINT', () => {
     temzinBot.log('[readline] SIGINT');
     temzinBot.log('Stopping Bot...');
     temzinBot.hasInterrupt = true;
-    delay(1000).then(() => {
-      temzinBot.instance.quit();
+
+    setTimeout(() => {
+      temzinBot.instance?.quit();
       readline.close();
       process.exit();
-    });
+    }, 1000);
   } else {
     console.log('[readline] SIGINT');
     process.exit();

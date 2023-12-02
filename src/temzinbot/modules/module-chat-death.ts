@@ -1,4 +1,4 @@
-import { TemzinBot } from '..';
+import { TemzinBot } from '@/temzinbot';
 
 export default (bot: TemzinBot) => {
   let is_dead = false;

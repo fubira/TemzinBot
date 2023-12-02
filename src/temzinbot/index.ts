@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import delay from 'delay';
 import * as Readline from 'readline';
 import * as Mineflayer from 'mineflayer';
 import { ChatMessage } from 'prismarine-chat';
@@ -97,6 +96,7 @@ export class TemzinBot {
    * チャットパターン
    */
   public setChatPattern(patterns: { name: string; regexp: RegExp }[]) {
+    console.log(this.instance.chatPatterns);
     if (this.instance) {
       patterns.forEach((p) => {
         this.instance.addChatPattern(p.name, p.regexp);
@@ -160,16 +160,16 @@ export class TemzinBot {
     lines.forEach((line, index) => {
       // 1行ごとに2秒 + 5行ごとに5秒
       const wait = (index * 2000 + (index / 5) * 5000);
-      delay(wait).then(() => {
+      setTimeout(() => {
         this.instance.chat(line);
-      });
+      }, wait);
     })
   }
 
   public safechat(text: string, msec = 800) {
-    delay(msec).then(async () => {
+    setTimeout(() => {
       this.safechatText(text);
-    });
+    }, msec)
   }
 
   public randomchat(messages: string[], msec = 800) {
@@ -181,9 +181,9 @@ export class TemzinBot {
       message = messages;
     }
 
-    delay(msec).then(() => {
+    setTimeout(() => {
       this.safechatText(message);
-    });
+    }, msec);
   }
 
   public async loadModule(module: TemzinBotModule) {

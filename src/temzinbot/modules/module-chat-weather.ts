@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { TemzinBot } from '..';
-import { default as area } from '../../../area.json';
+import { TemzinBot } from '@/temzinbot';
+import { default as area } from './area.json';
 
 function makeForecastMessageFromJson(json: any) {
   const { city } = json.location;
