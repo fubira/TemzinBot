@@ -96,7 +96,6 @@ export class TemzinBot {
    * チャットパターン
    */
   public setChatPattern(patterns: { name: string; regexp: RegExp }[]) {
-    console.log(this.instance.chatPatterns);
     if (this.instance) {
       patterns.forEach((p) => {
         this.instance.addChatPattern(p.name, p.regexp);
