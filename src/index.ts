@@ -7,9 +7,10 @@ import moduleChatAnswer from '@/temzinbot/modules/module-chat-answer';
 import moduleChatCountdown from '@/temzinbot/modules/module-chat-countdown';
 import moduleChatDeath from '@/temzinbot/modules/module-chat-death';
 import moduleChatGoogle from '@/temzinbot/modules/module-chat-google';
-import moduleChatUrlRepeat from '@/temzinbot/modules/module-chat-url-repeat';
+// import moduleChatUrlRepeat from '@/temzinbot/modules/module-chat-url-repeat';
 import moduleChatWeather from '@/temzinbot/modules/module-chat-weather';
 import moduleChatOpenAI from '@/temzinbot/modules/module-chat-openai';
+import moduleChatGemini from './temzinbot/modules/module-chat-gemini';
 
 /**
  * Initialize Readline
@@ -56,6 +57,7 @@ function start() {
   temzinBot.loadModule(moduleChatCountdown);
   temzinBot.loadModule(moduleChatDeath);
   temzinBot.loadModule(moduleChatGoogle);
+  temzinBot.loadModule(moduleChatGemini);
   // temzinBot.loadModule(moduleChatUrlRepeat);
   temzinBot.loadModule(moduleChatWeather);
   temzinBot.loadModule(moduleChatOpenAI);
