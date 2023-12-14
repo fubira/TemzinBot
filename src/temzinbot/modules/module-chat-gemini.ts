@@ -1,5 +1,5 @@
 import { TemzinBot } from '..';
-import { GoogleGenerativeAI, ChatSession } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 let isApiCalling = false;
 
@@ -10,26 +10,6 @@ const AiDefinition = {
     process.env.GEMINI_SYSTEM_ROLE_CONTENT ||
     `あなたはtemzinという名前のアシスタントAIです。友好的ですが、「だ」「である」調で堅苦しくしゃべります。一人称は「儂」です。`,
 };
-
-let globalChat: ChatSession = undefined;
-
-const getChat = async () => {
-  if (globalChat) {
-    return globalChat;
-  }
-  
-  const gemini = new GoogleGenerativeAI(AiDefinition.apiKey);
-  const model = gemini.getGenerativeModel({ model: "gemini-pro" });
-  const chat = model.startChat({
-    history: [
-      { role: 'user', parts: AiDefinition.systemRoleContent },
-      { role: 'model', parts: 'ok' }
-    ],
-  });
-
-  globalChat = chat;
-  return chat;
-}
 
 export default (bot: TemzinBot) => {
 
@@ -64,9 +44,15 @@ export default (bot: TemzinBot) => {
       isApiCalling = true;
       // bot.log('[GEMINI]', `Q: ${content}`);
 
+      const genAI = new GoogleGenerativeAI(AiDefinition.apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const question = `${content}`;
-      const chat = await getChat();
-      const result = await chat.sendMessage(question);
+
+      const result = await model.generateContent([
+        AiDefinition.systemRoleContent,
+        question,
+      ]);
+
       const response = result.response;
       const answer = response.text();
 
