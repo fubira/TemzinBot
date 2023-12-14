@@ -25,9 +25,6 @@ const getChat = async () => {
       { role: 'user', parts: AiDefinition.systemRoleContent },
       { role: 'model', parts: 'ok' }
     ],
-    generationConfig: {
-      maxOutputTokens: 50
-    },
   });
 
   globalChat = chat;
