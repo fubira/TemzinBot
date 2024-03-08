@@ -4,6 +4,7 @@
   "description": "Temzinbot, minecraft bot implementation with mineflayer.",
   "main": "main.js",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.17.1",
     "@google/generative-ai": "^0.1.1",
     "axios": "^1.6.2",
     "dateformat": "^5.0.3",
