@@ -21,6 +21,7 @@ export default (bot: TemzinBot) => {
     bot.log('[CLAUDE3] No apikey found.');
     return;
   }
+  bot.log(`[CLAUDE3] ${JSON.stringify(AiDefinition)}`);
 
   const anthropic = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY
