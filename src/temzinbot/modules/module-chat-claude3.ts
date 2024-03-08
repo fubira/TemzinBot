@@ -28,6 +28,7 @@ export default (bot: TemzinBot) => {
   })
 
   bot.instance.on('chat', async (username: string, message: string) => {
+    if (username === bot.instance.username) return;
 
     const matchKeyword = AiDefinition.matchKeyword.toLocaleLowerCase();
     const match = message.match(new RegExp(`^(${matchKeyword})\\s*(.*)\\)?`, 'i'));
