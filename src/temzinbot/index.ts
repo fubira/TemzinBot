@@ -37,6 +37,7 @@ export class TemzinBot {
     if (this.instance) {
       console.log(`Bot [${this.instance.username}] is active.`);
     }
+    console.log(opts);
 
     this.instance = Mineflayer.createBot({ ...opts });
     this.readline = readline;

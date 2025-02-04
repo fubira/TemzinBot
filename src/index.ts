@@ -37,7 +37,7 @@ function start() {
       port: Number(process.env.MC_PORT),
       username: String(process.env.MC_USERNAME),
       password: String(process.env.MC_PASSWORD),
-      version: String(process.env.MC_VERSION || '1.19'),
+      version: String(process.env.MC_VERSION || '1.20.1'),
       auth: process.env.MC_AUTH as
         | 'mojang'
         | 'microsoft'

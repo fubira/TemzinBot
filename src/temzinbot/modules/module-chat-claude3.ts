@@ -67,7 +67,8 @@ export default (bot: TemzinBot) => {
         ]
       });
 
-      const answer = response.content[0].text;
+      const answer = response.content.find((c) => c.type === 'text')?.text;
+
       bot.log('[CLAUDE3]', `A: ${answer}`);
       bot.safechat(answer);
     } catch (err) {
