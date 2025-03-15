@@ -77,7 +77,7 @@ export default (bot: TemzinBot) => {
       {
         keyword:
           /^(ra[dj]io|ら[じぢ]お|ラ[ヂジ]オ|ラディオ|レディオ|ラヂヲ|レイディオ)/gi,
-        answer: 'http://radio.kenmomine.club:8980/r/kenmomine',
+        answer: 'http://radio.kenmomine.club:8980',
       },
     ];
 
