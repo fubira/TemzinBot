@@ -22,11 +22,11 @@ export default (bot: TemzinBot) => {
         answer: 'http://kenmomine.wiki.fc2.com/',
       },
       {
-        keyword: /^(うに|uni)/gi,
+        keyword: /^(ウニ|うに|uni)/gi,
         answer: 'うに',
       },
       {
-        keyword: /^(ぶり|buri)/gi,
+        keyword: /^(ブリ|ぶり|buri)/gi,
         answer: 'うに',
       },
       {
