@@ -54,7 +54,7 @@ export default (bot: TemzinBot) => {
       isApiCalling = true;
       bot.log('[OPENAI]', `Q: ${content}`);
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        model: 'gpt-4o-mini-search-preview',
         messages: [
           {
             role: 'system',
