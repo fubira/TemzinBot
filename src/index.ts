@@ -2,12 +2,19 @@ import 'dotenv/config';
 import * as Readline from 'readline';
 import TemzinBot from '@/temzinbot';
 
-// import moduleChatHi from 'temzinbot/modules/module-chat-hi';
+// Constants
+const DEFAULT_MC_VERSION = '1.20.1';
+const SIGINT_TIMEOUT_MS = 1000;
+const RECONNECTION_DELAY_MS = 60000;
+
+// Utility functions
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// import moduleChatHi from 'temzinbot/modules/module-chat-hi'; // For simple response testing
 import moduleChatAnswer from '@/temzinbot/modules/module-chat-answer';
 import moduleChatCountdown from '@/temzinbot/modules/module-chat-countdown';
 import moduleChatDeath from '@/temzinbot/modules/module-chat-death';
 import moduleChatGoogle from '@/temzinbot/modules/module-chat-google';
-// import moduleChatUrlRepeat from '@/temzinbot/modules/module-chat-url-repeat';
 import moduleChatWeather from '@/temzinbot/modules/module-chat-weather';
 import moduleChatOpenAI from '@/temzinbot/modules/module-chat-openai';
 import moduleChatGemini from './temzinbot/modules/module-chat-gemini';
@@ -37,7 +44,7 @@ function start() {
       port: Number(process.env.MC_PORT),
       username: String(process.env.MC_USERNAME),
       password: String(process.env.MC_PASSWORD),
-      version: String(process.env.MC_VERSION || '1.20.1'),
+      version: String(process.env.MC_VERSION || DEFAULT_MC_VERSION),
       auth: process.env.MC_AUTH as
         | 'mojang'
         | 'microsoft'
@@ -53,13 +60,12 @@ function start() {
     readline,
   );
 
-  // temzinBot.loadModule(moduleChatHi);
+  // temzinBot.loadModule(moduleChatHi); // Enable for simple response testing
   temzinBot.loadModule(moduleChatAnswer);
   temzinBot.loadModule(moduleChatCountdown);
   temzinBot.loadModule(moduleChatDeath);
   temzinBot.loadModule(moduleChatGoogle);
   temzinBot.loadModule(moduleChatGemini);
-  // temzinBot.loadModule(moduleChatUrlRepeat);
   temzinBot.loadModule(moduleChatWeather);
   temzinBot.loadModule(moduleChatOpenAI);
   temzinBot.loadModule(moduleChatClaude3);
@@ -90,7 +96,7 @@ readline.on('SIGINT', () => {
       temzinBot.instance?.quit();
       readline.close();
       process.exit();
-    }, 1000);
+    }, SIGINT_TIMEOUT_MS);
   } else {
     console.log('[readline] SIGINT');
     process.exit();
@@ -101,15 +107,21 @@ readline.on('SIGINT', () => {
  * System event
  */
 process.on('uncaughtException', (err) => {
-  /*
   if (temzinBot) {
-    temzinBot.log('[error] UncaughtException: Trying reconnection 1 min later...');
-    delay(60000).then(() => { start(); });
+    temzinBot.log(`[error] UncaughtException: ${err.message} - ${err.stack}`);
+    temzinBot.log(`[error] Trying reconnection ${RECONNECTION_DELAY_MS / 1000} seconds later...`);
+    temzinBot.instance?.quit(); // 現在のインスタンスを停止
+    delay(RECONNECTION_DELAY_MS).then(() => {
+      temzinBot.log('[system] Attempting to restart bot...');
+      start();
+    }).catch(restartError => {
+      console.error('[error] Failed to restart bot after delay:', restartError);
+      process.exit(1); // 再起動にも失敗したら終了
+    });
   } else {
-    console.log('[error] ' + err);
+    console.log(`[error] UncaughtException (bot not initialized): ${err.message} - ${err.stack}`);
+    process.exit(1); // ボット未初期化時のエラーは終了
   }
-  */
-  console.log(`[error] ${err.message}: ${err.stack}`);
 });
 
 /**
