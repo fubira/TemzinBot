@@ -17,8 +17,8 @@ import moduleChatDeath from '@/temzinbot/modules/module-chat-death';
 import moduleChatGoogle from '@/temzinbot/modules/module-chat-google';
 import moduleChatWeather from '@/temzinbot/modules/module-chat-weather';
 import moduleChatOpenAI from '@/temzinbot/modules/module-chat-openai';
-import moduleChatGemini from './temzinbot/modules/module-chat-gemini';
-import moduleChatClaude3 from './temzinbot/modules/module-chat-claude3';
+import moduleChatGemini from '@/temzinbot/modules/module-chat-gemini';
+import moduleChatClaude3 from '@/temzinbot/modules/module-chat-claude3';
 
 /**
  * Initialize Readline

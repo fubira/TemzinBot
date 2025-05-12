@@ -15,6 +15,9 @@ export default (bot: TemzinBot) => {
     userRoleContentPostfix:
       process.env.ANTHROPIC_USER_ROLE_CONTENT_POSTFIX ||
       `100～200文字程度にまとめて回答してください。`,
+    modelName: process.env.ANTHROPIC_MODEL_NAME || "claude-3-5-sonnet-latest",
+    maxTokens: Number(process.env.ANTHROPIC_MAX_TOKENS) || 1000,
+    temperature: Number(process.env.ANTHROPIC_TEMPERATURE) || 0,
   };
 
   if (!AiDefinition.apiKey) {
@@ -24,20 +27,20 @@ export default (bot: TemzinBot) => {
   bot.log(`[CLAUDE3] ${JSON.stringify(AiDefinition)}`);
 
   const anthropic = new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY
+    apiKey: AiDefinition.apiKey
   })
 
   bot.instance.on('chat', async (username: string, message: string) => {
     if (username === bot.instance.username) return;
 
     const matchKeyword = AiDefinition.matchKeyword;
-    const match = message.match(new RegExp(`\\b(${matchKeyword})\\b\\s*(.*)\\)?`));
+    const match = message.match(new RegExp(`\\b(${matchKeyword})\\b\\s*(.*?)(?:\\)|$)`));
 
     if (!match) {
       return;
     }
 
-    const content = match[2].replace(')', '');
+    const content = match[2];
     if (!content) {
       bot.safechat('[CLAUDE3] 内容がないようです。');
       return;
@@ -53,15 +56,16 @@ export default (bot: TemzinBot) => {
       bot.log('[CLAUDE3]', `Q: ${content}`);
 
       const response = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-latest",
-        max_tokens: 1000,
-        temperature: 0,
+        model: AiDefinition.modelName,
+        max_tokens: AiDefinition.maxTokens,
+        temperature: AiDefinition.temperature,
+        system: AiDefinition.systemRoleContent,
         messages: [
           {
             role: 'user',
             content: [{
               type: 'text',
-              text: `${AiDefinition.systemRoleContent} ${AiDefinition.userRoleContentPrefix}${content}${AiDefinition.userRoleContentPostfix}`,
+              text: `${AiDefinition.userRoleContentPrefix}${content}${AiDefinition.userRoleContentPostfix}`,
             }],
           }
         ]
@@ -73,7 +77,7 @@ export default (bot: TemzinBot) => {
       bot.safechat(answer);
     } catch (err) {
       bot.safechat('[CLAUDE3] APIの呼び出し中にエラーが起きました。');
-      console.error(err.toString());
+      console.error(err);
     } finally {
       isApiCalling = false;
       bot.log('[CLAUDE3]', `chat complete.`);

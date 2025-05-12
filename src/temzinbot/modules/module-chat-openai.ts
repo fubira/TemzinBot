@@ -14,6 +14,7 @@ export default (bot: TemzinBot) => {
     userRoleContentPostfix:
       process.env.OPENAI_USER_ROLE_CONTENT_POSTFIX ||
       `100～200文字程度にまとめて回答してください。`,
+    modelName: process.env.OPENAI_MODEL_NAME || 'gpt-4o-mini-search-preview',
   };
 
   if (!AiDefinition.apiKey) {
@@ -33,13 +34,13 @@ export default (bot: TemzinBot) => {
     if (username === bot.instance.username) return;
 
     const matchKeyword = AiDefinition.matchKeyword;
-    const match = message.match(new RegExp(`\\b(${matchKeyword})\\b\\s+(.*)\\)?`));
+    const match = message.match(new RegExp(`\\b(${matchKeyword})\\b\\s+(.*?)(?:\\)|$)`));
 
     if (!match) {
       return;
     }
 
-    const content = match[2].replace(')', '');
+    const content = match[2];
     if (!content) {
       bot.safechat('[OPENAI] 内容がないようです。');
       return;
@@ -54,7 +55,7 @@ export default (bot: TemzinBot) => {
       isApiCalling = true;
       bot.log('[OPENAI]', `Q: ${content}`);
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini-search-preview',
+        model: AiDefinition.modelName,
         messages: [
           {
             role: 'system',
@@ -71,7 +72,7 @@ export default (bot: TemzinBot) => {
       bot.safechat(answer);
     } catch (err) {
       bot.safechat('[OPENAI] APIの呼び出し中にエラーが起きました。');
-      console.error(err.toString());
+      console.error(err);
     } finally {
       isApiCalling = false;
       bot.log('[OPENAI]', `chat complete.`);
