@@ -7,7 +7,7 @@ let isApiCalling = false;
 export default (bot: TemzinBot) => {
   const AiDefinition = {
     apiKey: process.env.ANTHROPIC_API_KEY,
-    matchKeyword: process.env.ANTHROPIC_MATCH_KEYWORD || 'ai',
+    matchKeyword: process.env.ANTHROPIC_MATCH_KEYWORD || 'AI',
     systemRoleContent:
       process.env.ANTHROPIC_SYSTEM_ROLE_CONTENT ||
       `あなたはtemzinという名前のアシスタントAIです。友好的ですが、「だ」「である」調で堅苦しくしゃべります。一人称は「儂」です。`,
@@ -30,8 +30,8 @@ export default (bot: TemzinBot) => {
   bot.instance.on('chat', async (username: string, message: string) => {
     if (username === bot.instance.username) return;
 
-    const matchKeyword = AiDefinition.matchKeyword.toLocaleLowerCase();
-    const match = message.match(new RegExp(`^(${matchKeyword})\\s*(.*)\\)?`, 'i'));
+    const matchKeyword = AiDefinition.matchKeyword;
+    const match = message.match(new RegExp(`\\b(${matchKeyword})\\b\\s*(.*)\\)?`));
 
     if (!match) {
       return;
