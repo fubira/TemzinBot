@@ -3,7 +3,7 @@ import * as Readline from 'readline';
 import TemzinBot from '@/temzinbot';
 
 // Constants
-const DEFAULT_MC_VERSION = '1.20.1';
+const DEFAULT_MC_VERSION = '1.21.4';
 const SIGINT_TIMEOUT_MS = 1000;
 const RECONNECTION_DELAY_MS = 60000;
 
@@ -43,7 +43,6 @@ function start() {
       host: String(process.env.MC_HOST),
       port: Number(process.env.MC_PORT),
       username: String(process.env.MC_USERNAME),
-      password: String(process.env.MC_PASSWORD),
       version: String(process.env.MC_VERSION || DEFAULT_MC_VERSION),
       auth: process.env.MC_AUTH as
         | 'mojang'

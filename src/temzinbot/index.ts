@@ -10,7 +10,7 @@ export interface TemzinBotOpts {
   host: string;
   port: number;
   username: string;
-  password: string;
+  password?: string;
   version: string;
   auth: 'mojang' | 'microsoft' | 'offline' | undefined;
   onLogin?: () => void;
