@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { TemzinBot } from '@/temzinbot';
+import type { TemzinBot } from '@/core';
 import { default as area } from './area.json';
 
 interface WeatherForecast {

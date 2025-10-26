@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import type { TemzinBot } from '..';
+import type { TemzinBot } from '@/core';
 
 let isApiCalling = false;
 

@@ -1,5 +1,5 @@
 import type * as Mineflayer from 'mineflayer';
-import type { TemzinBot } from '@/temzinbot';
+import type { TemzinBot } from '@/core';
 
 let last_joined_player: string | undefined;
 

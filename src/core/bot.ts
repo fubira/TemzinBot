@@ -1,27 +1,21 @@
-import * as Readline from 'node:readline';
+import type * as Readline from 'node:readline';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import * as Mineflayer from 'mineflayer';
 import type { ChatMessage } from 'prismarine-chat';
+import { CONSTANTS } from '@/config';
+import type { TemzinBotModule, TemzinBotOpts } from './types';
 
 dayjs.extend(utc);
-
-export interface TemzinBotOpts {
-  host: string;
-  port: number;
-  username: string;
-  password?: string;
-  version: string;
-  auth: 'mojang' | 'microsoft' | 'offline' | undefined;
-  onLogin?: () => void;
-}
-
-export type TemzinBotModule = (temzinBot: TemzinBot) => Promise<void> | void;
 
 export class TemzinBot {
   public instance!: Mineflayer.Bot;
   private readline!: Readline.Interface;
   public hasInterrupt: boolean;
+
+  private safechat_send_text_cache: string[] = [];
+  private safechat_last_send_time: number = Date.now();
+  private safechat_continuous_count = 0;
 
   constructor() {
     this.hasInterrupt = false;
@@ -29,7 +23,6 @@ export class TemzinBot {
 
   /**
    * Botインスタンスの初期化
-   * @param opts
    */
   public createBot({ ...opts }: TemzinBotOpts, readline: Readline.Interface) {
     if (this.instance) {
@@ -42,9 +35,13 @@ export class TemzinBot {
 
     console.log(`Connecting to [${opts.host}:${opts.port}] (${this.instance.version})`);
 
-    /**
-     * 基本的なイベントの処理
-     */
+    this.setupEventHandlers(opts);
+  }
+
+  /**
+   * 基本的なイベントハンドラーのセットアップ
+   */
+  private setupEventHandlers(opts: TemzinBotOpts) {
     this.instance.on('login', () => {
       this.log(`[bot.login] ${this.instance.username}`);
       opts.onLogin?.();
@@ -75,9 +72,9 @@ export class TemzinBot {
 
   /**
    * Readline処理を含むログ出力
-   * @param args
    */
   public log(...args: unknown[]) {
+    const Readline = require('node:readline');
     Readline.cursorTo(process.stdout, 0);
 
     if (typeof args[0] === 'string') {
@@ -92,7 +89,7 @@ export class TemzinBot {
   }
 
   /**
-   * チャットパターン
+   * チャットパターンの設定
    */
   public setChatPattern(patterns: { name: string; regexp: RegExp }[]) {
     if (this.instance) {
@@ -106,10 +103,6 @@ export class TemzinBot {
    * 同じメッセージのループ送信、短時間での大量送信などを
    * 防ぐ仕組みを入れたチャット送信メソッド
    */
-  private safechat_send_text_cache: string[] = [];
-  private safechat_last_send_time: number = Date.now();
-  private safechat_continuous_count = 0;
-
   private safechatText(text: string) {
     const current_time = Date.now();
     const elapsed_ms = current_time - this.safechat_last_send_time;
@@ -118,26 +111,21 @@ export class TemzinBot {
       return;
     }
 
-    if (elapsed_ms > 1000) {
+    if (elapsed_ms > CONSTANTS.SAFECHAT_RESET_INTERVAL_MS) {
       this.safechat_continuous_count = 0;
     }
 
     this.safechat_continuous_count++;
-    if (this.safechat_continuous_count > 10) {
+    if (this.safechat_continuous_count > CONSTANTS.SAFECHAT_MAX_CONTINUOUS) {
       this.log('[bot.safechat] *REJECTED* 短時間での大量メッセージが送信がされました');
       return;
     }
 
-    if (elapsed_ms > 3000) {
-      // 一定時間経過したら直前のメッセージは忘れる
+    if (elapsed_ms > CONSTANTS.SAFECHAT_CACHE_CLEAR_MS) {
       this.safechat_send_text_cache = [];
     }
 
-    if (
-      this.safechat_send_text_cache.find((value) => {
-        return value === text;
-      })
-    ) {
+    if (this.safechat_send_text_cache.find((value) => value === text)) {
       this.log(`[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました: ${text}`);
       return;
     }
@@ -145,27 +133,25 @@ export class TemzinBot {
     this.safechat_send_text_cache.push(text);
     this.safechat_last_send_time = current_time;
 
-    /**
-     * 改行コードが入っている場合、1行ごとに時間を空けて発言する
-     */
     const lines = text.split(/\n/);
 
     lines.forEach((line, index) => {
-      // 1行ごとに2秒 + 5行ごとに5秒
-      const wait = index * 2000 + (index / 5) * 5000;
+      const wait =
+        index * CONSTANTS.SAFECHAT_LINE_DELAY_MS +
+        Math.floor(index / 5) * CONSTANTS.SAFECHAT_BATCH_DELAY_MS;
       setTimeout(() => {
         this.instance.chat(line);
       }, wait);
     });
   }
 
-  public safechat(text: string, msec = 800) {
+  public safechat(text: string, msec: number = CONSTANTS.SAFECHAT_DEFAULT_DELAY_MS) {
     setTimeout(() => {
       this.safechatText(text);
     }, msec);
   }
 
-  public randomchat(messages: string[], msec = 800) {
+  public randomchat(messages: string[], msec: number = CONSTANTS.SAFECHAT_DEFAULT_DELAY_MS) {
     if (Array.isArray(messages) && messages.length > 0) {
       const message = messages[Math.floor(Math.random() * messages.length)];
       if (message) {

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import type { TemzinBot } from '@/temzinbot';
+import type { TemzinBot } from '@/core';
 
 interface JsonAnswerItem {
   keyword: string; // JSONではRegExpオブジェクトを直接表現できないため、文字列として格納
@@ -22,7 +22,7 @@ export default (bot: TemzinBot) => {
     // JSONから読み込んだkeyword文字列をRegExpオブジェクトに変換
     answers = jsonData.map((item) => {
       const match = item.keyword.match(/^\/(.+)\/([gimyus]*)$/);
-      if (match && match[1] && match[2] !== undefined) {
+      if (match?.[1] && match[2] !== undefined) {
         return { answer: item.answer, keyword: new RegExp(match[1], match[2]) };
       }
       // 正規表現リテラル形式でない場合は、警告を出し、通常の文字列としてRegExpを作成

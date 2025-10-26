@@ -1,4 +1,4 @@
-import type { TemzinBot } from '@/temzinbot';
+import type { TemzinBot } from '@/core';
 
 export default (bot: TemzinBot) => {
   let is_dead = false;

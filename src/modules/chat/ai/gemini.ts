@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { TemzinBot } from '..';
+import type { TemzinBot } from '@/core';
 
 let isApiCalling = false;
 

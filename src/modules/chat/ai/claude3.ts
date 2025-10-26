@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import type { TemzinBot } from '..';
+import type { TemzinBot } from '@/core';
 
 let isApiCalling = false;
 
