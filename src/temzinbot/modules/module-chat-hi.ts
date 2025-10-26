@@ -1,7 +1,7 @@
-import * as Mineflayer from 'mineflayer';
-import { TemzinBot } from '@/temzinbot';
+import type * as Mineflayer from 'mineflayer';
+import type { TemzinBot } from '@/temzinbot';
 
-let last_joined_player: string | undefined = undefined;
+let last_joined_player: string | undefined;
 
 export default (bot: TemzinBot) => {
   /**
@@ -23,8 +23,7 @@ export default (bot: TemzinBot) => {
 
     if (username === last_joined_player) {
       if (message.match(/^(?:hi|hai|ひ|日|はい|へ)$/)) bot.safechat('hi', 2000);
-      if (message.match(/^(?:わんへ|わんっ|wannhe)/))
-        bot.safechat('わんへ', 2000);
+      if (message.match(/^(?:わんへ|わんっ|wannhe)/)) bot.safechat('わんへ', 2000);
       if (message.match(/^(?:こん|kon)$/)) bot.safechat('こん', 2000);
 
       last_joined_player = undefined;

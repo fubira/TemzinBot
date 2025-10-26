@@ -1,18 +1,40 @@
 import axios from 'axios';
-import { TemzinBot } from '@/temzinbot';
+import type { TemzinBot } from '@/temzinbot';
 import { default as area } from './area.json';
 
-function makeForecastMessageFromJson(json: any) {
+interface WeatherForecast {
+  date: string;
+  dateLabel: string;
+  telop: string;
+  temperature: {
+    max: { celsius: string | null };
+    min: { celsius: string | null };
+  };
+  chanceOfRain: Record<string, string>;
+}
+
+interface WeatherApiResponse {
+  location: { city: string };
+  forecasts: WeatherForecast[];
+}
+
+interface AreaData {
+  id: string;
+  keyword: string[];
+}
+
+function makeForecastMessageFromJson(json: WeatherApiResponse) {
   const { city } = json.location;
 
-  const primaryForecastData = json.forecasts.find(
-    (f: any) => f.temperature.max.celsius !== null
-  );
-  const secondaryForecastData = json.forecasts.find(
-    (f: any) => f.temperature.min.celsius !== null
-  );
+  const primaryForecastData = json.forecasts.find((f) => f.temperature.max.celsius !== null);
+  const secondaryForecastData = json.forecasts.find((f) => f.temperature.min.celsius !== null);
+
+  if (!primaryForecastData || !secondaryForecastData) {
+    return `[${city}の天気] データが取得できませんでした。`;
+  }
+
   const chanceOfRain = Object.values(primaryForecastData.chanceOfRain).reduce(
-    (a: string, b: string) => (parseInt(a) > parseInt(b) ? a : b)
+    (a: string, b: string) => (parseInt(a, 10) > parseInt(b, 10) ? a : b)
   );
   const date = new Date(primaryForecastData.date);
 
@@ -55,20 +77,16 @@ export default (bot: TemzinBot) => {
         locations.push('東京');
       }
 
-      const locationSet = new Set();
+      const locationSet = new Set<string>();
       // 指定された文字列をエリアデータの場所名から探す
-      locations.map((loc) => {
+      locations.forEach((loc) => {
         // まず完全一致で探す
-        let value = area?.find((a: any) =>
-          a.keyword.find((word: string) => word === loc)
-        );
+        let value = (area as AreaData[])?.find((a) => a.keyword.find((word) => word === loc));
 
         // 完全一致がなかった場合、前方一致で探す
         if (!value) {
-          value = area?.find((a: any) =>
-            a.keyword.find(
-              (word: string) => word?.startsWith(loc) || loc?.startsWith(word)
-            )
+          value = (area as AreaData[])?.find((a) =>
+            a.keyword.find((word) => word?.startsWith(loc) || loc?.startsWith(word))
           );
         }
 
@@ -95,10 +113,9 @@ export default (bot: TemzinBot) => {
       // API呼び出し
       try {
         locationIds.forEach(async (id) => {
-          const res = await axios.get(
-            `https://weather.tsukumijima.net/api/forecast/city/${id}`,
-            { headers: { 'User-Agent': 'WeatherApp/1.0.0' } }
-          );
+          const res = await axios.get(`https://weather.tsukumijima.net/api/forecast/city/${id}`, {
+            headers: { 'User-Agent': 'WeatherApp/1.0.0' },
+          });
           console.log(id, res.data);
           const message = makeForecastMessageFromJson(res.data);
 
@@ -107,7 +124,7 @@ export default (bot: TemzinBot) => {
           }
         });
       } catch (err) {
-        bot.safechat('エラーが発生しました:' + err);
+        bot.safechat(`エラーが発生しました:${err}`);
         console.log(err);
       }
     }

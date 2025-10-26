@@ -1,6 +1,6 @@
-import { TemzinBot } from '@/temzinbot';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+import type { TemzinBot } from '@/temzinbot';
 
 interface JsonAnswerItem {
   keyword: string; // JSONではRegExpオブジェクトを直接表現できないため、文字列として格納
@@ -20,13 +20,15 @@ export default (bot: TemzinBot) => {
     const rawData = fs.readFileSync(answersPath, 'utf-8');
     const jsonData = JSON.parse(rawData) as JsonAnswerItem[];
     // JSONから読み込んだkeyword文字列をRegExpオブジェクトに変換
-    answers = jsonData.map(item => {
+    answers = jsonData.map((item) => {
       const match = item.keyword.match(/^\/(.+)\/([gimyus]*)$/);
-      if (match) {
+      if (match && match[1] && match[2] !== undefined) {
         return { answer: item.answer, keyword: new RegExp(match[1], match[2]) };
       }
       // 正規表現リテラル形式でない場合は、警告を出し、通常の文字列としてRegExpを作成
-      bot.log(`[AnswerModule] Invalid regex format in answers.json: ${item.keyword}. Treating as plain string.`);
+      bot.log(
+        `[AnswerModule] Invalid regex format in answers.json: ${item.keyword}. Treating as plain string.`
+      );
       return { answer: item.answer, keyword: new RegExp(item.keyword) };
     });
     bot.log(`[AnswerModule] Loaded ${answers.length} answers.`);

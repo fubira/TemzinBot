@@ -1,5 +1,5 @@
-import { TemzinBot } from '..';
 import OpenAI from 'openai';
+import type { TemzinBot } from '..';
 
 let isApiCalling = false;
 
@@ -22,14 +22,14 @@ export default (bot: TemzinBot) => {
     return;
   }
   bot.log(`[OPENAI] ${JSON.stringify(AiDefinition)}`);
-  
+
   /**
    * Initialize OpenAI
    */
   const openai = new OpenAI({
     apiKey: AiDefinition.apiKey,
   });
-  
+
   bot.instance.on('chat', async (username: string, message: string) => {
     if (username === bot.instance.username) return;
 
@@ -59,17 +59,22 @@ export default (bot: TemzinBot) => {
         messages: [
           {
             role: 'system',
-            content: AiDefinition.systemRoleContent
-          }, {
+            content: AiDefinition.systemRoleContent,
+          },
+          {
             role: 'user',
             content: `${AiDefinition.userRoleContentPrefix}${content}${AiDefinition.userRoleContentPostfix}`,
           },
         ],
       });
 
-      const answer = response.choices[0].message?.content;
-      bot.log('[OPENAI]', `A: ${answer}`);
-      bot.safechat(answer);
+      const answer = response.choices[0]?.message?.content;
+      if (answer) {
+        bot.log('[OPENAI]', `A: ${answer}`);
+        bot.safechat(answer);
+      } else {
+        bot.safechat('[OPENAI] 回答を取得できませんでした。');
+      }
     } catch (err) {
       bot.safechat('[OPENAI] APIの呼び出し中にエラーが起きました。');
       console.error(err);

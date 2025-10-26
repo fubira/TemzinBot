@@ -1,4 +1,4 @@
-import { TemzinBot } from '@/temzinbot';
+import type { TemzinBot } from '@/temzinbot';
 
 export default (bot: TemzinBot) => {
   let is_dead = false;
@@ -12,12 +12,7 @@ export default (bot: TemzinBot) => {
       return;
     }
 
-    bot.randomchat([
-      'ギエピー',
-      '死ぬかと思った',
-      '致命傷ですんだ',
-      'あやうく死ぬところだった',
-    ]);
+    bot.randomchat(['ギエピー', '死ぬかと思った', '致命傷ですんだ', 'あやうく死ぬところだった']);
     is_dead = false;
   });
 };

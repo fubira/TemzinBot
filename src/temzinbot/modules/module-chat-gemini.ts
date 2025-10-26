@@ -1,5 +1,5 @@
-import { TemzinBot } from '..';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import type { TemzinBot } from '..';
 
 let isApiCalling = false;
 
@@ -12,13 +12,13 @@ const AiDefinition = {
 };
 
 export default (bot: TemzinBot) => {
-
-  if (!AiDefinition.apiKey) {
+  const apiKey = AiDefinition.apiKey;
+  if (!apiKey) {
     bot.log('[GEMINI] No apikey found.');
     return;
   }
   bot.log(`[GEMINI] ${JSON.stringify(AiDefinition)}`);
-  
+
   bot.instance.on('chat', async (username: string, message: string) => {
     if (username === bot.instance.username) return;
 
@@ -29,7 +29,7 @@ export default (bot: TemzinBot) => {
       return;
     }
 
-    const content = match[2].replace(')', '');
+    const content = match[2]?.replace(')', '') ?? '';
     if (!content) {
       bot.safechat('[GEMINI] 内容がないようです。');
       return;
@@ -44,14 +44,11 @@ export default (bot: TemzinBot) => {
       isApiCalling = true;
       // bot.log('[GEMINI]', `Q: ${content}`);
 
-      const genAI = new GoogleGenerativeAI(AiDefinition.apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
       const question = `${content}`;
 
-      const result = await model.generateContent([
-        AiDefinition.systemRoleContent,
-        question,
-      ]);
+      const result = await model.generateContent([AiDefinition.systemRoleContent, question]);
 
       const response = result.response;
       const answer = response.text();
@@ -60,7 +57,7 @@ export default (bot: TemzinBot) => {
       bot.safechat(answer);
     } catch (err) {
       bot.safechat('[GEMINI] APIの呼び出し中にエラーが起きました。');
-      console.error(err.toString());
+      console.error(err instanceof Error ? err.toString() : String(err));
     } finally {
       isApiCalling = false;
     }

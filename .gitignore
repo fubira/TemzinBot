@@ -12,6 +12,15 @@ pids
 # Dependency directories
 node_modules/
 
+# Bun
+bun.lockb
+
+# Build output
+dist/
+
+# TypeScript
+*.tsbuildinfo
+
 # dotenv environment variables file
 *.env*
 !.env.sample

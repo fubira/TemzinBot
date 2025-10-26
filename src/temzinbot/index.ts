@@ -1,8 +1,8 @@
+import * as Readline from 'node:readline';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import * as Readline from 'readline';
 import * as Mineflayer from 'mineflayer';
-import { ChatMessage } from 'prismarine-chat';
+import type { ChatMessage } from 'prismarine-chat';
 
 dayjs.extend(utc);
 
@@ -19,13 +19,11 @@ export interface TemzinBotOpts {
 export type TemzinBotModule = (temzinBot: TemzinBot) => Promise<void> | void;
 
 export class TemzinBot {
-  public instance: Mineflayer.Bot;
-  private readline: Readline.Interface;
+  public instance!: Mineflayer.Bot;
+  private readline!: Readline.Interface;
   public hasInterrupt: boolean;
 
   constructor() {
-    this.instance = undefined;
-    this.readline = undefined;
     this.hasInterrupt = false;
   }
 
@@ -42,9 +40,7 @@ export class TemzinBot {
     this.instance = Mineflayer.createBot({ ...opts });
     this.readline = readline;
 
-    console.log(
-      `Connecting to [${opts.host}:${opts.port}] (${this.instance.version})`
-    );
+    console.log(`Connecting to [${opts.host}:${opts.port}] (${this.instance.version})`);
 
     /**
      * 基本的なイベントの処理
@@ -54,7 +50,7 @@ export class TemzinBot {
       opts.onLogin?.();
     });
 
-    this.instance.on('end', (reason: any) => {
+    this.instance.on('end', (reason: string) => {
       this.log(`[bot.end] reason: ${reason}`);
     });
 
@@ -81,7 +77,7 @@ export class TemzinBot {
    * Readline処理を含むログ出力
    * @param args
    */
-  public log(...args: any[]) {
+  public log(...args: unknown[]) {
     Readline.cursorTo(process.stdout, 0);
 
     if (typeof args[0] === 'string') {
@@ -111,11 +107,11 @@ export class TemzinBot {
    * 防ぐ仕組みを入れたチャット送信メソッド
    */
   private safechat_send_text_cache: string[] = [];
-  private safechat_last_send_time: number = new Date().getTime();
+  private safechat_last_send_time: number = Date.now();
   private safechat_continuous_count = 0;
 
   private safechatText(text: string) {
-    const current_time = new Date().getTime();
+    const current_time = Date.now();
     const elapsed_ms = current_time - this.safechat_last_send_time;
 
     if (!text) {
@@ -128,9 +124,7 @@ export class TemzinBot {
 
     this.safechat_continuous_count++;
     if (this.safechat_continuous_count > 10) {
-      this.log(
-        '[bot.safechat] *REJECTED* 短時間での大量メッセージが送信がされました'
-      );
+      this.log('[bot.safechat] *REJECTED* 短時間での大量メッセージが送信がされました');
       return;
     }
 
@@ -144,10 +138,7 @@ export class TemzinBot {
         return value === text;
       })
     ) {
-      this.log(
-        '[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました: ' +
-          text
-      );
+      this.log(`[bot.safechat] *REJECTED* 一定時間内に同一の文章が複数回送信されました: ${text}`);
       return;
     }
 
@@ -161,31 +152,28 @@ export class TemzinBot {
 
     lines.forEach((line, index) => {
       // 1行ごとに2秒 + 5行ごとに5秒
-      const wait = (index * 2000 + (index / 5) * 5000);
+      const wait = index * 2000 + (index / 5) * 5000;
       setTimeout(() => {
         this.instance.chat(line);
       }, wait);
-    })
+    });
   }
 
   public safechat(text: string, msec = 800) {
     setTimeout(() => {
       this.safechatText(text);
-    }, msec)
+    }, msec);
   }
 
   public randomchat(messages: string[], msec = 800) {
-    let message: string;
-
-    if (Array.isArray(messages)) {
-      message = messages[Math.floor(Math.random() * messages.length)];
-    } else {
-      message = messages;
+    if (Array.isArray(messages) && messages.length > 0) {
+      const message = messages[Math.floor(Math.random() * messages.length)];
+      if (message) {
+        setTimeout(() => {
+          this.safechatText(message);
+        }, msec);
+      }
     }
-
-    setTimeout(() => {
-      this.safechatText(message);
-    }, msec);
   }
 
   public async loadModule(module: TemzinBotModule) {
