@@ -1,17 +1,21 @@
-import type { TemzinBot } from '@/core';
+import type { BotInstance } from '@/core';
+import { CONSTANTS } from '@/config';
+import { onUserChat } from '@/utils';
 
-export default (bot: TemzinBot) => {
-  bot.instance.on('chat', (username, message) => {
-    if (username === bot.instance.username) return;
+const COUNTDOWN_MESSAGES = [
+  { text: 'カウントダウンしますぽん！', delay: CONSTANTS.CHAT_DELAY.QUICK },
+  { text: '> 3', delay: 3000 },
+  { text: '> 2', delay: 4000 },
+  { text: '> 1', delay: 5000 },
+  { text: '> GO!', delay: 6000 },
+] as const;
 
-    const match = message.match(/^カウント/);
-
-    if (match && match[1] === bot.instance.username) {
-      bot.safechat('カウントダウンしますぽん！', 500);
-      bot.safechat('> 3', 3000);
-      bot.safechat('> 2', 4000);
-      bot.safechat('> 1', 5000);
-      bot.safechat('> GO!', 6000);
+export function countdownModule(bot: BotInstance) {
+  onUserChat(bot, (_username, message) => {
+    if (message.match(/^カウント/)) {
+      COUNTDOWN_MESSAGES.forEach(({ text, delay }) => {
+        bot.chat.send(text, { delay });
+      });
     }
   });
 };

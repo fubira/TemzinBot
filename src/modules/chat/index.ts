@@ -2,10 +2,10 @@
  * チャットモジュールのエクスポート
  */
 
-export { default as answerModule } from './answer';
-export { default as countdownModule } from './countdown';
-export { default as deathModule } from './death';
-export { default as googleModule } from './google';
-export { default as hiModule } from './hi';
-export { default as urlRepeatModule } from './url-repeat';
-export { default as weatherModule } from './weather';
+export { answerModule } from './answer';
+export { countdownModule } from './countdown';
+export { deathModule } from './death';
+export { googleModule } from './google';
+export { hiModule } from './hi';
+export { urlRepeatModule } from './url-repeat';
+export { weatherModule } from './weather';

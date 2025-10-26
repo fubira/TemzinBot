@@ -1,6 +1,3 @@
-/**
- * コアモジュールのエクスポート
- */
-
-export { TemzinBot } from './bot';
-export type { TemzinBotOpts, TemzinBotModule } from './types';
+export { createBot, loadModule } from './bot';
+export type { BotConfig, BotModule, BotInstance } from './types';
+export { createApplication } from './application';

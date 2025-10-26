@@ -1,12 +1,5 @@
-/**
- * Minecraft接続設定
- */
-
 import { CONSTANTS } from './constants';
 
-/**
- * 環境変数からMinecraft接続設定を取得
- */
 export function getMinecraftConfig() {
   const host = process.env.MC_HOST;
   const port = process.env.MC_PORT;

@@ -1,11 +1,11 @@
-import type { TemzinBot } from '@/core';
+import type { BotInstance } from '@/core';
+import { CONSTANTS } from '@/config';
+import { onUserChat } from '@/utils';
 
-export default (bot: TemzinBot) => {
-  bot.instance.on('chat', (username, message) => {
-    if (bot.instance.username === username) return;
-
+export function urlRepeatModule(bot: BotInstance) {
+  onUserChat(bot, (_username, message) => {
     if (message.match(/^(http|https):\/\//)) {
-      bot.safechat(`URL: ${message}`, 500);
+      bot.chat.send(`URL: ${message}`, { delay: CONSTANTS.CHAT_DELAY.QUICK });
     }
   });
 };

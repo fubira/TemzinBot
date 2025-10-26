@@ -1,37 +1,50 @@
-import type { TemzinBot } from '@/core';
+import type { BotInstance } from '@/core';
+import { CONSTANTS } from '@/config';
+import { onUserChat } from '@/utils';
 
-export default (bot: TemzinBot) => {
-  bot.instance.on('chat', (username, message) => {
-    console.log('chat', username, message);
-    // if (username === bot.instance.username) return;
+/**
+ * 検索タイプ定義
+ */
+interface SearchType {
+  /** マッチさせる正規表現 */
+  regex: RegExp;
+  /** 検索URL生成関数 */
+  buildUrl: (query: string) => string;
+}
 
-    const matchGoogle = message.match(/(^|\(\s*)(google|sksim|ggl)\s*[(]?([^()]*)[)]?/i);
-    if (matchGoogle) {
-      const [, text] = matchGoogle[0].split(' ');
+/**
+ * サポートする検索タイプ
+ */
+const searchTypes: SearchType[] = [
+  {
+    regex: /(?:^|\(\s*)(google|sksim|ggl)\s*[(]?([^()]*)[)]?/i,
+    buildUrl: (query) => `https://www.google.co.jp/search?q=${query}`,
+  },
+  {
+    regex: /(?:^|\(\s*)(image|img)\s*[(]?([^()]*)[)]?/i,
+    buildUrl: (query) => `https://www.google.co.jp/search?tbm=isch&q=${query}`,
+  },
+  {
+    regex: /(?:^|\(\s*)(map|地図)\s*[(]?([^()]*)[)]?/i,
+    buildUrl: (query) => `https://www.google.co.jp/maps?q=${query}`,
+  },
+];
 
-      if (text) {
-        const params = text.replace(/\s+/gi, '+');
-        bot.safechat(`https://www.google.co.jp/search?q=${params}`, 1000);
-      }
-    }
+export function googleModule(bot: BotInstance) {
+  onUserChat(bot, (_username, message) => {
+    for (const searchType of searchTypes) {
+      const match = message.match(searchType.regex);
 
-    const matchImage = message.match(/(^|\()(image|img)\s*[(]?([^()]*)[)]?/i);
-    if (matchImage) {
-      const [, text] = matchImage[0].split(' ');
+      if (match) {
+        const query = match[2]?.trim();
 
-      if (text) {
-        const params = text.replace(/\s+/gi, '+');
-        bot.safechat(`https://www.google.co.jp/search?tbm=isch&q=${params}`, 1000);
-      }
-    }
+        if (query) {
+          const encodedQuery = query.replace(/\s+/g, '+');
+          const url = searchType.buildUrl(encodedQuery);
 
-    const matchMap = message.match(/(^|\()(map|地図)\s*[(]?([^()]*)[)]?/i);
-    if (matchMap) {
-      const [, text] = matchMap[0].split(' ');
-
-      if (text) {
-        const params = text.replace(/\s+/gi, '+');
-        bot.safechat(`https://www.google.co.jp/maps?q=${params}`, 1000);
+          bot.chat.send(url, { delay: CONSTANTS.CHAT_DELAY.NORMAL });
+        }
+        return;
       }
     }
   });

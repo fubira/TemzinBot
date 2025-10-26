@@ -1,6 +1,10 @@
 import axios from 'axios';
-import type { TemzinBot } from '@/core';
-import { default as area } from './area.json';
+import type { BotInstance } from '@/core';
+import { onUserChat } from '@/utils';
+import areaJson from './area.json';
+
+const MODULE_NAME = 'WeatherModule';
+const API_MIN_INTERVAL_MS = 1000;
 
 interface WeatherForecast {
   date: string;
@@ -23,6 +27,9 @@ interface AreaData {
   keyword: string[];
 }
 
+// 型安全なエリアデータ
+const area = areaJson as AreaData[];
+
 function makeForecastMessageFromJson(json: WeatherApiResponse) {
   const { city } = json.location;
 
@@ -33,14 +40,13 @@ function makeForecastMessageFromJson(json: WeatherApiResponse) {
     return `[${city}の天気] データが取得できませんでした。`;
   }
 
-  const chanceOfRain = Object.values(primaryForecastData.chanceOfRain).reduce(
-    (a: string, b: string) => (parseInt(a, 10) > parseInt(b, 10) ? a : b)
-  );
+  const chanceOfRain = Object.values(primaryForecastData.chanceOfRain)
+    .map((v) => parseInt(v, 10))
+    .reduce((a, b) => Math.max(a, b), 0)
+    .toString();
   const date = new Date(primaryForecastData.date);
 
   const title = `[${date.getMonth() + 1}/${date.getDate()} ${city}の天気]`;
-  const label = primaryForecastData.dateLabel;
-  const telop = primaryForecastData.telop;
   const tempMax =
     primaryForecastData.temperature.max.celsius ||
     secondaryForecastData.temperature.max.celsius ||
@@ -50,82 +56,70 @@ function makeForecastMessageFromJson(json: WeatherApiResponse) {
     secondaryForecastData.temperature.min.celsius ||
     '--';
 
-  const forecastText =
-    primaryForecastData &&
-    `${label}の${city}の天気は ${telop} 気温は${tempMax}℃/${tempMin}℃ 降水確率は ${
-      chanceOfRain || '--'
-    } です。`;
+  const forecastText = `${primaryForecastData.dateLabel}の${city}の天気は ${primaryForecastData.telop} 気温は${tempMax}℃/${tempMin}℃ 降水確率は ${
+    chanceOfRain || '--'
+  } です。`;
 
   return `${title} ${forecastText}`;
 }
 
-let last_called = 0;
+export function weatherModule(bot: BotInstance) {
+  // モジュールスコープから関数スコープに移動（クロージャで管理）
+  let lastCalled = Date.now();
 
-export default (bot: TemzinBot) => {
-  last_called = Date.now();
+  onUserChat(bot, async (_username, message) => {
+    const weatherMatch = message.match(/(^|\()(天気|tenki)\s*[(]?([^()]*)[)]?/i);
 
-  bot.instance.on('chat', (username, message) => {
-    // 自分の発言は無視
-    if (bot.instance.username === username) return;
-
-    // 行頭"天気" or "tenki"を処理する
-    if (message.match(/(^|\()(天気|tenki)\s*[(]?([^()]*)[)]?/gi)) {
-      // 天気のあとに続く文字列を場所として探す なければ東京
-      const [...locations] = RegExp.$3.split(/[ ,]/);
-
+    if (weatherMatch) {
+      const locationQuery = weatherMatch[3]?.trim() || '';
+      const locations = locationQuery ? locationQuery.split(/[ ,]/).filter(Boolean) : [];
       if (locations.length === 0) {
         locations.push('東京');
       }
 
-      const locationSet = new Set<string>();
-      // 指定された文字列をエリアデータの場所名から探す
-      locations.forEach((loc) => {
-        // まず完全一致で探す
-        let value = (area as AreaData[])?.find((a) => a.keyword.find((word) => word === loc));
-
-        // 完全一致がなかった場合、前方一致で探す
-        if (!value) {
-          value = (area as AreaData[])?.find((a) =>
-            a.keyword.find((word) => word?.startsWith(loc) || loc?.startsWith(word))
-          );
-        }
-
-        if (value) {
-          locationSet.add(value.id);
-        }
-      });
-
-      // 重複のない気象庁IDでの場所リスト
-      const locationIds = Array.from(locationSet);
+      const locationIds = Array.from(
+        new Set(
+          locations
+            .map((loc) =>
+              area.find((a) =>
+                a.keyword.some((word) => word === loc || word?.startsWith(loc) || loc?.startsWith(word))
+              )?.id
+            )
+            .filter((id): id is string => id !== undefined)
+        )
+      );
 
       // ここでIDが一つもない場合、場所名が見つからなかった
       if (locationIds.length === 0) {
-        bot.safechat(`知らない場所です: ${locations}`);
+        bot.chat.send(`知らない場所です: ${locations}`);
+        return;
       }
 
       // API呼び出しには1秒以上時間をあける
-      if (last_called > Date.now() - 1000) {
-        bot.safechat(`ちょっとまって早い`);
+      if (lastCalled > Date.now() - API_MIN_INTERVAL_MS) {
+        bot.chat.send(`ちょっとまって早い`);
         return;
       }
-      last_called = Date.now();
+      lastCalled = Date.now();
 
       // API呼び出し
       try {
-        locationIds.forEach(async (id) => {
-          const res = await axios.get(`https://weather.tsukumijima.net/api/forecast/city/${id}`, {
-            headers: { 'User-Agent': 'WeatherApp/1.0.0' },
-          });
-          console.log(id, res.data);
-          const message = makeForecastMessageFromJson(res.data);
+        await Promise.all(
+          locationIds.map(async (id) => {
+            const res = await axios.get(`https://weather.tsukumijima.net/api/forecast/city/${id}`, {
+              headers: { 'User-Agent': 'WeatherApp/1.0.0' },
+            });
+            bot.log(`[${MODULE_NAME}] Fetched weather for city ID: ${id}`);
+            const message = makeForecastMessageFromJson(res.data);
 
-          if (message) {
-            bot.safechat(message);
-          }
-        });
+            if (message) {
+              bot.chat.send(message);
+            }
+          })
+        );
       } catch (err) {
-        bot.safechat(`エラーが発生しました:${err}`);
-        console.log(err);
+        bot.chat.send(`エラーが発生しました: ${err}`);
+        bot.log(`[${MODULE_NAME}] API error:`, err);
       }
     }
   });

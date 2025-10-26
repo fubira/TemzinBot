@@ -1,65 +1,40 @@
+/**
+ * Google Gemini Chat モジュール
+ */
+
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { TemzinBot } from '@/core';
+import { createAiModule, type AiConfig, type AiProvider } from './factory';
+import { CONSTANTS } from '@/config';
 
-let isApiCalling = false;
-
-const AiDefinition = {
-  apiKey: process.env.GEMINI_API_KEY,
-  matchKeyword: process.env.GEMINI_MATCH_KEYWORD || 'temzin',
-  systemRoleContent:
-    process.env.GEMINI_SYSTEM_ROLE_CONTENT ||
-    `あなたはtemzinという名前のアシスタントAIです。友好的ですが、「だ」「である」調で堅苦しくしゃべります。一人称は「儂」です。`,
+/**
+ * Gemini設定
+ */
+const geminiConfig: AiConfig = {
+  serviceName: 'GEMINI',
+  apiKeyEnv: 'GEMINI_API_KEY',
+  matchKeywordEnv: 'GEMINI_MATCH_KEYWORD',
+  defaultMatchKeyword: 'temzin',
+  systemRoleContentEnv: 'GEMINI_SYSTEM_ROLE_CONTENT',
+  defaultSystemRoleContent: CONSTANTS.AI_DEFAULTS.SYSTEM_ROLE,
+  // Gemini用のカスタム正規表現（大文字小文字区別なし）
+  customMatchRegex: (keyword: string) =>
+    new RegExp(`(${keyword.toLowerCase()})\\s+(.*)\\)?`, 'i'),
 };
 
-export default (bot: TemzinBot) => {
-  const apiKey = AiDefinition.apiKey;
-  if (!apiKey) {
-    bot.log('[GEMINI] No apikey found.');
-    return;
-  }
-  bot.log(`[GEMINI] ${JSON.stringify(AiDefinition)}`);
+/**
+ * Geminiプロバイダー
+ */
+const geminiProvider: AiProvider<GoogleGenerativeAI> = {
+  init: (apiKey: string) => {
+    return new GoogleGenerativeAI(apiKey);
+  },
 
-  bot.instance.on('chat', async (username: string, message: string) => {
-    if (username === bot.instance.username) return;
-
-    const matchKeyword = AiDefinition.matchKeyword.toLocaleLowerCase();
-    const match = message.match(new RegExp(`(${matchKeyword})\\s+(.*)\\)?`, 'i'));
-
-    if (!match) {
-      return;
-    }
-
-    const content = match[2]?.replace(')', '') ?? '';
-    if (!content) {
-      bot.safechat('[GEMINI] 内容がないようです。');
-      return;
-    }
-
-    if (isApiCalling) {
-      bot.safechat('[GEMINI] 前の質問の処理中です。しばらくお待ちください。');
-      return;
-    }
-
-    try {
-      isApiCalling = true;
-      // bot.log('[GEMINI]', `Q: ${content}`);
-
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-      const question = `${content}`;
-
-      const result = await model.generateContent([AiDefinition.systemRoleContent, question]);
-
-      const response = result.response;
-      const answer = response.text();
-
-      // bot.log('[GEMINI]', `A: ${answer}`);
-      bot.safechat(answer);
-    } catch (err) {
-      bot.safechat('[GEMINI] APIの呼び出し中にエラーが起きました。');
-      console.error(err instanceof Error ? err.toString() : String(err));
-    } finally {
-      isApiCalling = false;
-    }
-  });
+  callApi: async (client, question, config) => {
+    const model = client.getGenerativeModel({ model: 'gemini-pro' });
+    const result = await model.generateContent([config.systemRole, question]);
+    const response = result.response;
+    return response.text();
+  },
 };
+
+export const geminiModule = createAiModule(geminiConfig, geminiProvider);
