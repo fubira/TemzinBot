@@ -6,6 +6,16 @@ import areaJson from './area.json';
 const MODULE_NAME = 'WeatherModule';
 const API_MIN_INTERVAL_MS = 1000;
 
+interface HttpClient {
+  get<T>(url: string, options?: { headers?: Record<string, string> }): Promise<{ data: T }>;
+}
+
+const defaultHttpClient: HttpClient = {
+  get: async <T>(url: string, options?: { headers?: Record<string, string> }) => {
+    return axios.get<T>(url, options);
+  },
+};
+
 interface WeatherForecast {
   date: string;
   dateLabel: string;
@@ -63,8 +73,7 @@ function makeForecastMessageFromJson(json: WeatherApiResponse) {
   return `${title} ${forecastText}`;
 }
 
-export function weatherModule(bot: BotInstance) {
-  // モジュールスコープから関数スコープに移動（クロージャで管理）
+export function weatherModule(bot: BotInstance, httpClient: HttpClient = defaultHttpClient) {
   let lastCalled = Date.now();
 
   onUserChat(bot, async (_username, message) => {
@@ -102,13 +111,13 @@ export function weatherModule(bot: BotInstance) {
       }
       lastCalled = Date.now();
 
-      // API呼び出し
       try {
         await Promise.all(
           locationIds.map(async (id) => {
-            const res = await axios.get(`https://weather.tsukumijima.net/api/forecast/city/${id}`, {
-              headers: { 'User-Agent': 'WeatherApp/1.0.0' },
-            });
+            const res = await httpClient.get<WeatherApiResponse>(
+              `https://weather.tsukumijima.net/api/forecast/city/${id}`,
+              { headers: { 'User-Agent': 'WeatherApp/1.0.0' } }
+            );
             bot.log(`[${MODULE_NAME}] Fetched weather for city ID: ${id}`);
             const message = makeForecastMessageFromJson(res.data);
 

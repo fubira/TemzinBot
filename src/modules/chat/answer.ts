@@ -16,6 +16,17 @@ interface ProcessedAnswerItem {
   answer: string;
 }
 
+interface FileReader {
+  readJson<T>(path: string): T;
+}
+
+const defaultFileReader: FileReader = {
+  readJson: <T>(path: string): T => {
+    const rawData = fs.readFileSync(path, 'utf-8');
+    return JSON.parse(rawData) as T;
+  },
+}
+
 /**
  * 文字列を正規表現に変換
  * @param regexStr - 変換する文字列（正規表現リテラル形式 /pattern/flags または通常の文字列）
@@ -35,14 +46,12 @@ function parseRegExpString(regexStr: string, logger?: (msg: string) => void): Re
   return new RegExp(escaped);
 }
 
-export function answerModule(bot: BotInstance) {
+export function answerModule(bot: BotInstance, fileReader: FileReader = defaultFileReader) {
   const answersPath = path.join(__dirname, 'answers.json');
   let answers: ProcessedAnswerItem[] = [];
 
   try {
-    const rawData = fs.readFileSync(answersPath, 'utf-8');
-    const jsonData = JSON.parse(rawData) as JsonAnswerItem[];
-    // JSONから読み込んだkeyword文字列をRegExpオブジェクトに変換
+    const jsonData = fileReader.readJson<JsonAnswerItem[]>(answersPath);
     answers = jsonData.map((item) => ({
       answer: item.answer,
       keyword: parseRegExpString(item.keyword, (msg) => bot.log(`[${MODULE_NAME}] ${msg}`)),
@@ -50,7 +59,7 @@ export function answerModule(bot: BotInstance) {
     bot.log(`[${MODULE_NAME}] Loaded ${answers.length} answers.`);
   } catch (error) {
     bot.log(`[${MODULE_NAME}] Failed to load answers.json:`, error);
-    return; // answers.jsonが読み込めない場合はモジュールを初期化しない
+    return;
   }
 
   onUserChat(bot, (_username, message) => {

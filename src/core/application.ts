@@ -6,7 +6,7 @@
 import * as Readline from 'node:readline';
 import { createBot, loadModule } from './bot';
 import type { BotInstance } from './types';
-import { CONSTANTS, CHAT_PATTERNS, getMinecraftConfig } from '@/config';
+import { CONSTANTS, CHAT_PATTERNS, getMinecraftConfig, type Env } from '@/config';
 import { delay } from '@/utils';
 import {
   answerModule,
@@ -54,11 +54,11 @@ async function loadModules(bot: BotInstance): Promise<void> {
 /**
  * Botを起動
  */
-async function startBot(): Promise<{
+async function startBot(env: Env): Promise<{
   bot: BotInstance;
   readline: Readline.Interface;
 }> {
-  const config = getMinecraftConfig();
+  const config = getMinecraftConfig(env);
 
   // Readlineを先に作成（createBotで必要）
   const rl = Readline.createInterface({
@@ -207,8 +207,7 @@ function setupErrorHandlers(
 /**
  * アプリケーションを作成
  */
-export function createApplication() {
-  // クロージャ内で状態管理（モジュールスコープから移動）
+export function createApplication(env: Env) {
   const state: ApplicationState = {
     bot: undefined,
     readline: undefined,
@@ -220,7 +219,7 @@ export function createApplication() {
    * アプリケーション起動
    */
   async function start(): Promise<void> {
-    const { bot, readline } = await startBot();
+    const { bot, readline } = await startBot(env);
     state.bot = bot;
     state.readline = readline;
   }
@@ -230,7 +229,7 @@ export function createApplication() {
    */
   async function restart(): Promise<void> {
     state.readline?.close();
-    const { bot, readline } = await startBot();
+    const { bot, readline } = await startBot(env);
     state.bot = bot;
     state.readline = readline;
   }

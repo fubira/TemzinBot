@@ -1,7 +1,9 @@
 import 'dotenv/config';
+import { validateEnv } from '@/config';
 import { createApplication } from '@/core';
 
-const app = createApplication();
+const env = validateEnv();
+const app = createApplication(env);
 
 app.start().catch((error) => {
   console.error('[fatal] Failed to start application:', error);

@@ -6,22 +6,38 @@
 import type { BotInstance } from '@/core';
 import { onUserChat } from '@/utils';
 
+interface EnvProvider {
+  get(key: string): string | undefined;
+}
+
+const defaultEnvProvider: EnvProvider = {
+  get: (key: string) => process.env[key],
+};
+
 /**
  * 環境変数から数値を取得するヘルパー関数
  */
-export function getEnvNumber(key: string, defaultValue: number): number {
-  const value = process.env[key];
+export function getEnvNumber(
+  key: string,
+  defaultValue: number,
+  envProvider: EnvProvider = defaultEnvProvider
+): number {
+  const value = envProvider.get(key);
   return value ? Number(value) : defaultValue;
 }
 
 /**
  * 環境変数から文字列を取得するヘルパー関数
  */
-function getEnvOrDefault(envKey: string | undefined, defaultValue?: string): string {
+function getEnvOrDefault(
+  envKey: string | undefined,
+  defaultValue: string | undefined,
+  envProvider: EnvProvider
+): string {
   if (!envKey) {
     return defaultValue || '';
   }
-  return process.env[envKey] || defaultValue || '';
+  return envProvider.get(envKey) || defaultValue || '';
 }
 
 /**
@@ -85,24 +101,28 @@ export interface AiProvider<TClient = unknown> {
  */
 export function createAiModule<TClient>(
   config: AiConfig,
-  provider: AiProvider<TClient>
+  provider: AiProvider<TClient>,
+  envProvider: EnvProvider = defaultEnvProvider
 ) {
   return (bot: BotInstance) => {
-    // クロージャで状態管理
     let isApiCalling = false;
 
-    // 環境変数から設定を読み込み
-    const apiKey = process.env[config.apiKeyEnv];
+    const apiKey = envProvider.get(config.apiKeyEnv);
     const matchKeyword =
-      process.env[config.matchKeywordEnv] || config.defaultMatchKeyword;
+      envProvider.get(config.matchKeywordEnv) || config.defaultMatchKeyword;
     const systemRoleContent =
-      process.env[config.systemRoleContentEnv] || config.defaultSystemRoleContent;
-    const userRoleContentPrefix = getEnvOrDefault(config.userRoleContentPrefixEnv);
+      envProvider.get(config.systemRoleContentEnv) || config.defaultSystemRoleContent;
+    const userRoleContentPrefix = getEnvOrDefault(
+      config.userRoleContentPrefixEnv,
+      undefined,
+      envProvider
+    );
     const userRoleContentPostfix = getEnvOrDefault(
       config.userRoleContentPostfixEnv,
-      config.defaultUserRoleContentPostfix
+      config.defaultUserRoleContentPostfix,
+      envProvider
     );
-    const modelName = getEnvOrDefault(config.modelNameEnv, config.defaultModelName);
+    const modelName = getEnvOrDefault(config.modelNameEnv, config.defaultModelName, envProvider);
 
     // APIキーチェック
     if (!apiKey) {
