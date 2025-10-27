@@ -18,13 +18,13 @@ const envSchema = z.object({
   MC_VERSION: z.string().optional(),
   MC_AUTH: z.enum(['mojang', 'microsoft', 'offline']).optional(),
 
-  // Claude 3 AI設定
-  CLAUDE3_API_KEY: z.string().optional(),
-  CLAUDE3_MATCH_KEYWORD: z.string().optional(),
-  CLAUDE3_SYSTEM_ROLE_CONTENT: z.string().optional(),
-  CLAUDE3_USER_ROLE_CONTENT_PREFIX: z.string().optional(),
-  CLAUDE3_USER_ROLE_CONTENT_POSTFIX: z.string().optional(),
-  CLAUDE3_MODEL_NAME: z.string().optional(),
+  // Claude AI設定
+  CLAUDE_API_KEY: z.string().optional(),
+  CLAUDE_MATCH_KEYWORD: z.string().optional(),
+  CLAUDE_SYSTEM_ROLE_CONTENT: z.string().optional(),
+  CLAUDE_USER_ROLE_CONTENT_PREFIX: z.string().optional(),
+  CLAUDE_USER_ROLE_CONTENT_POSTFIX: z.string().optional(),
+  CLAUDE_MODEL_NAME: z.string().optional(),
 
   // Gemini AI設定
   GEMINI_API_KEY: z.string().optional(),

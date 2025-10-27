@@ -2,6 +2,6 @@
  * AIチャットモジュールのエクスポート
  */
 
-export { claude3Module } from './claude3';
+export { claudeModule } from './claude';
 export { geminiModule } from './gemini';
 export { openaiModule } from './openai';

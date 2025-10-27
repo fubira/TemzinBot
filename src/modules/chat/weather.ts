@@ -50,8 +50,12 @@ function makeForecastMessageFromJson(json: WeatherApiResponse) {
     return `[${city}の天気] データが取得できませんでした。`;
   }
 
-  const chanceOfRain = Object.values(primaryForecastData.chanceOfRain)
-    .map((v) => parseInt(v, 10))
+  const rainValues = Object.values(primaryForecastData.chanceOfRain);
+  const chanceOfRain = rainValues
+    .map((v) => {
+      const parsed = parseInt(v, 10);
+      return Number.isNaN(parsed) ? 0 : parsed;
+    })
     .reduce((a, b) => Math.max(a, b), 0)
     .toString();
   const date = new Date(primaryForecastData.date);

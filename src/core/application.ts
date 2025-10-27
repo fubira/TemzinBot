@@ -10,7 +10,7 @@ import { CONSTANTS, CHAT_PATTERNS, getMinecraftConfig, type Env } from '@/config
 import { delay } from '@/utils';
 import {
   answerModule,
-  claude3Module,
+  claudeModule,
   countdownModule,
   deathModule,
   geminiModule,
@@ -44,7 +44,7 @@ async function loadModules(bot: BotInstance): Promise<void> {
   // AIモジュール（APIキー必要）
   await loadModule(bot, geminiModule);
   await loadModule(bot, openaiModule);
-  await loadModule(bot, claude3Module);
+  await loadModule(bot, claudeModule);
 
   // オプショナルモジュール（必要に応じてコメントアウト）
   await loadModule(bot, hiModule);

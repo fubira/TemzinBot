@@ -1,5 +1,5 @@
 /**
- * Anthropic Claude 3 Chat モジュール
+ * Anthropic Claude Chat モジュール
  */
 
 import Anthropic from '@anthropic-ai/sdk';
@@ -7,35 +7,35 @@ import { createAiModule, getEnvNumber, type AiConfig, type AiProvider } from './
 import { CONSTANTS } from '@/config';
 
 /**
- * Claude3設定
+ * Claude設定
  */
-const claude3Config: AiConfig = {
-  serviceName: 'CLAUDE3',
-  apiKeyEnv: 'CLAUDE3_API_KEY',
-  matchKeywordEnv: 'CLAUDE3_MATCH_KEYWORD',
+const claudeConfig: AiConfig = {
+  serviceName: 'CLAUDE',
+  apiKeyEnv: 'CLAUDE_API_KEY',
+  matchKeywordEnv: 'CLAUDE_MATCH_KEYWORD',
   defaultMatchKeyword: 'AI',
-  systemRoleContentEnv: 'CLAUDE3_SYSTEM_ROLE_CONTENT',
+  systemRoleContentEnv: 'CLAUDE_SYSTEM_ROLE_CONTENT',
   defaultSystemRoleContent: CONSTANTS.AI_DEFAULTS.SYSTEM_ROLE,
-  userRoleContentPrefixEnv: 'CLAUDE3_USER_ROLE_CONTENT_PREFIX',
-  userRoleContentPostfixEnv: 'CLAUDE3_USER_ROLE_CONTENT_POSTFIX',
+  userRoleContentPrefixEnv: 'CLAUDE_USER_ROLE_CONTENT_PREFIX',
+  userRoleContentPostfixEnv: 'CLAUDE_USER_ROLE_CONTENT_POSTFIX',
   defaultUserRoleContentPostfix: CONSTANTS.AI_DEFAULTS.USER_POSTFIX,
-  modelNameEnv: 'CLAUDE3_MODEL_NAME',
-  defaultModelName: 'claude-3-5-sonnet-latest',
+  modelNameEnv: 'CLAUDE_MODEL_NAME',
+  defaultModelName: 'claude-sonnet-4-5-20250929',
 };
 
 /**
- * Claude3プロバイダー
+ * Claudeプロバイダー
  */
-const claude3Provider: AiProvider<Anthropic> = {
+const claudeProvider: AiProvider<Anthropic> = {
   init: (apiKey: string) => {
     return new Anthropic({ apiKey });
   },
 
   callApi: async (client, question, config) => {
     const response = await client.messages.create({
-      model: config.modelName || 'claude-3-5-sonnet-latest',
-      max_tokens: getEnvNumber('CLAUDE3_MAX_TOKENS', 1000),
-      temperature: getEnvNumber('CLAUDE3_TEMPERATURE', 0),
+      model: config.modelName || 'claude-sonnet-4-5-20250929',
+      max_tokens: getEnvNumber('CLAUDE_MAX_TOKENS', 1000),
+      temperature: getEnvNumber('CLAUDE_TEMPERATURE', 0),
       system: config.systemRole,
       messages: [
         {
@@ -54,4 +54,4 @@ const claude3Provider: AiProvider<Anthropic> = {
   },
 };
 
-export const claude3Module = createAiModule(claude3Config, claude3Provider);
+export const claudeModule = createAiModule(claudeConfig, claudeProvider);
