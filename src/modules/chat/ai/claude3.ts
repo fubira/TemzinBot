@@ -11,15 +11,15 @@ import { CONSTANTS } from '@/config';
  */
 const claude3Config: AiConfig = {
   serviceName: 'CLAUDE3',
-  apiKeyEnv: 'ANTHROPIC_API_KEY',
-  matchKeywordEnv: 'ANTHROPIC_MATCH_KEYWORD',
+  apiKeyEnv: 'CLAUDE3_API_KEY',
+  matchKeywordEnv: 'CLAUDE3_MATCH_KEYWORD',
   defaultMatchKeyword: 'AI',
-  systemRoleContentEnv: 'ANTHROPIC_SYSTEM_ROLE_CONTENT',
+  systemRoleContentEnv: 'CLAUDE3_SYSTEM_ROLE_CONTENT',
   defaultSystemRoleContent: CONSTANTS.AI_DEFAULTS.SYSTEM_ROLE,
-  userRoleContentPrefixEnv: 'ANTHROPIC_USER_ROLE_CONTENT_PREFIX',
-  userRoleContentPostfixEnv: 'ANTHROPIC_USER_ROLE_CONTENT_POSTFIX',
+  userRoleContentPrefixEnv: 'CLAUDE3_USER_ROLE_CONTENT_PREFIX',
+  userRoleContentPostfixEnv: 'CLAUDE3_USER_ROLE_CONTENT_POSTFIX',
   defaultUserRoleContentPostfix: CONSTANTS.AI_DEFAULTS.USER_POSTFIX,
-  modelNameEnv: 'ANTHROPIC_MODEL_NAME',
+  modelNameEnv: 'CLAUDE3_MODEL_NAME',
   defaultModelName: 'claude-3-5-sonnet-latest',
 };
 
@@ -34,8 +34,8 @@ const claude3Provider: AiProvider<Anthropic> = {
   callApi: async (client, question, config) => {
     const response = await client.messages.create({
       model: config.modelName || 'claude-3-5-sonnet-latest',
-      max_tokens: getEnvNumber('ANTHROPIC_MAX_TOKENS', 1000),
-      temperature: getEnvNumber('ANTHROPIC_TEMPERATURE', 0),
+      max_tokens: getEnvNumber('CLAUDE3_MAX_TOKENS', 1000),
+      temperature: getEnvNumber('CLAUDE3_TEMPERATURE', 0),
       system: config.systemRole,
       messages: [
         {
