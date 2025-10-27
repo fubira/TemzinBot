@@ -28,7 +28,6 @@ dist/
 # cache data
 data.*.json
 config.*.json
-minecraft-cache/
 
 # editor
 .vscode/

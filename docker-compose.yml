@@ -26,7 +26,7 @@ services:
     volumes:
       - ./logs:/app/logs
       # Microsoft認証キャッシュの永続化（コンテナ再作成時もログイン状態を維持）
-      - ./minecraft-cache:/home/botuser/.minecraft
+      - minecraft-cache:/home/botuser/.minecraft
       # answers.jsonを外部から編集可能にする場合
       # - ./src/modules/chat/answers.json:/app/src/modules/chat/answers.json:ro
 
@@ -39,6 +39,11 @@ services:
     #     reservations:
     #       cpus: '0.5'
     #       memory: 1G
+
+# Named Volumes（Docker管理のボリューム）
+volumes:
+  minecraft-cache:
+    driver: local
 
 # 外部ネットワーク（Minecraftサーバーと同じネットワーク）
 # networks:
