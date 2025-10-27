@@ -25,6 +25,8 @@ services:
     # ボリュームマウント（ログやデータ永続化）
     volumes:
       - ./logs:/app/logs
+      # Microsoft認証キャッシュの永続化（コンテナ再作成時もログイン状態を維持）
+      - ./minecraft-cache:/home/botuser/.minecraft
       # answers.jsonを外部から編集可能にする場合
       # - ./src/modules/chat/answers.json:/app/src/modules/chat/answers.json:ro
 
