@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 
 /**
  * 環境変数スキーマ定義
@@ -56,7 +56,7 @@ export function validateEnv(): Env {
   try {
     return envSchema.parse(process.env);
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       const messages = error.errors.map(
         (err) => `  - ${err.path.join('.')}: ${err.message}`
       );
