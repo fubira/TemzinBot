@@ -12,10 +12,7 @@ const envSchema = z.object({
     .regex(/^\d+$/, 'MC_PORT must be a valid number')
     .transform(Number)
     .refine((n) => n >= 1 && n <= 65535, 'MC_PORT must be between 1 and 65535'),
-  MC_USERNAME: z
-    .string()
-    .min(1, 'MC_USERNAME must not be empty')
-    .max(16, 'MC_USERNAME must be 16 characters or less'),
+  MC_USERNAME: z.string().min(1, 'MC_USERNAME must not be empty'),
 
   // Minecraft接続設定（オプション）
   MC_VERSION: z.string().optional(),
@@ -57,7 +54,7 @@ export function validateEnv(): Env {
     return envSchema.parse(process.env);
   } catch (error) {
     if (error instanceof ZodError) {
-      const messages = error.errors.map(
+      const messages = error.issues.map(
         (err) => `  - ${err.path.join('.')}: ${err.message}`
       );
       throw new Error(
