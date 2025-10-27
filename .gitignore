@@ -23,7 +23,6 @@ dist/
 
 # dotenv environment variables file
 *.env*
-!.env.sample
 !.env.example
 
 # cache data
