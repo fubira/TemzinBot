@@ -28,15 +28,15 @@ services:
       # answers.jsonを外部から編集可能にする場合
       # - ./src/modules/chat/answers.json:/app/src/modules/chat/answers.json:ro
 
-    # リソース制限（オプション）
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: 2G
-        reservations:
-          cpus: '0.5'
-          memory: 512M
+    # リソース制限（コメントアウト - 運用環境に十分なリソースがある場合）
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '2.0'
+    #       memory: 3G
+    #     reservations:
+    #       cpus: '0.5'
+    #       memory: 1G
 
 # 外部ネットワーク（Minecraftサーバーと同じネットワーク）
 # networks:
