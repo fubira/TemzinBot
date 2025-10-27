@@ -31,8 +31,9 @@ COPY --from=builder /app/src/modules/chat/area.json ./src/modules/chat/area.json
 
 # 非rootユーザーで実行
 RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 botuser && \
-    chown -R botuser:nodejs /app
+    adduser --system --uid 1001 --home /home/botuser --shell /bin/sh botuser && \
+    mkdir -p /home/botuser/.minecraft && \
+    chown -R botuser:nodejs /app /home/botuser
 
 USER botuser
 
