@@ -1,0 +1,44 @@
+services:
+  temzinbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: temzinbot
+    restart: unless-stopped
+
+    # 環境変数は.envファイルから読み込み
+    env_file:
+      - .env
+
+    # または個別に指定（.envが優先される）
+    # environment:
+    #   MC_HOST: ${MC_HOST}
+    #   MC_PORT: ${MC_PORT}
+    #   MC_USERNAME: ${MC_USERNAME}
+    #   MC_VERSION: ${MC_VERSION:-1.21.4}
+    #   MC_AUTH: ${MC_AUTH:-offline}
+
+    # ネットワーク設定（Minecraftサーバーが同じDockerネットワーク内にある場合）
+    # networks:
+    #   - minecraft-network
+
+    # ボリュームマウント（ログやデータ永続化）
+    volumes:
+      - ./logs:/app/logs
+      # answers.jsonを外部から編集可能にする場合
+      # - ./src/modules/chat/answers.json:/app/src/modules/chat/answers.json:ro
+
+    # リソース制限（オプション）
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+# 外部ネットワーク（Minecraftサーバーと同じネットワーク）
+# networks:
+#   minecraft-network:
+#     external: true

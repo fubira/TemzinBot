@@ -1,3 +1,48 @@
+# 依存関係
 node_modules
-.env*
-npm-debug.log
+bun.lockb
+
+# 環境変数とシークレット
+.env
+.env.*
+*.env
+
+# ログファイル
+logs
+*.log
+npm-debug.log*
+
+# ビルド成果物（ビルドステージで生成）
+dist
+
+# Git関連
+.git
+.gitignore
+.gitattributes
+
+# エディタ設定
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS生成ファイル
+.DS_Store
+Thumbs.db
+
+# テストとCI
+*.test.ts
+*.spec.ts
+.github
+
+# ドキュメント
+README.md
+CLAUDE.md
+LICENSE
+
+# Docker関連
+Dockerfile
+Dockerfile.*
+docker-compose.yml
+.dockerignore
