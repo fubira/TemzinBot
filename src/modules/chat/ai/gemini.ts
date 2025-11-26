@@ -30,7 +30,7 @@ const geminiProvider: AiProvider<GoogleGenAI> = {
   },
 
   callApi: async (client, question, config) => {
-    const model = process.env.GEMINI_MODEL_NAME ?? 'gemini-2.5-flash-preview-05-20';
+    const model = process.env.GEMINI_MODEL_NAME ?? 'gemini-2.5-flash';
     const response = await client.models.generateContent({
       model,
       contents: [config.systemRole, question].join('\n\n'),
