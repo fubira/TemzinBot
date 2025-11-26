@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.67.0",
-    "@google/generative-ai": "^0.24.1",
+    "@google/genai": "^1.30.0",
     "axios": "^1.12.2",
     "dayjs": "^1.11.18",
     "dotenv": "^17.2.3",

@@ -2,7 +2,7 @@
  * Google Gemini Chat モジュール
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { createAiModule, type AiConfig, type AiProvider } from './factory';
 import { CONSTANTS } from '@/config';
 
@@ -24,16 +24,21 @@ const geminiConfig: AiConfig = {
 /**
  * Geminiプロバイダー
  */
-const geminiProvider: AiProvider<GoogleGenerativeAI> = {
+const geminiProvider: AiProvider<GoogleGenAI> = {
   init: (apiKey: string) => {
-    return new GoogleGenerativeAI(apiKey);
+    return new GoogleGenAI({ apiKey });
   },
 
   callApi: async (client, question, config) => {
-    const model = client.getGenerativeModel({ model: 'gemini-pro' });
-    const result = await model.generateContent([config.systemRole, question]);
-    const response = result.response;
-    return response.text();
+    const model = process.env.GEMINI_MODEL_NAME ?? 'gemini-2.5-flash-preview-05-20';
+    const response = await client.models.generateContent({
+      model,
+      contents: [config.systemRole, question].join('\n\n'),
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
+    return response.text ?? '';
   },
 };
 
