@@ -65,12 +65,11 @@ const geminiProvider: AiProvider<GoogleGenAI> = {
 
   callApi: async (client, question, config) => {
     const model = process.env.GEMINI_MODEL_NAME ?? 'gemini-2.5-flash-lite';
-    const useGrounding = process.env.GEMINI_USE_GROUNDING === 'true';
     const response = await callWithRetry(() =>
       client.models.generateContent({
         model,
         contents: [config.systemRole, question].join('\n\n'),
-        config: useGrounding ? { tools: [{ googleSearch: {} }] } : {},
+        config: { tools: [{ googleSearch: {} }] },
       })
     );
     return response.text ?? '';
