@@ -4,7 +4,7 @@ FROM oven/bun:1 AS builder
 WORKDIR /app
 
 # 依存関係ファイルのみコピー（レイヤーキャッシュ最適化）
-COPY package.json bun.lockb* ./
+COPY package.json bun.lock* ./
 
 # 依存関係インストール
 RUN bun install --frozen-lockfile
@@ -21,7 +21,7 @@ FROM oven/bun:1-slim AS production
 WORKDIR /app
 
 # 本番用依存関係のみインストール
-COPY package.json bun.lockb* ./
+COPY package.json bun.lock* ./
 RUN bun install --production --frozen-lockfile
 
 # ビルド成果物をコピー
