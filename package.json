@@ -10,17 +10,17 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.67.1",
-    "@google/genai": "^1.32.0",
-    "axios": "^1.13.2",
-    "dayjs": "^1.11.19",
-    "dotenv": "^17.2.3",
-    "mineflayer": "^4.33.0",
-    "openai": "^6.10.0",
-    "zod": "^4.1.13"
+    "@google/genai": "^1.52.0",
+    "axios": "^1.18.1",
+    "dayjs": "^1.11.21",
+    "dotenv": "^17.4.2",
+    "mineflayer": "^4.37.1",
+    "openai": "^6.49.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.8",
-    "@types/node": "^24.10.2",
+    "@biomejs/biome": "^2.5.5",
+    "@types/node": "^24.13.3",
     "typescript": "^5.9.3"
   },
   "scripts": {
