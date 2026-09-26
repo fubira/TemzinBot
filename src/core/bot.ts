@@ -17,6 +17,12 @@ dayjs.extend(utc);
  * ログ関数を作成
  */
 function createLogger(readline: Readline.Interface) {
+  // stdin が EOF のとき（Docker 等）や再接続で閉じた後に prompt() を呼ぶと例外になる
+  let closed = false;
+  readline.on('close', () => {
+    closed = true;
+  });
+
   return (...args: unknown[]) => {
     Readline.cursorTo(process.stdout, 0);
 
@@ -26,7 +32,7 @@ function createLogger(readline: Readline.Interface) {
 
     console.log(...args);
 
-    if (readline) {
+    if (!closed) {
       readline.prompt(true);
     }
   };
