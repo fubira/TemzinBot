@@ -17,6 +17,7 @@ import {
   googleModule,
   // hiModule,
   openaiModule,
+  openwebuiModule,
   // urlRepeatModule,
   weatherModule,
 } from '@/modules';
@@ -45,6 +46,7 @@ async function loadModules(bot: BotInstance): Promise<void> {
   await loadModule(bot, geminiModule);
   await loadModule(bot, openaiModule);
   await loadModule(bot, claudeModule);
+  await loadModule(bot, openwebuiModule);
 
   // オプショナルモジュール（必要に応じてコメントアウト）
   // await loadModule(bot, hiModule);

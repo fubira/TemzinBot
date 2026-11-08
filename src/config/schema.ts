@@ -41,6 +41,15 @@ const envSchema = z.object({
   OPENAI_USER_ROLE_CONTENT_PREFIX: z.string().optional(),
   OPENAI_USER_ROLE_CONTENT_POSTFIX: z.string().optional(),
   OPENAI_MODEL_NAME: z.string().optional(),
+
+  // Open WebUI設定
+  OPENWEBUI_API_KEY: z.string().optional(),
+  OPENWEBUI_BASE_URL: z.string().optional(),
+  OPENWEBUI_MATCH_KEYWORD: z.string().optional(),
+  OPENWEBUI_SYSTEM_ROLE_CONTENT: z.string().optional(),
+  OPENWEBUI_USER_ROLE_CONTENT_PREFIX: z.string().optional(),
+  OPENWEBUI_USER_ROLE_CONTENT_POSTFIX: z.string().optional(),
+  OPENWEBUI_MODEL_NAME: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

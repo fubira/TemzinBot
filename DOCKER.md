@@ -77,9 +77,11 @@ TemzinBot/
 |--------|------|-----------|
 | `MC_VERSION` | Minecraftバージョン | `1.21.4` |
 | `MC_AUTH` | 認証方式 (`mojang`, `microsoft`, `offline`) | `offline` |
-| `CLAUDE3_API_KEY` | Claude 3 APIキー | - |
+| `CLAUDE_API_KEY` | Claude APIキー | - |
 | `GEMINI_API_KEY` | Gemini APIキー | - |
 | `OPENAI_API_KEY` | OpenAI APIキー | - |
+| `OPENWEBUI_API_KEY` | Open WebUI APIキー（`OPENWEBUI_BASE_URL`も必須） | - |
+| `OPENWEBUI_BASE_URL` | Open WebUI APIのURL（例: `http://host:3000/api`） | - |
 
 詳細は`.env.example`を参照してください。
 
