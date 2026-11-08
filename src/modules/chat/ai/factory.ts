@@ -40,6 +40,30 @@ function getEnvOrDefault(
   return envProvider.get(envKey) || defaultValue || '';
 }
 
+const dateFormatter = new Intl.DateTimeFormat('ja-JP', {
+  timeZone: 'Asia/Tokyo',
+  dateStyle: 'long',
+});
+
+/** モデルは現在の日付を知らないため、システムロールに添える文 */
+export function todayPrompt(now: Date = new Date()): string {
+  return `今日の日付は${dateFormatter.format(now)}です。`;
+}
+
+/** 大文字小文字を区別せず、文中のキーワードで反応する正規表現 */
+export function keywordMatchRegex(keyword: string): RegExp {
+  return new RegExp(`(${keyword})\\s+(.*)\\)?`, 'i');
+}
+
+/** 空行は空の発言になるため取り除く */
+export function removeBlankLines(text: string): string {
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join('\n');
+}
+
 /**
  * AI設定インターフェイス
  */
@@ -176,7 +200,7 @@ export function createAiModule<TClient>(
 
         if (answer) {
           bot.log(`[${config.serviceName}]`, `A: ${answer}`);
-          bot.chat.send(answer);
+          bot.chat.send(removeBlankLines(answer));
         } else {
           bot.chat.send(`[${config.serviceName}] 回答を取得できませんでした。`);
         }
