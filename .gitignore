@@ -31,3 +31,6 @@ config.*.json
 
 # editor
 .vscode/
+
+# work in progress
+/tmp/
